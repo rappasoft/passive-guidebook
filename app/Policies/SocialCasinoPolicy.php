@@ -2,7 +2,6 @@
 
 namespace App\Policies;
 
-use App\Models\SocialCasino;
 use App\Models\User;
 
 class SocialCasinoPolicy

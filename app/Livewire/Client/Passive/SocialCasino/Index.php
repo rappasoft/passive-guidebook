@@ -63,12 +63,12 @@ class Index extends Component implements HasForms, HasTable
                 Action::make('using')
                     ->label('Mark Used')
                     ->tooltip('Add this to your dashboard to keep track of your daily earnings.')
-                    ->action(fn(SocialCasino $record) => auth()->user()->socialCasinos()->attach($record)) // TODO: Refresh estimated monthly
-                    ->hidden(fn(SocialCasino $record) => auth()->user()->socialCasinos()->exists($record)),
+                    ->action(fn (SocialCasino $record) => auth()->user()->socialCasinos()->attach($record)) // TODO: Refresh estimated monthly
+                    ->hidden(fn (SocialCasino $record) => auth()->user()->socialCasinos()->exists($record)),
                 Action::make('not-using')
                     ->label('Remove')
-                    ->action(fn(SocialCasino $record) => auth()->user()->socialCasinos()->detach($record)) // TODO: Refresh estimated monthly
-                    ->hidden(fn(SocialCasino $record) => ! auth()->user()->socialCasinos()->exists($record)),
+                    ->action(fn (SocialCasino $record) => auth()->user()->socialCasinos()->detach($record)) // TODO: Refresh estimated monthly
+                    ->hidden(fn (SocialCasino $record) => ! auth()->user()->socialCasinos()->exists($record)),
             ]);
     }
 

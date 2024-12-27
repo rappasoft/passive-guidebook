@@ -17,6 +17,7 @@ class SocialCasinoResource extends Resource
     protected static ?string $navigationGroup = 'Passive';
 
     protected static ?string $recordTitleAttribute = 'name';
+
     protected static ?string $navigationIcon = 'heroicon-o-user';
 
     protected static ?string $label = 'Social Casino';
@@ -40,7 +41,7 @@ class SocialCasinoResource extends Resource
                             ->options([
                                 '1' => '1',
                                 '2' => '2',
-                                '3' => '3'
+                                '3' => '3',
                             ])
                             ->required()
                             ->inline()

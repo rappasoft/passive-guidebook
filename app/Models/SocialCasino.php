@@ -63,7 +63,7 @@ class SocialCasino extends Model implements HasMedia
             ->singleFile();
     }
 
-    public function getSlugOptions() : SlugOptions
+    public function getSlugOptions(): SlugOptions
     {
         return SlugOptions::create()
             ->generateSlugsFrom('name')

@@ -23,9 +23,9 @@ class ListSocialCasinos extends ListRecords
     {
         return [
             Tab::make('Active')
-                ->modifyQueryUsing(fn(Builder $query) => $query->active()),
+                ->modifyQueryUsing(fn (Builder $query) => $query->active()),
             Tab::make('Inactive')
-                ->modifyQueryUsing(fn(Builder $query) => $query->inactive()),
+                ->modifyQueryUsing(fn (Builder $query) => $query->inactive()),
         ];
     }
 }
