@@ -49,6 +49,8 @@
         "spatie/laravel-sluggable": "^3.7",
         "spatie/security-advisories-health-check": "^1.0",
         "stechstudio/filament-impersonate": "^3.5",
+        "symfony/http-client": "^7.2",
+        "symfony/mailgun-mailer": "^7.2",
         "tapp/filament-timezone-field": "^3.0"
     },
     "require-dev": {
