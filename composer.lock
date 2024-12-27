@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "a2360e9fe0a0694ba0c5118611802f92",
+    "content-hash": "0c4362784d8583f8f80b1cd85264f233",
     "packages": [
         {
             "name": "andreiio/blade-remix-icon",
@@ -7293,16 +7293,16 @@
         },
         {
             "name": "shuvroroy/filament-spatie-laravel-health",
-            "version": "dev-main",
+            "version": "v2.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/shuvroroy/filament-spatie-laravel-health.git",
-                "reference": "a3512c92ec50755e3cae5d8f4f4f14bab518579d"
+                "reference": "bc50a268c868cdb1c28272cae9acfa4a27b3f757"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/shuvroroy/filament-spatie-laravel-health/zipball/a3512c92ec50755e3cae5d8f4f4f14bab518579d",
-                "reference": "a3512c92ec50755e3cae5d8f4f4f14bab518579d",
+                "url": "https://api.github.com/repos/shuvroroy/filament-spatie-laravel-health/zipball/bc50a268c868cdb1c28272cae9acfa4a27b3f757",
+                "reference": "bc50a268c868cdb1c28272cae9acfa4a27b3f757",
                 "shasum": ""
             },
             "require": {
@@ -7323,7 +7323,6 @@
                 "phpstan/phpstan-deprecation-rules": "^1.1",
                 "phpstan/phpstan-phpunit": "^1.3"
             },
-            "default-branch": true,
             "type": "library",
             "extra": {
                 "laravel": {
@@ -7357,7 +7356,7 @@
             ],
             "support": {
                 "issues": "https://github.com/shuvroroy/filament-spatie-laravel-health/issues",
-                "source": "https://github.com/shuvroroy/filament-spatie-laravel-health/tree/main"
+                "source": "https://github.com/shuvroroy/filament-spatie-laravel-health/tree/v2.2.0"
             },
             "funding": [
                 {
@@ -7365,7 +7364,7 @@
                     "type": "buy_me_a_coffee"
                 }
             ],
-            "time": "2024-12-27T17:31:33+00:00"
+            "time": "2024-12-06T09:30:54+00:00"
         },
         {
             "name": "spatie/color",
@@ -14661,8 +14660,7 @@
     "stability-flags": {
         "jamesmills/laravel-timezone": 20,
         "larabug/larabug": 20,
-        "laravel/pulse": 10,
-        "shuvroroy/filament-spatie-laravel-health": 20
+        "laravel/pulse": 10
     },
     "prefer-stable": true,
     "prefer-lowest": false,
