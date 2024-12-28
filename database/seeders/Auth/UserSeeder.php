@@ -3,14 +3,11 @@
 namespace Database\Seeders\Auth;
 
 use App\Models\User;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Spatie\Permission\Models\Role;
 
 class UserSeeder extends Seeder
 {
-    use WithoutModelEvents;
-
     /**
      * Run the database seeds.
      */
@@ -24,9 +21,5 @@ class UserSeeder extends Seeder
         ]);
 
         $admin->assignRole(Role::whereName('Super Admin')->firstOrFail());
-
-        User::factory(10)->admin()->create();
-
-        User::factory(10)->user()->create();
     }
 }
