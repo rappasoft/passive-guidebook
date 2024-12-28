@@ -13,7 +13,6 @@
                         <x-filament::button
                             href="{{ route('passive.social-casinos.how-to') }}"
                             tag="a"
-                            target="_blank"
                             color="info"
                         >
                             How-To
@@ -22,7 +21,6 @@
                         <x-filament::button
                             href="{{ route('passive.social-casinos.faq') }}"
                             tag="a"
-                            target="_blank"
                             color="info"
                         >
                             FAQ
@@ -31,20 +29,68 @@
                         <x-filament::button
                             href="{{ route('passive.social-casinos.tips-and-tricks') }}"
                             tag="a"
-                            target="_blank"
                             color="info"
                         >
                             Tips & Tricks
                         </x-filament::button>
 
-                        <x-filament::button
-                            href="https://sweeps-app.vercel.app/"
-                            tag="a"
-                            target="_blank"
-                            color="info"
-                        >
-                            Sweeps Extension
-                        </x-filament::button>
+                        <x-filament::dropdown color="info" class="inline-block">
+                            <x-slot name="trigger">
+                                <x-filament::button>
+                                    Community
+                                </x-filament::button>
+                            </x-slot>
+
+                            <x-filament::dropdown.list>
+                                <x-filament::dropdown.list.item
+                                    href="https://discord.gg/8XVzdqBP"
+                                    tag="a"
+                                    target="_blank"
+                                    badge-color="info"
+                                >
+                                    Sweeps Extension
+
+                                    <x-slot name="badge">
+                                        Discord
+                                    </x-slot>
+                                </x-filament::dropdown.list.item>
+                                <x-filament::dropdown.list.item
+                                    href="https://discord.gg/MHs4wE5J"
+                                    tag="a"
+                                    target="_blank"
+                                    badge-color="info"
+                                >
+                                    Social Casino Hackers
+
+                                    <x-slot name="badge">
+                                        Discord
+                                    </x-slot>
+                                </x-filament::dropdown.list.item>
+                            </x-filament::dropdown.list>
+                        </x-filament::dropdown>
+
+                        <x-filament::dropdown width="xs" placement="bottom-end" color="info" class="inline-block">
+                            <x-slot name="trigger">
+                                <x-filament::button>
+                                    Tools
+                                </x-filament::button>
+                            </x-slot>
+
+                            <x-filament::dropdown.list>
+                                <x-filament::dropdown.list.item
+                                    href="https://sweeps-app.vercel.app/"
+                                    tag="a"
+                                    target="_blank"
+                                    badge-color="success"
+                                >
+                                    Sweeps Extension
+
+                                    <x-slot name="badge">
+                                        Free to $18/mo
+                                    </x-slot>
+                                </x-filament::dropdown.list.item>
+                            </x-filament::dropdown.list>
+                        </x-filament::dropdown>
                     </div>
                 </div>
 

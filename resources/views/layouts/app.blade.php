@@ -27,7 +27,7 @@
         @if (\Illuminate\Support\Facades\Auth::user()->onTrial())
             <div class="bg-blue-50 dark:bg-blue-300 p-4">
                 <div class="max-w-7xl mx-auto text-center text-sm font-bold text-blue-700">
-                    <p>You are currently on a trial period. Your trial ends on {{ resolve(\App\Helpers\TimezoneHelper::class)->convertToLocal(date: \Illuminate\Support\Facades\Auth::user()->trial_ends_at, format: 'l jS \o\f F Y \a\t h:i A') }}. <a href="/billing" class="underline hover:no-underline">Click here to buy a membership!</a></p>
+                    <p>You are currently on a trial period. Your trial ends on {{ resolve(\App\Helpers\TimezoneHelper::class)->convertToLocal(date: \Illuminate\Support\Facades\Auth::user()->trial_ends_at, format: 'l \t\h\e jS \o\f F, Y') }}. <a href="/billing" class="underline hover:no-underline">Click here to buy a membership!</a></p>
                 </div>
             </div>
         @endif
