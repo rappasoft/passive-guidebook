@@ -8,12 +8,24 @@
     <div class="py-12">
         <div class="max-w-7xl space-y-6 mx-auto sm:px-6 lg:px-8">
             <div class="p-6 text-gray-900 dark:text-gray-100 bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
-                <div class="flex justify-end mb-4">
+                <div class="flex justify-between mb-4">
+                    <div>
+                        <x-filament::button
+                            href="https://www.helpguide.org/mental-health/addiction/gambling-addiction-and-problem-gambling"
+                            target="_blank"
+                            tag="a"
+                            outlined
+                        >
+                            Gambling Addiction Help
+                        </x-filament::button>
+                    </div>
+
                     <div class="space-x-2">
                         <x-filament::button
                             href="{{ route('passive.social-casinos.how-to') }}"
                             tag="a"
                             color="info"
+                            outlined
                         >
                             How-To
                         </x-filament::button>
@@ -22,6 +34,7 @@
                             href="{{ route('passive.social-casinos.faq') }}"
                             tag="a"
                             color="info"
+                            outlined
                         >
                             FAQ
                         </x-filament::button>
@@ -30,13 +43,14 @@
                             href="{{ route('passive.social-casinos.tips-and-tricks') }}"
                             tag="a"
                             color="info"
+                            outlined
                         >
                             Tips & Tricks
                         </x-filament::button>
 
-                        <x-filament::dropdown color="info" class="inline-block">
+                        <x-filament::dropdown color="info" class="inline-block" >
                             <x-slot name="trigger">
-                                <x-filament::button>
+                                <x-filament::button outlined>
                                     Community
                                 </x-filament::button>
                             </x-slot>
@@ -71,7 +85,7 @@
 
                         <x-filament::dropdown width="xs" placement="bottom-end" color="info" class="inline-block">
                             <x-slot name="trigger">
-                                <x-filament::button>
+                                <x-filament::button outlined>
                                     Tools
                                 </x-filament::button>
                             </x-slot>
