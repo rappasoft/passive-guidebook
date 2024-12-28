@@ -16,7 +16,7 @@
                         {{ __('Dashboard') }}
                     </x-nav-link>
 
-                    <x-nav-link href="{{ route('passive.social-casinos.index') }}" :active="request()->routeIs('social-casinos')" class="flex space-x-2">
+                    <x-nav-link href="{{ route('passive.social-casinos.index') }}" :active="request()->routeIs('passive.social-casinos.*')" class="flex space-x-2">
                         <p>{{ __('Social Casinos') }}</p>
 {{--                        <x-filament::badge>--}}
 {{--                            Best--}}
@@ -109,6 +109,21 @@
                         </x-slot>
                     </x-dropdown>
                 </div>
+
+                <div x-cloak class="flex items-center">
+                    <button x-show="currentTheme === 'dark'" x-on:click="currentTheme = 'system'">
+                        <x-heroicon-s-moon class="p-2 ml-3 w-8 h-8 text-gray-100 bg-gray-700 rounded-md transition cursor-pointer dark:hover:bg-gray-600" />
+                    </button>
+
+                    <button x-show="currentTheme === 'light'" x-on:click="currentTheme = 'dark'">
+                        <x-heroicon-s-sun class="p-2 ml-3 w-8 h-8 text-gray-700 bg-gray-100 rounded-md transition cursor-pointer hover:bg-gray-200" />
+                    </button>
+
+                    <button x-show="currentTheme === 'system'" x-on:click="window.matchMedia('(prefers-color-scheme: dark)').matches ? currentTheme = 'light' : currentTheme = 'dark'">
+                        <x-heroicon-s-cog x-show="! window.matchMedia('(prefers-color-scheme: dark)').matches" class="p-2 ml-3 w-8 h-8 text-gray-700 bg-gray-100 rounded-md transition cursor-pointer hover:bg-gray-200" />
+                        <x-heroicon-s-cog x-show="window.matchMedia('(prefers-color-scheme: dark)').matches" class="p-2 ml-3 w-8 h-8 text-gray-100 bg-gray-700 rounded-md transition cursor-pointer dark:hover:bg-gray-600" />
+                    </button>
+                </div>
             </div>
 
             <!-- Hamburger -->
@@ -130,7 +145,7 @@
                 {{ __('Dashboard') }}
             </x-responsive-nav-link>
 
-            <x-responsive-nav-link href="{{ route('passive.social-casinos.index') }}" :active="request()->routeIs('social-casinos')">
+            <x-responsive-nav-link href="{{ route('passive.social-casinos.index') }}" :active="request()->routeIs('passive.social-casinos.*')">
                 {{ __('Social Casinos') }}
             </x-responsive-nav-link>
 
