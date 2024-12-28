@@ -6,7 +6,7 @@ use Carbon\Carbon;
 
 class TimezoneHelper
 {
-    public function convertToLocal(?Carbon $date, $timezoneOverride = null, string $format = null): string
+    public function convertToLocal(?Carbon $date, $timezoneOverride = null, ?string $format = null): string
     {
         if (is_null($date)) {
             return __('Empty');
