@@ -31,7 +31,7 @@ return [
     /**
      * this will be setup the default seo site description. read more about it in 'laravel-seo'.
      */
-    'site_description' => 'All about ' . config('app.name', 'Passive Guidebook'),
+    'site_description' => 'All about '.config('app.name', 'Passive Guidebook'),
 
     /**
      * this will be setup the default seo site color theme. read more about it in 'laravel-seo'.

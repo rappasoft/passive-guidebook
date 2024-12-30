@@ -15,7 +15,12 @@ use App\Policies\TagPolicy;
 use App\Policies\UserPolicy;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Gate;
-use LaraZeus\Sky\Models\{Faq, Post, PostStatus, Tag, Library, Navigation};
+use LaraZeus\Sky\Models\Faq;
+use LaraZeus\Sky\Models\Library;
+use LaraZeus\Sky\Models\Navigation;
+use LaraZeus\Sky\Models\Post;
+use LaraZeus\Sky\Models\PostStatus;
+use LaraZeus\Sky\Models\Tag;
 use Spatie\ScheduleMonitor\Models\MonitoredScheduledTask;
 use Spatie\ScheduleMonitor\Models\MonitoredScheduledTaskLogItem;
 
@@ -36,12 +41,12 @@ class AuthServiceProvider extends ServiceProvider
         SocialCasino::class => SocialCasinoPolicy::class,
 
         // CMS
-        Faq::class => FaqPolicy::Class,
-        Post::class => PostPolicy::Class,
-        PostStatus::class => PostStatusPolicy::Class,
-        Tag::class => TagPolicy::Class,
-        Library::class => LibraryPolicy::Class,
-        Navigation::class => NavigationPolicy::Class,
+        Faq::class => FaqPolicy::class,
+        Post::class => PostPolicy::class,
+        PostStatus::class => PostStatusPolicy::class,
+        Tag::class => TagPolicy::class,
+        Library::class => LibraryPolicy::class,
+        Navigation::class => NavigationPolicy::class,
     ];
 
     /**
