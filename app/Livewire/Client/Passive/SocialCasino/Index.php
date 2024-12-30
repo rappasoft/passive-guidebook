@@ -64,11 +64,17 @@ class Index extends Component implements HasForms, HasTable
                 Action::make('using')
                     ->label('Mark Used')
                     ->tooltip('Add this to your dashboard to keep track of your daily earnings.')
-                    ->action(function (SocialCasino $record) { auth()->user()->addSocialCasino($record); $this->dispatch('refresh')->to(EstimatedMonthlyIncome::class); })
+                    ->action(function (SocialCasino $record) {
+                        auth()->user()->addSocialCasino($record);
+                        $this->dispatch('refresh')->to(EstimatedMonthlyIncome::class);
+                    })
                     ->hidden(fn (SocialCasino $record) => auth()->user()->hasSocialCasino($record)),
                 Action::make('not-using')
                     ->label('Remove')
-                    ->action(function (SocialCasino $record) { auth()->user()->removeSocialCasino($record); $this->dispatch('refresh')->to(EstimatedMonthlyIncome::class); })
+                    ->action(function (SocialCasino $record) {
+                        auth()->user()->removeSocialCasino($record);
+                        $this->dispatch('refresh')->to(EstimatedMonthlyIncome::class);
+                    })
                     ->hidden(fn (SocialCasino $record) => ! auth()->user()->hasSocialCasino($record)),
             ]);
     }
