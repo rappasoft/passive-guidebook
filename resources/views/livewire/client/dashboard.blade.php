@@ -27,7 +27,11 @@
                                 @if (\Illuminate\Support\Facades\Auth::user()->socialCasinos()->count())
                                     <x-filament::tabs label="Dashboard Tabs">
                                         <x-filament::tabs.item @click="tab = 'social-casinos';window.location.hash = 'social-casinos'" :alpine-active="'tab === \'social-casinos\''" active>
-                                            My Social Casinos
+                                            <div class="flex items-center space-x-2">
+                                                <span>My Social Casinos</span>
+
+                                                <x-filament::badge color="success">${{ \Illuminate\Support\Facades\Auth::user()->getSocialCasinosDailyIncome() }}/day</x-filament::badge>
+                                            </div>
                                         </x-filament::tabs.item>
                                     </x-filament::tabs>
                                 @endif
