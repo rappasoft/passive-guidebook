@@ -39,6 +39,11 @@ trait UserMethods
             ->logFillable();
     }
 
+    public function getPassiveIncomeSources(): int
+    {
+        return $this->socialCasinos()->count();
+    }
+
     public function getSocialCasinosDailyIncome(): float
     {
         return $this->socialCasinos()->sum('daily_bonus');
@@ -47,6 +52,11 @@ trait UserMethods
     public function getEstimatedMonthlyIncome(): float
     {
         return $this->getSocialCasinosDailyIncome();
+    }
+
+    public function getEstimatedYearlyIncome(): float
+    {
+        return $this->getSocialCasinosDailyIncome() * 12;
     }
 
     public function addSocialCasino(SocialCasino $socialCasino): void
