@@ -12,7 +12,7 @@ use Filament\Forms\Contracts\HasForms;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
 
-class Show extends Component implements HasForms, HasActions
+class Show extends Component implements HasActions, HasForms
 {
     use InteractsWithActions, InteractsWithForms;
 
@@ -28,7 +28,10 @@ class Show extends Component implements HasForms, HasActions
                 'class' => 'ml-2',
             ])
             ->tooltip('Add this to your dashboard to keep track of your daily earnings.')
-            ->action(function () { auth()->user()->addSocialCasino($this->socialCasino); $this->dispatch('refresh')->to(EstimatedMonthlyIncome::class); }); // TODO: Not working
+            ->action(function () {
+                auth()->user()->addSocialCasino($this->socialCasino);
+                $this->dispatch('refresh')->to(EstimatedMonthlyIncome::class);
+            }); // TODO: Not working
     }
 
     public function markUnusedAction(): Action
@@ -40,7 +43,10 @@ class Show extends Component implements HasForms, HasActions
             ->extraAttributes([
                 'class' => 'ml-2',
             ])
-            ->action(function () { auth()->user()->removeSocialCasino($this->socialCasino); $this->dispatch('refresh')->to(EstimatedMonthlyIncome::class); }); // TODO: Not working
+            ->action(function () {
+                auth()->user()->removeSocialCasino($this->socialCasino);
+                $this->dispatch('refresh')->to(EstimatedMonthlyIncome::class);
+            }); // TODO: Not working
     }
 
     #[Layout('layouts.app')]

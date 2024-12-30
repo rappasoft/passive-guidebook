@@ -32,6 +32,6 @@ return [
         'role' => ['Super Admin'],
     ],
 
-    //Use this option for customize tenant model class
-    //'tenant_model' => \App\Models\Team::class,
+    // Use this option for customize tenant model class
+    // 'tenant_model' => \App\Models\Team::class,
 ];

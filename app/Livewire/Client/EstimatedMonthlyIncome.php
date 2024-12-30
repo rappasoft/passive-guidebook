@@ -12,7 +12,8 @@ class EstimatedMonthlyIncome extends Component
     ];
 
     #[Computed]
-    public function monthlyIncome(): string {
+    public function monthlyIncome(): string
+    {
         return number_format(auth()->user()->getEstimatedMonthlyIncome(), 2);
     }
 
