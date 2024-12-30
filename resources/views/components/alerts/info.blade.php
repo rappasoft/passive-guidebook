@@ -1,6 +1,6 @@
 @props(['title'])
 
-<div class="rounded-md bg-blue-50 p-4">
+<div class="sm:rounded-md bg-blue-50 p-4">
     <div class="flex">
         <div class="flex-shrink-0">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="h-5 w-5 text-blue-400" >

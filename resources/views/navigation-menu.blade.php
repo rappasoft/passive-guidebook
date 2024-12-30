@@ -31,8 +31,12 @@
 
                         <x-slot name="content">
                             <x-dropdown-link wire:navigate :href="route('passive.social-casinos.index')">
-                                <span class="flex items-center space-x-1">
+                                <span class="flex items-center space-x-2">
                                     <span>{{ __('Social Casinos') }}</span>
+
+                                    @if (\Illuminate\Support\Facades\Auth::user()->socialCasinos()->count())
+                                        <x-filament::badge color="success">Enabled</x-filament::badge>
+                                    @endif
                                 </span>
                             </x-dropdown-link>
 
@@ -209,7 +213,13 @@
             </x-responsive-nav-link>
 
             <x-responsive-nav-link wire:navigate href="{{ route('passive.social-casinos.index') }}" :active="request()->routeIs('passive.social-casinos.*')">
-                {{ __('Social Casinos') }}
+               <span class="flex items-center space-x-2">
+                    <span>{{ __('Social Casinos') }}</span>
+
+                    @if (\Illuminate\Support\Facades\Auth::user()->socialCasinos()->count())
+                        <x-filament::badge color="success">Enabled</x-filament::badge>
+                    @endif
+               </span>
             </x-responsive-nav-link>
 
 {{--            <x-responsive-nav-link href="" :active="false">--}}

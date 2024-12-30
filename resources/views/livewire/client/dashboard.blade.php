@@ -7,17 +7,43 @@
 
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-xl sm:rounded-lg">
-                @if (! \Illuminate\Support\Facades\Auth::user()->onTrial() && ! \Illuminate\Support\Facades\Auth::user()->subscribed())
-                    <div class="bg-blue-50 dark:bg-blue-300 p-4">
-                        <div class="max-w-7xl m-auto text-center text-sm font-bold text-blue-700">
-                            <p>Your trial period has ended. Please <a href="/billing" class="underline hover:no-underline">purchase a membership</a> to continue.</p>
+            @if (! \Illuminate\Support\Facades\Auth::user()->onTrial() && ! \Illuminate\Support\Facades\Auth::user()->subscribed())
+                <x-alerts.info>
+                    <p>Your trial period has ended. Please <a href="/billing" class="underline hover:no-underline">purchase a membership</a> to continue.</p>
+                </x-alerts.info>
+            @else
+                <x-alerts.info>
+                    <p>Your dashboard will populate automatically as you enable the different types of passive income generation.</p>
+                </x-alerts.info>
+
+                @if (\Illuminate\Support\Facades\Auth::user()->socialCasinos()->count())
+                    <div class="mt-4 bg-white dark:bg-gray-800 overflow-hidden shadow-xl sm:rounded-lg">
+                        <div class="mt-4 p-6 text-gray-900 dark:text-gray-100 bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
+                            @php
+                                $defaultTab = \Illuminate\Support\Facades\Auth::user()->socialCasinos()->count() ? 'social-casinos' : ''
+                            @endphp
+
+                            <div x-data="{ tab: window.location.hash ? window.location.hash.substring(1) : '{{ $defaultTab }}' }">
+                                @if (\Illuminate\Support\Facades\Auth::user()->socialCasinos()->count())
+                                    <x-filament::tabs label="Dashboard Tabs">
+                                        <x-filament::tabs.item @click="tab = 'social-casinos';window.location.hash = 'social-casinos'" :alpine-active="'tab === \'social-casinos\''" active>
+                                            Social Casinos
+                                        </x-filament::tabs.item>
+                                    </x-filament::tabs>
+                                @endif
+
+                                <div class="mt-2">
+                                    @if (\Illuminate\Support\Facades\Auth::user()->socialCasinos()->count())
+                                        <div x-show="tab === 'social-casinos'">
+                                            // TODO
+                                        </div>
+                                    @endif
+                                </div>
+                            </div>
                         </div>
                     </div>
-                @else
-
                 @endif
-            </div>
+            @endif
         </div>
     </div>
 </div>
