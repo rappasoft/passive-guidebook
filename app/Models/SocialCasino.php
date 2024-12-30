@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Traits\Relationships\SocialCasinoRelationship;
 use App\Models\Traits\Scopes\SocialCasinoScope;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -14,6 +15,7 @@ class SocialCasino extends Model implements HasMedia
 {
     use HasSlug,
         InteractsWithMedia,
+        SocialCasinoRelationship,
         SocialCasinoScope,
         SoftDeletes;
 

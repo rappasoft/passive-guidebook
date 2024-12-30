@@ -27,7 +27,7 @@
                                 @if (\Illuminate\Support\Facades\Auth::user()->socialCasinos()->count())
                                     <x-filament::tabs label="Dashboard Tabs">
                                         <x-filament::tabs.item @click="tab = 'social-casinos';window.location.hash = 'social-casinos'" :alpine-active="'tab === \'social-casinos\''" active>
-                                            Social Casinos
+                                            My Social Casinos
                                         </x-filament::tabs.item>
                                     </x-filament::tabs>
                                 @endif
@@ -35,7 +35,7 @@
                                 <div class="mt-2">
                                     @if (\Illuminate\Support\Facades\Auth::user()->socialCasinos()->count())
                                         <div x-show="tab === 'social-casinos'">
-                                            // TODO
+                                            <livewire:client.passive.social-casino.my-social-casinos />
                                         </div>
                                     @endif
                                 </div>
