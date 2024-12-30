@@ -95,6 +95,7 @@ class AdminPanelProvider extends PanelProvider
             ])
             ->plugin(FilamentSpatieLaravelHealthPlugin::make()->usingPage(HealthCheckResults::class))
             ->plugin(FilamentSpatieLaravelBackupPlugin::make()->usingPage(Backups::class))
+            ->plugin(\Mvenghaus\FilamentScheduleMonitor\FilamentPlugin::make())
             ->plugin(FilamentEmail::make())
             ->viteTheme('resources/css/filament/admin/theme.css')
             ->globalSearchKeyBindings(['command+k', 'ctrl+k']);

@@ -4,10 +4,12 @@ namespace App\Providers;
 
 use App\Models\SocialCasino;
 use App\Models\User;
+use App\Policies\ScheduledTaskPolicy;
 use App\Policies\SocialCasinoPolicy;
 use App\Policies\UserPolicy;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Gate;
+use Spatie\ScheduleMonitor\Models\MonitoredScheduledTask;
 
 class AuthServiceProvider extends ServiceProvider
 {
@@ -17,6 +19,7 @@ class AuthServiceProvider extends ServiceProvider
      * @var array<class-string, class-string>
      */
     protected $policies = [
+        MonitoredScheduledTask::class => ScheduledTaskPolicy::class,
         SocialCasino::class => SocialCasinoPolicy::class,
         User::class => UserPolicy::class,
     ];
