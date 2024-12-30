@@ -11,7 +11,7 @@
 
             <div class="mt-4 lg:mt-0 flex">
                 <div class="flex items-center space-x-2">
-                    <x-filament::button size="xs"
+                    <x-filament::button
                         href="{{ $socialCasino->referral_url ?? $socialCasino->url }}"
                         tag="a"
                         target="_blank"
@@ -29,7 +29,7 @@
                 </div>
 
                 @if (Auth::user()->can('Create/Edit Social Casinos'))
-                    <x-filament::button size="xs"
+                    <x-filament::button
                         href="{{ route('filament.admin.resources.social-casinos.edit', $socialCasino) }}"
                         tag="a"
                         target="_blank"
@@ -41,17 +41,21 @@
                     </x-filament::button>
                 @endif
 
-                {{-- TODO --}}
-                <x-filament::button size="xs"
-                    href="#"
+                <x-filament::button
+                    href="{{ route('passive.social-casinos.index') }}"
                     tag="a"
-                    target="_blank"
+                    color="info"
                     class="ml-2"
-                    color="success"
                     outlined
                 >
-                    Mark Used
+                    Back to List
                 </x-filament::button>
+
+                @if (auth()->user()->hasSocialCasino($socialCasino))
+                    {{ $this->markUnusedAction }}
+                @else
+                    {{ $this->markUsedAction }}
+                @endif
             </div>
         </div>
     </x-slot>
@@ -157,7 +161,7 @@
             @endif
         </div>
 
-        {{--<div class="lg:mt-3 mt-4 lg:grid grid-cols-2 gap-3 lg:space-y-0 space-y-4 max-w-7xl mx-auto sm:px-6 lg:px-8">
+        <div class="lg:mt-3 mt-4 lg:grid grid-cols-2 gap-3 lg:space-y-0 space-y-4 max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="p-6 text-gray-900 dark:text-gray-100 bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                 <h2 class="mb-4 text-xl font-bold">Promotions</h2>
 
@@ -170,10 +174,18 @@
             </div>
 
             <div class="p-6 text-gray-900 dark:text-gray-100 bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
+                <h2 class="mb-4 text-xl font-bold">Bonuses</h2>
+
+                <p>None</p>
+            </div>
+
+            <div class="p-6 col-span-2 text-gray-900 dark:text-gray-100 bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                 <h2 class="mb-4 text-xl font-bold">{{ $socialCasino->name }} News</h2>
 
                 <p>None</p>
             </div>
-        </div>--}}
+        </div>
     </div>
+
+    <x-filament-actions::modals />
 </div>

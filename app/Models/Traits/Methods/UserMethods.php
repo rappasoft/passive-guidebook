@@ -2,6 +2,7 @@
 
 namespace App\Models\Traits\Methods;
 
+use App\Models\SocialCasino;
 use Filament\Panel;
 use Spatie\Activitylog\LogOptions;
 
@@ -41,5 +42,20 @@ trait UserMethods
     public function getEstimatedMonthlyIncome(): float
     {
         return $this->socialCasinos()->sum('daily_bonus');
+    }
+
+    public function addSocialCasino(SocialCasino $socialCasino): void
+    {
+        $this->socialCasinos()->attach($socialCasino);
+    }
+
+    public function removeSocialCasino(SocialCasino $socialCasino): void
+    {
+        $this->socialCasinos()->detach($socialCasino);
+    }
+
+    public function hasSocialCasino(SocialCasino $socialCasino): bool
+    {
+        return $this->socialCasinos()->where('social_casino_id', $socialCasino->id)->exists();
     }
 }

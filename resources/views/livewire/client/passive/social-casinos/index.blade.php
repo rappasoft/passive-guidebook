@@ -1,8 +1,25 @@
 <div>
     <x-slot name="header">
-        <h2 class="font-semibold text-xl text-primary-800 dark:text-white leading-tight">
-            {{ __('Social Casinos') }}
-        </h2>
+        <div class="lg:flex justify-between items-center">
+            <h2 class="font-semibold text-xl text-primary-800 dark:text-white leading-tight">
+                {{ __('Social Casinos') }}
+            </h2>
+
+            <div class="lg:mt-0 mt-4 flex space-x-4">
+                <div class="flex flex-grow-0 items-center space-x-2">
+                    <span class="dark:text-white whitespace-nowrap text-sm">Upfront Cost:</span>
+                    <x-filament::badge color="success">$0</x-filament::badge>
+                </div>
+
+                <div class="flex flex-grow-0 items-center space-x-2">
+                    <span class="dark:text-white whitespace-nowrap text-sm">Passive Meter:</span>
+                    <div class="w-[100px] overflow-hidden rounded-full bg-gray-200">
+                        <div class="h-2 rounded-full bg-green-600" style="width: 80%"></div>
+                    </div>
+                    <x-heroicon-o-information-circle class="w-4 h-4 dark:text-gray-500" x-tooltip="{theme: $store.theme, content: 'Upfront setup required (a couple days) and then you must log in to each account every day to redeem the daily bonus. You can use the sweeps extension to do this automatically for 30 or so sites. For the other sites, see the guide on optimization.'}" />
+                </div>
+            </div>
+        </div>
     </x-slot>
 
     <div class="py-12">
@@ -101,6 +118,21 @@
 
                                     <x-slot name="badge">
                                         Free to $18/mo
+                                    </x-slot>
+                                </x-filament::dropdown.list.item>
+                            </x-filament::dropdown.list>
+
+                            <x-filament::dropdown.list>
+                                <x-filament::dropdown.list.item
+                                    href="https://chromewebstore.google.com/detail/nopecha-captcha-solver/dknlfmjaanfblgfdfebhijalfmhmjjjo"
+                                    tag="a"
+                                    target="_blank"
+                                    badge-color="success"
+                                >
+                                    NopeCHA: CAPTCHA Solver
+
+                                    <x-slot name="badge">
+                                        Free
                                     </x-slot>
                                 </x-filament::dropdown.list.item>
                             </x-filament::dropdown.list>

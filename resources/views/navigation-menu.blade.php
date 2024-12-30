@@ -44,7 +44,7 @@
 
                             <x-dropdown-link wire:navigate href="#">
                                 <span class="flex items-center space-x-1">
-                                    <span>{{ __('Investing/Dividends') }}</span>
+                                    <span>{{ __('Dividends') }}</span>
                                 </span>
                             </x-dropdown-link>
 
@@ -70,6 +70,12 @@
                         </x-slot>
 
                         <x-slot name="content">
+                            <x-dropdown-link wire:navigate href="#">
+                                <span class="flex items-center space-x-1">
+                                    <span>{{ __('Investing') }}</span>
+                                </span>
+                            </x-dropdown-link>
+
                             <x-dropdown-link wire:navigate href="#">
                                 <span class="flex items-center space-x-1">
                                     <span>{{ __('FreeCash.com') }}</span>
@@ -103,7 +109,7 @@
             </div>
 
             <div class="hidden sm:flex sm:items-center sm:ml-6">
-                <a href=""><x-filament::badge color="success">Estimated Monthly Income: ${{ number_format(\Illuminate\Support\Facades\Auth::user()->getEstimatedMonthlyIncome(), 2) }}</x-filament::badge></a>
+                <livewire:client.estimated-monthly-income />
 
                 <!-- Settings Dropdown -->
                 <div class="ml-3 relative">

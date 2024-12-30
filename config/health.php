@@ -86,7 +86,7 @@ return [
      * Oh Dear, you can also have access to more advanced notification options.
      */
     'oh_dear_endpoint' => [
-        'enabled' => false,
+        'enabled' => true,
 
         /*
          * When this option is enabled, the checks will run before sending a response.

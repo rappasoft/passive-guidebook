@@ -10,6 +10,7 @@ use App\Policies\UserPolicy;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Gate;
 use Spatie\ScheduleMonitor\Models\MonitoredScheduledTask;
+use Spatie\ScheduleMonitor\Models\MonitoredScheduledTaskLogItem;
 
 class AuthServiceProvider extends ServiceProvider
 {
@@ -20,6 +21,7 @@ class AuthServiceProvider extends ServiceProvider
      */
     protected $policies = [
         MonitoredScheduledTask::class => ScheduledTaskPolicy::class,
+        MonitoredScheduledTaskLogItem::class => ScheduledTaskPolicy::class,
         SocialCasino::class => SocialCasinoPolicy::class,
         User::class => UserPolicy::class,
     ];
