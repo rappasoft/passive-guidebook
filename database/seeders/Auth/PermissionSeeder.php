@@ -21,5 +21,13 @@ class PermissionSeeder extends Seeder
         Permission::create(['name' => 'View Social Casinos']);
         Permission::create(['name' => 'Create/Edit Social Casinos']);
         Permission::create(['name' => 'Delete/Restore Social Casinos']);
+
+        // Blog
+        Permission::create(['name' => 'Manage Posts']);
+        Permission::create(['name' => 'Manage Pages']);
+        Permission::create(['name' => 'Manage FAQs']);
+        Permission::create(['name' => 'Manage Libraries']);
+        Permission::create(['name' => 'Manage Tags']);
+        Permission::create(['name' => 'Manage Navigations']);
     }
 }

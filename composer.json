@@ -26,6 +26,7 @@
         "flowframe/laravel-trend": "*",
         "guzzlehttp/guzzle": "^7.2",
         "jamesmills/laravel-timezone": "dev-l11-compatibility",
+        "lara-zeus/sky": "^3.4",
         "larabug/larabug": "dev-master",
         "laravel/framework": "^11.0",
         "laravel/horizon": "^5.22",
