@@ -46,56 +46,58 @@ class SocialCasinoSeeder extends Seeder
             'terms_url' => 'https://www.zulacasino.com/terms-and-conditions',
         ]);
 
-        $zula->promotions()->saveMany([
-            new SocialCasinoPromotion([
-                'title' => 'HOT VS COLD SLOTS: The Ultimate Slots Showdown!',
-                'url' => 'https://www.zulacasino.com/promotions/promo/the-ultimate-slots-showdown',
-                'rewards' => 'GC 500M + SC 3,000',
-                'dollar_value' => 3000,
-                'rewards_label' => 'Prize Pool',
-                'expires_at' => now()->addMonths(5),
-            ]),
+        if (app()->environment('local')) {
+            $zula->promotions()->saveMany([
+                new SocialCasinoPromotion([
+                    'title'         => 'HOT VS COLD SLOTS: The Ultimate Slots Showdown!',
+                    'url'           => 'https://www.zulacasino.com/promotions/promo/the-ultimate-slots-showdown',
+                    'rewards'       => 'GC 500M + SC 3,000',
+                    'dollar_value'  => 3000,
+                    'rewards_label' => 'Prize Pool',
+                    'expires_at'    => now()->addMonths(5),
+                ]),
 
-            new SocialCasinoPromotion([
-                'title' => 'HOT VS COLD SLOTS: The Ultimate Slots Showdown!',
-                'url' => 'https://www.zulacasino.com/promotions/promo/the-ultimate-slots-showdown',
-                'rewards' => 'GC 500M + SC 3,000',
-                'dollar_value' => 3000,
-                'rewards_label' => 'Prize Pool',
-                'expires_at' => now()->subDays(5),
-            ]),
-        ]);
+                new SocialCasinoPromotion([
+                    'title'         => 'HOT VS COLD SLOTS: The Ultimate Slots Showdown!',
+                    'url'           => 'https://www.zulacasino.com/promotions/promo/the-ultimate-slots-showdown',
+                    'rewards'       => 'GC 500M + SC 3,000',
+                    'dollar_value'  => 3000,
+                    'rewards_label' => 'Prize Pool',
+                    'expires_at'    => now()->subDays(5),
+                ]),
+            ]);
 
-        $zula->promotions()->saveMany([
-            new SocialCasinoPromotion([
-                'type' => SocialCasinoPromotion::TYPE_BONUS,
-                'title' => 'BONUS',
-                'url' => 'https://www.zulacasino.com/promotions/promo/the-ultimate-slots-showdown',
-                'rewards' => '1 SC',
-                'dollar_value' => 1,
-                'expires_at' => now()->addMonths(5),
-            ]),
+            $zula->promotions()->saveMany([
+                new SocialCasinoPromotion([
+                    'type'         => SocialCasinoPromotion::TYPE_BONUS,
+                    'title'        => 'BONUS',
+                    'url'          => 'https://www.zulacasino.com/promotions/promo/the-ultimate-slots-showdown',
+                    'rewards'      => '1 SC',
+                    'dollar_value' => 1,
+                    'expires_at'   => now()->addMonths(5),
+                ]),
 
-            new SocialCasinoPromotion([
-                'type' => SocialCasinoPromotion::TYPE_BONUS,
-                'title' => 'BONUS',
-                'url' => 'https://www.zulacasino.com/promotions/promo/the-ultimate-slots-showdown',
-                'rewards' => '2 SC',
-                'dollar_value' => 2,
-                'expires_at' => now()->subDays(5),
-            ]),
-        ]);
+                new SocialCasinoPromotion([
+                    'type'         => SocialCasinoPromotion::TYPE_BONUS,
+                    'title'        => 'BONUS',
+                    'url'          => 'https://www.zulacasino.com/promotions/promo/the-ultimate-slots-showdown',
+                    'rewards'      => '2 SC',
+                    'dollar_value' => 2,
+                    'expires_at'   => now()->subDays(5),
+                ]),
+            ]);
 
-        $zula->news()->saveMany([
-            new SocialCasinoNews([
-                'title' => 'Crazy News Article',
-                'url' => 'https://google.com',
-            ]),
-            new SocialCasinoNews([
-                'title' => 'Crazy News Article 2',
-                'url' => 'https://google.com',
-            ]),
-        ]);
+            $zula->news()->saveMany([
+                new SocialCasinoNews([
+                    'title' => 'Crazy News Article',
+                    'url'   => 'https://google.com',
+                ]),
+                new SocialCasinoNews([
+                    'title' => 'Crazy News Article 2',
+                    'url'   => 'https://google.com',
+                ]),
+            ]);
+        }
 
         //        SocialCasino::create([
         //            'active' => true,
