@@ -26,8 +26,11 @@
                         <dd class="mt-1 text-3xl font-semibold tracking-tight text-gray-900 dark:text-white">${{ number_format(\Illuminate\Support\Facades\Auth::user()->getEstimatedMonthlyIncome(), 2) }}</dd>
                     </div>
                     <div class="overflow-hidden rounded-none sm:rounded-lg bg-white px-4 py-5 shadow sm:p-6 dark:bg-gray-800">
-                        <dt class="truncate text-sm font-medium text-gray-500 dark:text-gray-300">One-Time Passive Income</dt>
-                        <dd class="mt-1 text-3xl font-semibold tracking-tight text-gray-900 dark:text-white">TODO</dd>
+                        <dt class="flex items-center space-x-2 truncate text-sm font-medium text-gray-500 dark:text-gray-300">
+                            <span>One-Time Passive Income</span>
+                            <x-heroicon-o-information-circle class="w-4 h-4 dark:text-gray-500" x-tooltip="{content: 'Accumulated from items such as redeemed promotions or bonuses on social casinos, etc.'}" />
+                        </dt>
+                        <dd class="mt-1 text-3xl font-semibold tracking-tight text-gray-900 dark:text-white">${{ number_format(\Illuminate\Support\Facades\Auth::user()->getOneTimeIncome(), 2) }}</dd>
                     </div>
                 </dl>
 

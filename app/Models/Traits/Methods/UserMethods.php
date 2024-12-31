@@ -2,6 +2,7 @@
 
 namespace App\Models\Traits\Methods;
 
+use App\Models\Pivots\SocialCasinoPromotionUser;
 use App\Models\Pivots\SocialCasinoUser;
 use App\Models\SocialCasino;
 use Filament\Panel;
@@ -53,6 +54,16 @@ trait UserMethods
     public function getEstimatedMonthlyIncome(): float
     {
         return $this->getSocialCasinosDailyIncome();
+    }
+
+    public function getOneTimeIncome(): float
+    {
+        return SocialCasinoPromotionUser::query()
+            ->where('user_id', $this->id)
+            ->whereNotNull('redeemed_at')
+            ->join('social_casino_promotions', 'social_casino_promotions.id', '=', 'social_casino_promotion_user.social_casino_promotion_id')
+            ->whereNotNull('social_casino_promotions.rewards')
+            ->sum('social_casino_promotions.dollar_value');
     }
 
     public function getEstimatedYearlyIncome(): float
