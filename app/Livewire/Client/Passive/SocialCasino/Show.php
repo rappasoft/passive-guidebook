@@ -30,6 +30,15 @@ class Show extends Component
     #[Validate('boolean')]
     public bool $notifyNewPromotions = false;
 
+    #[Validate('boolean')]
+    public bool $hideRedeemedBonuses = false;
+
+    #[Validate('boolean')]
+    public bool $hideExpiredBonuses = false;
+
+    #[Validate('boolean')]
+    public bool $notifyNewBonuses = false;
+
     protected $listeners = ['refresh' => '$refresh'];
 
     public function mount(): void
@@ -37,6 +46,10 @@ class Show extends Component
         $this->hideRedeemedPromotions = (auth()->user()->getSocialCasino($this->socialCasino)->hide_redeemed_promotions ?? false) === true;
         $this->hideExpiredPromotions = (auth()->user()->getSocialCasino($this->socialCasino)->hide_expired_promotions ?? false) === true;
         $this->notifyNewPromotions = (auth()->user()->getSocialCasino($this->socialCasino)->notify_new_promotions ?? false) === true;
+
+        $this->hideRedeemedBonuses = (auth()->user()->getSocialCasino($this->socialCasino)->hide_redeemed_bonuses ?? false) === true;
+        $this->hideExpiredBonuses = (auth()->user()->getSocialCasino($this->socialCasino)->hide_expired_bonuses ?? false) === true;
+        $this->notifyNewBonuses = (auth()->user()->getSocialCasino($this->socialCasino)->notify_new_bonuses ?? false) === true;
     }
 
     public function updatedHideRedeemedPromotions(): void
@@ -54,12 +67,27 @@ class Show extends Component
         auth()->user()->getSocialCasino($this->socialCasino)->update(['notify_new_promotions' => $this->notifyNewPromotions]);
     }
 
+    public function updatedHideRedeemedBonuses(): void
+    {
+        auth()->user()->getSocialCasino($this->socialCasino)->update(['hide_redeemed_bonuses' => $this->hideRedeemedBonuses]);
+    }
+
+    public function updatedHideExpiredBonuses(string $value): void
+    {
+        auth()->user()->getSocialCasino($this->socialCasino)->update(['hide_expired_bonuses' => $this->hideExpiredBonuses]);
+    }
+
+    public function updatedNotifyNewBonuses(string $value): void
+    {
+        auth()->user()->getSocialCasino($this->socialCasino)->update(['notify_new_bonuses' => $this->notifyNewBonuses]);
+    }
+
     #[Layout('layouts.app')]
     public function render()
     {
         return view('livewire.client.passive.social-casinos.show')
             ->withPromotions($this->getPromotions())
-            ->withBonuses($this->socialCasino->bonuses()->latest()->simplePaginate(5, '*', 'bonuses-links'))
+            ->withBonuses($this->getBonuses())
             ->withNews($this->socialCasino->news()->latest()->simplePaginate(5, '*', 'news-links'));
     }
 
@@ -85,5 +113,29 @@ class Show extends Component
             ->when(! $this->hideExpiredPromotions, fn (Builder $builder) => $builder->where('expires_at', '>', now()->timezone(auth()->user()->timezone ?? config('app.timezone'))))
             ->when($this->hideRedeemedPromotions, fn (Builder $builder) => $builder->whereNull('scpu.redeemed_at'))
             ->simplePaginate(5, '*', 'promotions-links');
+    }
+
+    private function getBonuses(): Paginator
+    {
+        $bonusesQuery = $this->socialCasino
+            ->bonuses()
+            ->latest('social_casino_promotions.created_at');
+
+        // Make sure the pivot exists for all of them
+        foreach ($bonusesQuery->take(5)->get() as $bonus) {
+            if (! SocialCasinoPromotionUser::where('social_casino_promotion_id', $bonus->id)->where('user_id', auth()->id())->first()) {
+                SocialCasinoPromotionUser::create([
+                    'social_casino_promotion_id' => $bonus->id,
+                    'user_id' => auth()->id(),
+                ]);
+            }
+        }
+
+        return $bonusesQuery->rightJoin('social_casino_promotion_user as scpu', 'scpu.social_casino_promotion_id', '=', 'social_casino_promotions.id')
+            ->where('scpu.user_id', auth()->id())
+            ->whereNull('scpu.dismissed_at')
+            ->when(! $this->hideExpiredBonuses, fn (Builder $builder) => $builder->where('expires_at', '>', now()->timezone(auth()->user()->timezone ?? config('app.timezone'))))
+            ->when($this->hideRedeemedBonuses, fn (Builder $builder) => $builder->whereNull('scpu.redeemed_at'))
+            ->simplePaginate(5, '*', 'bonuses-links');
     }
 }

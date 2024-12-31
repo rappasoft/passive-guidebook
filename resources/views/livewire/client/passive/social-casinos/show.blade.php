@@ -193,23 +193,28 @@
             </div>
 
             <div class="p-6 text-gray-900 dark:text-gray-100 bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
-                <h2 class="mb-4 text-xl font-bold">Bonuses</h2>
+                <div class="mb-4 flex justify-between items-center">
+                    <h2 class="text-xl font-bold">Bonuses</h2>
+
+                    <div class="flex items-center space-x-4">
+                        <div class="flex items-center space-x-1">
+                            <input type="checkbox" class="rounded" id="hide-redeemed-bonuses" wire:model.live="hideRedeemedBonuses" /> <label for="hide-redeemed-bonuses"><small>Hide Redeemed</small></label>
+                        </div>
+
+                        <div class="flex items-center space-x-1">
+                            <input type="checkbox" class="rounded" id="hide-expired-bonuses" wire:model.live="hideExpiredBonuses" /> <label for="hide-expired-bonuses"><small>Show Expired</small></label>
+                        </div>
+
+                        <div class="flex items-center space-x-1">
+                            <input type="checkbox" class="rounded" id="notify-new-bonuses" wire:model.live="notifyNewBonuses" /> <label for="notify-new-bonuses"><small>Notify New</small></label>
+                        </div>
+                    </div>
+                </div>
 
                 @if ($bonuses->count())
                     <div class="space-y-2">
                         @foreach($bonuses as $bonus)
-                            <p><a href="{{ $bonus->url }}" target="_blank" class="underline hover:no-underline {{ $bonus->used ? 'line-through' : '' }}">{{ $bonus->title }}</a></p>
-
-                            <p class="ml-4 flex items-center space-x-2 {{ $bonus->used ? 'line-through' : '' }}">
-                                @if ($bonus->rewards)
-                                    <span>Bonus:</span>
-                                    <x-filament::badge color="success" class="inline-flex">{{ $bonus->rewards }}</x-filament::badge>
-                                @endif
-
-                                @if ($bonus->expires_at)
-                                    <span><small><em>{{ $bonus->expires_at->diffForHumans() }}</em></small></span>
-                                @endif
-                            </p>
+                            <livewire:client.passive.social-casino.promotion :promotion="$bonus" :key="'bonus'.$bonus->id" />
                         @endforeach
                     </div>
 
@@ -227,7 +232,7 @@
                 @if ($socialCasino->news->count())
                     <div class="space-y-2">
                         @foreach($news as $newsItem)
-                            {{-- TODO --}}
+                            <p><a href="{{ $newsItem->url }}" target="_blank" class="underline hover:no-underline">{{ $newsItem->title }}</a></p>
                         @endforeach
                     </div>
 
