@@ -11,7 +11,7 @@
 
             <div class="mt-4 lg:mt-0 flex">
                 <div class="flex items-center space-x-2">
-                    <x-filament::button
+                    <x-filament::button size="xs"
                         href="{{ $socialCasino->referral_url ?? $socialCasino->url }}"
                         tag="a"
                         target="_blank"
@@ -29,7 +29,7 @@
                 </div>
 
                 @if (Auth::user()->can('Create/Edit Social Casinos'))
-                    <x-filament::button
+                    <x-filament::button size="xs"
                         href="{{ route('filament.admin.resources.social-casinos.edit', $socialCasino) }}"
                         tag="a"
                         target="_blank"
@@ -41,7 +41,7 @@
                     </x-filament::button>
                 @endif
 
-                <x-filament::button
+                <x-filament::button size="xs"
                     href="{{ route('passive.social-casinos.index') }}"
                     tag="a"
                     color="info"
@@ -51,11 +51,7 @@
                     Back to List
                 </x-filament::button>
 
-                @if (auth()->user()->hasSocialCasino($socialCasino))
-                    {{ $this->markUnusedAction }}
-                @else
-                    {{ $this->markUsedAction }}
-                @endif
+                <livewire:client.passive.social-casino.status-toggle :$socialCasino />
             </div>
         </div>
     </x-slot>
@@ -163,29 +159,85 @@
 
         <div class="lg:mt-3 mt-4 lg:grid grid-cols-2 gap-3 lg:space-y-0 space-y-4 max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="p-6 text-gray-900 dark:text-gray-100 bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
-                <h2 class="mb-4 text-xl font-bold">Promotions</h2>
+                <div class="mb-4 flex justify-between items-center">
+                    <h2 class="text-xl font-bold">Promotions</h2>
 
-                <div class="space-y-2">
-                    <p><a href="" target="_blank" class="underline hover:no-underline">Love Free Coins? - Like us on Facebook</a></p>
-                    <p><a href="" target="_blank" class="underline hover:no-underline">Love Free Coins? - Like us on Instagram</a></p>
-                    <p><a href="" target="_blank" class="underline hover:no-underline">Multiplayer Mania: Tumble Category</a></p>
-                    <p class="ml-4 flex items-center space-x-2"><span>Prize Pool:</span> <x-filament::badge color="success" class="inline-flex">GC 700M + SC 4,000</x-filament::badge> <span><small><em>Ends in 1 day, 10 hours, 11 minutes</em></small></span></p>
+                    <div class="flex items-center space-x-4">
+                        <div class="flex items-center space-x-1">
+                            <input type="checkbox" class="rounded" id="hide-redeemed-promotions" wire:model.live="hideRedeemedPromotions" /> <label for="hide-redeemed-promotions"><small>Hide Redeemed</small></label>
+                        </div>
+
+                        <div class="flex items-center space-x-1">
+                            <input type="checkbox" class="rounded" id="hide-expired-promotions" wire:model.live="hideExpiredPromotions" /> <label for="hide-expired-promotions"><small>Show Expired</small></label>
+                        </div>
+
+                        <div class="flex items-center space-x-1">
+                            <input type="checkbox" class="rounded" id="notify-new-promotions" wire:model.live="notifyNewPromotions" /> <label for="notify-new-promotions"><small>Notify New</small></label>
+                        </div>
+                    </div>
                 </div>
+
+                @if ($promotions->count())
+                    <div class="space-y-2">
+                        @foreach($promotions as $promotion)
+                            <livewire:client.passive.social-casino.promotion :$promotion :key="'promotion'.$promotion->id" />
+                        @endforeach
+                    </div>
+
+                    <div class="mt-4">
+                        {{ $promotions->links(data: ['scrollTo' => false]) }}
+                    </div>
+                @else
+                    <p>None</p>
+                @endif
             </div>
 
             <div class="p-6 text-gray-900 dark:text-gray-100 bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                 <h2 class="mb-4 text-xl font-bold">Bonuses</h2>
 
-                <p>None</p>
+                @if ($bonuses->count())
+                    <div class="space-y-2">
+                        @foreach($bonuses as $bonus)
+                            <p><a href="{{ $bonus->url }}" target="_blank" class="underline hover:no-underline {{ $bonus->used ? 'line-through' : '' }}">{{ $bonus->title }}</a></p>
+
+                            <p class="ml-4 flex items-center space-x-2 {{ $bonus->used ? 'line-through' : '' }}">
+                                @if ($bonus->rewards)
+                                    <span>Bonus:</span>
+                                    <x-filament::badge color="success" class="inline-flex">{{ $bonus->rewards }}</x-filament::badge>
+                                @endif
+
+                                @if ($bonus->expires_at)
+                                    <span><small><em>{{ $bonus->expires_at->diffForHumans() }}</em></small></span>
+                                @endif
+                            </p>
+                        @endforeach
+                    </div>
+
+                    <div class="mt-4">
+                        {{ $bonuses->links(data: ['scrollTo' => false]) }}
+                    </div>
+                @else
+                    <p>None</p>
+                @endif
             </div>
 
             <div class="p-6 col-span-2 text-gray-900 dark:text-gray-100 bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                 <h2 class="mb-4 text-xl font-bold">{{ $socialCasino->name }} News</h2>
 
-                <p>None</p>
+                @if ($socialCasino->news->count())
+                    <div class="space-y-2">
+                        @foreach($news as $newsItem)
+                            {{-- TODO --}}
+                        @endforeach
+                    </div>
+
+                    <div class="mt-4">
+                        {{ $news->links(data: ['scrollTo' => false]) }}
+                    </div>
+                @else
+                    <p>None</p>
+                @endif
             </div>
         </div>
     </div>
-
-    <x-filament-actions::modals />
 </div>

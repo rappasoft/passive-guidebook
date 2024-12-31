@@ -26,8 +26,8 @@
                         <dd class="mt-1 text-3xl font-semibold tracking-tight text-gray-900 dark:text-white">${{ number_format(\Illuminate\Support\Facades\Auth::user()->getEstimatedMonthlyIncome(), 2) }}</dd>
                     </div>
                     <div class="overflow-hidden rounded-none sm:rounded-lg bg-white px-4 py-5 shadow sm:p-6 dark:bg-gray-800">
-                        <dt class="truncate text-sm font-medium text-gray-500 dark:text-gray-300">Yearly Passive Income</dt>
-                        <dd class="mt-1 text-3xl font-semibold tracking-tight text-gray-900 dark:text-white">${{ number_format(\Illuminate\Support\Facades\Auth::user()->getEstimatedYearlyIncome(), 2) }}</dd>
+                        <dt class="truncate text-sm font-medium text-gray-500 dark:text-gray-300">One-Time Passive Income</dt>
+                        <dd class="mt-1 text-3xl font-semibold tracking-tight text-gray-900 dark:text-white">TODO</dd>
                     </div>
                 </dl>
 

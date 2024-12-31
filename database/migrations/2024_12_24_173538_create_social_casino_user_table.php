@@ -17,6 +17,13 @@ return new class extends Migration
             $table->id();
             $table->foreignIdFor(User::class);
             $table->foreignIdFor(SocialCasino::class);
+            $table->boolean('is_using')->default(true);
+            $table->boolean('hide_redeemed_promotions')->default(true);
+            $table->boolean('hide_redeemed_bonuses')->default(true);
+            $table->boolean('hide_expired_promotions')->default(false);
+            $table->boolean('hide_expired_bonuses')->default(false);
+            $table->boolean('notify_new_promotions')->default(false);
+            $table->boolean('notify_new_bonuses')->default(false);
             $table->timestamps();
         });
     }

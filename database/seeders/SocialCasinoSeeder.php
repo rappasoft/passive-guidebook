@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\SocialCasino;
+use App\Models\SocialCasinoPromotion;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -15,7 +16,7 @@ class SocialCasinoSeeder extends Seeder
      */
     public function run(): void
     {
-        SocialCasino::create([
+        $zula = SocialCasino::create([
             'active' => true,
             'tier' => 1,
             'name' => 'Zula',
@@ -42,6 +43,26 @@ class SocialCasinoSeeder extends Seeder
             'best_playthrough_game_url' => 'https://www.zulacasino.com/play/50015/50015',
             'notes' => '- No deposit welcome bonus<br/>- Fortune Coin sister company',
             'terms_url' => 'https://www.zulacasino.com/terms-and-conditions',
+        ]);
+
+        $zula->promotions()->saveMany([
+           new SocialCasinoPromotion([
+               'title' => 'HOT VS COLD SLOTS: The Ultimate Slots Showdown!',
+               'url' => 'https://www.zulacasino.com/promotions/promo/the-ultimate-slots-showdown',
+               'rewards' => 'GC 500M + SC 3,000',
+               'dollar_value' => 3000,
+               'rewards_label' => 'Prize Pool',
+               'expires_at' => now()->addMonths(5),
+           ]),
+
+            new SocialCasinoPromotion([
+                'title' => 'HOT VS COLD SLOTS: The Ultimate Slots Showdown!',
+                'url' => 'https://www.zulacasino.com/promotions/promo/the-ultimate-slots-showdown',
+                'rewards' => 'GC 500M + SC 3,000',
+                'dollar_value' => 3000,
+                'rewards_label' => 'Prize Pool',
+                'expires_at' => now()->subDays(5),
+            ]),
         ]);
 
         //        SocialCasino::create([

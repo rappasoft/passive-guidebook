@@ -2,6 +2,7 @@
 
 namespace App\Models\Traits\Methods;
 
+use App\Models\Pivots\SocialCasinoUser;
 use App\Models\SocialCasino;
 use Filament\Panel;
 use Spatie\Activitylog\LogOptions;
@@ -41,12 +42,12 @@ trait UserMethods
 
     public function getPassiveIncomeSources(): int
     {
-        return $this->socialCasinos()->count();
+        return $this->socialCasinos()->wherePivot('is_using', true)->count();
     }
 
     public function getSocialCasinosDailyIncome(): float
     {
-        return $this->socialCasinos()->sum('daily_bonus');
+        return $this->socialCasinos()->wherePivot('is_using', true)->sum('daily_bonus');
     }
 
     public function getEstimatedMonthlyIncome(): float
@@ -61,16 +62,38 @@ trait UserMethods
 
     public function addSocialCasino(SocialCasino $socialCasino): void
     {
-        $this->socialCasinos()->attach($socialCasino);
+        if (! $this->hasSocialCasino($socialCasino)) {
+            $this->socialCasinos()->attach($socialCasino, ['is_using' => true]);
+        } else {
+            SocialCasinoUser::query()->where('user_id', auth()->id())->where('social_casino_id', $socialCasino->id)->update(['is_using' => true]);
+        }
     }
 
     public function removeSocialCasino(SocialCasino $socialCasino): void
     {
-        $this->socialCasinos()->detach($socialCasino);
+        if (! $this->hasSocialCasino($socialCasino)) {
+            $this->socialCasinos()->attach($socialCasino, ['is_using' => false]);
+        } else {
+            SocialCasinoUser::query()->where('user_id', auth()->id())->where('social_casino_id', $socialCasino->id)->update(['is_using' => false]);
+        }
     }
 
     public function hasSocialCasino(SocialCasino $socialCasino): bool
     {
-        return $this->socialCasinos()->where('social_casino_id', $socialCasino->id)->exists();
+        return SocialCasinoUser::query()->where('user_id', auth()->id())->where('social_casino_id', $socialCasino->id)->count();
+    }
+
+    public function getSocialCasino(SocialCasino $socialCasino): ?SocialCasinoUser
+    {
+        if (! $this->hasSocialCasino($socialCasino)) {
+            $this->socialCasinos()->attach($socialCasino, ['is_using' => false]);
+        }
+
+        return SocialCasinoUser::query()->where('user_id', auth()->id())->where('social_casino_id', $socialCasino->id)->first();
+    }
+
+    public function hasActiveSocialCasino(SocialCasino $socialCasino): bool
+    {
+        return SocialCasinoUser::query()->where('user_id', auth()->id())->where('social_casino_id', $socialCasino->id)->where('is_using', true)->count();
     }
 }
