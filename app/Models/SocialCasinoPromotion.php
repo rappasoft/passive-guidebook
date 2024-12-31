@@ -10,6 +10,7 @@ class SocialCasinoPromotion extends Model
     use SocialCasinoPromotionScope;
 
     public const TYPE_PROMOTION = 'Promotion';
+
     public const TYPE_BONUS = 'Bonus';
 
     protected $fillable = [

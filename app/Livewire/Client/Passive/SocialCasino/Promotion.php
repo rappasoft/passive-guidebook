@@ -14,7 +14,7 @@ use Livewire\Attributes\Locked;
 use Livewire\Attributes\Validate;
 use Livewire\Component;
 
-class Promotion extends Component implements HasForms, HasActions
+class Promotion extends Component implements HasActions, HasForms
 {
     use InteractsWithActions,
         InteractsWithForms;

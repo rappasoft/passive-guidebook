@@ -13,8 +13,8 @@ use Livewire\Component;
 
 class StatusToggle extends Component implements HasActions, HasForms
 {
-    use InteractsWithForms,
-        InteractsWithActions;
+    use InteractsWithActions,
+        InteractsWithForms;
 
     public SocialCasino $socialCasino;
 

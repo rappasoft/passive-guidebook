@@ -15,8 +15,8 @@ use Livewire\WithPagination;
 
 class Show extends Component
 {
-    use WithPagination,
-        WithoutUrlPagination;
+    use WithoutUrlPagination,
+        WithPagination;
 
     #[Locked]
     public SocialCasino $socialCasino;
@@ -70,7 +70,7 @@ class Show extends Component
             ->latest('social_casino_promotions.created_at');
 
         // Make sure the pivot exists for all of them
-        foreach($promotionsQuery->take(5)->get() as $promotion) {
+        foreach ($promotionsQuery->take(5)->get() as $promotion) {
             if (! SocialCasinoPromotionUser::where('social_casino_promotion_id', $promotion->id)->where('user_id', auth()->id())->first()) {
                 SocialCasinoPromotionUser::create([
                     'social_casino_promotion_id' => $promotion->id,
@@ -82,8 +82,8 @@ class Show extends Component
         return $promotionsQuery->rightJoin('social_casino_promotion_user as scpu', 'scpu.social_casino_promotion_id', '=', 'social_casino_promotions.id')
             ->where('scpu.user_id', auth()->id())
             ->whereNull('scpu.dismissed_at')
-            ->when(! $this->hideExpiredPromotions, fn(Builder $builder) => $builder->where('expires_at', '>', now()->timezone(auth()->user()->timezone ?? config('app.timezone'))))
-            ->when($this->hideRedeemedPromotions, fn(Builder $builder) => $builder->whereNull('scpu.redeemed_at'))
+            ->when(! $this->hideExpiredPromotions, fn (Builder $builder) => $builder->where('expires_at', '>', now()->timezone(auth()->user()->timezone ?? config('app.timezone'))))
+            ->when($this->hideRedeemedPromotions, fn (Builder $builder) => $builder->whereNull('scpu.redeemed_at'))
             ->simplePaginate(5, '*', 'promotions-links');
     }
 }

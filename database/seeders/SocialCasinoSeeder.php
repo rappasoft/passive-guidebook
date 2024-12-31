@@ -46,14 +46,14 @@ class SocialCasinoSeeder extends Seeder
         ]);
 
         $zula->promotions()->saveMany([
-           new SocialCasinoPromotion([
-               'title' => 'HOT VS COLD SLOTS: The Ultimate Slots Showdown!',
-               'url' => 'https://www.zulacasino.com/promotions/promo/the-ultimate-slots-showdown',
-               'rewards' => 'GC 500M + SC 3,000',
-               'dollar_value' => 3000,
-               'rewards_label' => 'Prize Pool',
-               'expires_at' => now()->addMonths(5),
-           ]),
+            new SocialCasinoPromotion([
+                'title' => 'HOT VS COLD SLOTS: The Ultimate Slots Showdown!',
+                'url' => 'https://www.zulacasino.com/promotions/promo/the-ultimate-slots-showdown',
+                'rewards' => 'GC 500M + SC 3,000',
+                'dollar_value' => 3000,
+                'rewards_label' => 'Prize Pool',
+                'expires_at' => now()->addMonths(5),
+            ]),
 
             new SocialCasinoPromotion([
                 'title' => 'HOT VS COLD SLOTS: The Ultimate Slots Showdown!',
