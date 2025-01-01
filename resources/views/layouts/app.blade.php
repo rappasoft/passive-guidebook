@@ -22,6 +22,7 @@
 
         <!-- Styles -->
         @filamentStyles
+        @stack('styles')
     </head>
     <body class="font-sans antialiased">
         @if (\Illuminate\Support\Facades\Auth::user()->onTrial())
@@ -57,5 +58,6 @@
         @filamentScripts
         @livewire('notifications')
         <x-impersonate::banner/>
+        @stack('scripts')
     </body>
 </html>

@@ -15,6 +15,10 @@
         {
             "type": "composer",
             "url": "https://spark.laravel.com"
+        },
+        {
+            "type": "composer",
+            "url": "https://satis.spatie.be"
         }
     ],
     "require": {
@@ -45,6 +49,8 @@
         "shuvroroy/filament-spatie-laravel-health": "2.2.0",
         "spatie/cpu-load-health-check": "^1.0",
         "spatie/laravel-activitylog": "^4.7",
+        "spatie/laravel-comments": "^2.1",
+        "spatie/laravel-comments-livewire": "^3.1",
         "spatie/laravel-health": "^1.23",
         "spatie/laravel-medialibrary": "^11.11",
         "spatie/laravel-permission": "^6.0",

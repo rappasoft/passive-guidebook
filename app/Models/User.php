@@ -15,15 +15,18 @@ use Laravel\Fortify\TwoFactorAuthenticatable;
 use Laravel\Jetstream\HasProfilePhoto;
 use Laravel\Sanctum\HasApiTokens;
 use Spark\Billable;
+use Spatie\Comments\Models\Concerns\InteractsWithComments;
+use Spatie\Comments\Models\Concerns\Interfaces\CanComment;
 use Spatie\Permission\Traits\HasRoles;
 
-class User extends Authenticatable implements FilamentUser, MustVerifyEmail
+class User extends Authenticatable implements CanComment, FilamentUser, MustVerifyEmail
 {
     use Billable,
         HasApiTokens,
         HasFactory,
         HasProfilePhoto,
         HasRoles,
+        InteractsWithComments,
         Notifiable,
         SoftDeletes,
         TwoFactorAuthenticatable,

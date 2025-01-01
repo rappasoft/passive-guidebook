@@ -2,10 +2,12 @@
 
 namespace App\Models;
 
+use App\Models\Traits\Methods\SocialCasinoMethods;
 use App\Models\Traits\Relationships\SocialCasinoRelationship;
 use App\Models\Traits\Scopes\SocialCasinoScope;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Spatie\Comments\Models\Concerns\HasComments;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
 use Spatie\Sluggable\HasSlug;
@@ -13,8 +15,10 @@ use Spatie\Sluggable\SlugOptions;
 
 class SocialCasino extends Model implements HasMedia
 {
-    use HasSlug,
+    use HasComments,
+        HasSlug,
         InteractsWithMedia,
+        SocialCasinoMethods,
         SocialCasinoRelationship,
         SocialCasinoScope,
         SoftDeletes;

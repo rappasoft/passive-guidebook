@@ -1,4 +1,8 @@
 <div>
+    @push('styles')
+        @laravelCommentsLivewireStyles
+    @endpush
+
     <x-slot name="header">
         <div class="lg:flex justify-between items-center">
             <h2 class="font-semibold text-xl text-primary-800 dark:text-white leading-tight">
@@ -243,6 +247,16 @@
                     <p>None</p>
                 @endif
             </div>
+
+            <div class="p-6 col-span-2 text-gray-900 dark:text-gray-100 bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
+                <h2 class="mb-4 text-xl font-bold">{{ $socialCasino->name }} Community Comments</h2>
+
+                <livewire:comments :model="$socialCasino" no-comments-text="Be the first to comment in the {{ $socialCasino->name }} community..."  />
+            </div>
         </div>
     </div>
+
+    @push('scripts')
+        @laravelCommentsLivewireScripts
+    @endpush
 </div>
