@@ -11,14 +11,13 @@ class UpdateUsernameInCommentsJob implements ShouldQueue
 {
     use Queueable;
 
-    public function __construct(protected User $user)
-    {}
+    public function __construct(protected User $user) {}
 
     public function handle(): void
     {
         $comments = Comment::whereLike('original_text', "%data-mention=\"{$this->user->id}\"%")->get();
 
-        $comments->each(function($comment) {
+        $comments->each(function ($comment) {
             $comment->save();
         });
     }
