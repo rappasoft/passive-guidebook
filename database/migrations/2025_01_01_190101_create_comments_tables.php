@@ -1,8 +1,8 @@
 <?php
 
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
@@ -15,7 +15,7 @@ return new class extends Migration
             $table->foreignId('parent_id')->nullable()->constrained('comments')->onDelete('cascade');
             $table->longText('original_text');
             $table->longText('text');
-            $json = 'pgsql' === Schema::getConnection()->getConfig('driver') ? 'jsonb' : 'json';
+            $json = Schema::getConnection()->getConfig('driver') === 'pgsql' ? 'jsonb' : 'json';
             $table->{$json}('extra')->nullable();
             $table->timestamp('approved_at')->nullable();
             $table->timestamps();
@@ -26,7 +26,7 @@ return new class extends Migration
             $this->nullableMorphs($table, 'commentator', 'commentator_reactions');
             $table->foreignId('comment_id')->references('id')->on('comments')->cascadeOnDelete();
 
-            if ('mysql' === Schema::getConnection()->getConfig('driver')) {
+            if (Schema::getConnection()->getConfig('driver') === 'mysql') {
                 $table->string('reaction')->collation('utf8mb4_bin');
             } else {
                 $table->string('reaction');
@@ -35,7 +35,7 @@ return new class extends Migration
             $table->timestamps();
         });
 
-        Schema::create('comment_notification_subscriptions', function(Blueprint $table) {
+        Schema::create('comment_notification_subscriptions', function (Blueprint $table) {
             $table->id();
             $table->morphs('commentable', 'cn_subscriptions_commentable');
             $table->morphs('subscriber', 'cn_subscriptions_subscriber');
