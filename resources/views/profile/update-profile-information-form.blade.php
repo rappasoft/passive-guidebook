@@ -59,6 +59,15 @@
             <x-input-error for="name" class="mt-2" />
         </div>
 
+        <div class="col-span-6 sm:col-span-4">
+            <x-label for="display_name" value="{{ __('Display Name') }}" />
+            <x-input id="display_name" type="text" class="mt-1 block w-full" wire:model="state.display_name" placeholder="MyCoolUniqueUsername" maxlength="40" />
+            <div class="mt-3 max-w-xl text-sm text-gray-600 dark:text-gray-400">
+                <p>For use in any public setting such as comments.</p>
+            </div>
+            <x-input-error for="display_name" class="mt-2" />
+        </div>
+
         <!-- Email -->
         <div class="col-span-6 sm:col-span-4">
             <x-label for="email" value="{{ __('Email') }}" />

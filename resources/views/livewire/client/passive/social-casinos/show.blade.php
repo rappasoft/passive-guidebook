@@ -248,10 +248,18 @@
                 @endif
             </div>
 
-            <div class="p-6 col-span-2 text-gray-900 dark:text-gray-100 bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
+            <div class="p-6 col-span-2 text-gray-900 bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <h2 class="mb-4 text-xl font-bold">{{ $socialCasino->name }} Community Comments</h2>
 
-                <livewire:comments :model="$socialCasino" no-comments-text="Be the first to comment in the {{ $socialCasino->name }} community..."  />
+                @if (! \Illuminate\Support\Facades\Auth::user()->display_name)
+                    <div class="mb-4">
+                        <x-alerts.info>You must add a display name to your <a href="{{ route('profile.show') }}" class="underline hover:no-underline">profile</a> before you can participate in comments.</x-alerts.info>
+                    </div>
+
+                    <livewire:comments :model="$socialCasino" no-comments-text="Be the first to comment in the {{ $socialCasino->name }} community..." read-only />
+                @else
+                    <livewire:comments :model="$socialCasino" no-comments-text="Be the first to comment in the {{ $socialCasino->name }} community..." />
+                @endif
             </div>
         </div>
     </div>

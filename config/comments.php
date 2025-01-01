@@ -70,7 +70,7 @@ return [
         /*
          * The field to use to display the name of the commentator model.
          */
-        'name' => 'name',
+        'name' => 'display_name',
 
         /*
          * The field to use to display the avatar of the commentator model.

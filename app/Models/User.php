@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Traits\Attributes\UserAttributes;
 use App\Models\Traits\Methods\UserMethods;
 use App\Models\Traits\Relationships\UserRelationship;
 use App\Models\Traits\Scopes\UserScopes;
@@ -30,6 +31,7 @@ class User extends Authenticatable implements CanComment, FilamentUser, MustVeri
         Notifiable,
         SoftDeletes,
         TwoFactorAuthenticatable,
+        UserAttributes,
         UserMethods,
         UserRelationship,
         UserScopes;
@@ -41,6 +43,7 @@ class User extends Authenticatable implements CanComment, FilamentUser, MustVeri
      */
     protected $fillable = [
         'name',
+        'display_name',
         'email',
         'password',
         'timezone',
