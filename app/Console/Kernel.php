@@ -18,6 +18,8 @@ class Kernel extends ConsoleKernel
         $schedule->command(RunHealthChecksCommand::class)->everyMinute()->monitorName('Run Health Checks');
         $schedule->command('backup:clean')->daily()->at('01:00')->timezone('America/New_York')->monitorName('Clean Backups');
         $schedule->command('backup:run')->daily()->at('01:30')->timezone('America/New_York')->monitorName('Run Backup');
+        $schedule->command('sitemap:generate')->daily()->monitorName('Generate Sitemap');
+
     }
 
     /**

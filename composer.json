@@ -56,6 +56,7 @@
         "spatie/laravel-permission": "^6.0",
         "spatie/laravel-schedule-monitor": "^3.8",
         "spatie/laravel-settings": "^3.2",
+        "spatie/laravel-sitemap": "^7.3",
         "spatie/laravel-sluggable": "^3.7",
         "spatie/security-advisories-health-check": "^1.0",
         "stechstudio/filament-impersonate": "^3.5",

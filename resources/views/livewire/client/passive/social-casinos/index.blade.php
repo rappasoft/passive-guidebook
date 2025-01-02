@@ -109,7 +109,7 @@
 
                             <x-filament::dropdown.list>
                                 <x-filament::dropdown.list.item
-                                    href="https://sweeps-app.vercel.app/"
+                                    href="https://sweeps-app.vercel.app?via=anthony88"
                                     tag="a"
                                     target="_blank"
                                     badge-color="success"

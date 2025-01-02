@@ -140,6 +140,7 @@
         </div>
 
         <div class="lg:mt-3 mt-4 lg:grid grid-cols-2 gap-3 lg:space-y-0 space-y-4 max-w-7xl mx-auto sm:px-6 lg:px-8">
+            {{-- TODO: Show None instead of hiding --}}
             @if ($socialCasino->daily_location)
                 <div>
                     <div class="p-6 text-gray-900 dark:text-gray-100 bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
@@ -150,6 +151,7 @@
                 </div>
             @endif
 
+            {{-- TODO: Show None instead of hiding --}}
             @if ($socialCasino->notes)
                 <div>
                     <div class="p-6 text-gray-900 dark:text-gray-100 bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
