@@ -43,17 +43,17 @@ trait UserMethods
 
     public function getPassiveIncomeSources(): int
     {
-        return $this->socialCasinos()->wherePivot('is_using', true)->count();
+        return $this->activeSocialCasinos()->count();
     }
 
     public function getSocialCasinosDailyIncome(): float
     {
-        return $this->socialCasinos()->wherePivot('is_using', true)->sum('daily_bonus');
+        return $this->activeSocialCasinos()->sum('daily_bonus');
     }
 
     public function getEstimatedMonthlyIncome(): float
     {
-        return $this->getSocialCasinosDailyIncome();
+        return $this->getSocialCasinosDailyIncome() * 30;
     }
 
     public function getOneTimeIncome(): float

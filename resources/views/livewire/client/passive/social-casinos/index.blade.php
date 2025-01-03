@@ -124,6 +124,16 @@
 
                             <x-filament::dropdown.list>
                                 <x-filament::dropdown.list.item
+                                    href="https://sweeps-app.vercel.app/SweepsHandbook.pdf"
+                                    tag="a"
+                                    target="_blank"
+                                >
+                                    Sweeps Handbook
+                                </x-filament::dropdown.list.item>
+                            </x-filament::dropdown.list>
+
+                            <x-filament::dropdown.list>
+                                <x-filament::dropdown.list.item
                                     href="https://chromewebstore.google.com/detail/nopecha-captcha-solver/dknlfmjaanfblgfdfebhijalfmhmjjjo"
                                     tag="a"
                                     target="_blank"

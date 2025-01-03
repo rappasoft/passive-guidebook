@@ -34,15 +34,15 @@
                     </div>
                 </dl>
 
-                @if (\Illuminate\Support\Facades\Auth::user()->socialCasinos()->count())
+                @if (\Illuminate\Support\Facades\Auth::user()->activeSocialCasinos()->count())
                     <div class="mt-4 bg-white dark:bg-gray-800 overflow-hidden shadow-xl sm:rounded-lg">
                         <div class="mt-4 p-6 text-gray-900 dark:text-gray-100 bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                             @php
-                                $defaultTab = \Illuminate\Support\Facades\Auth::user()->socialCasinos()->count() ? 'social-casinos' : ''
+                                $defaultTab = \Illuminate\Support\Facades\Auth::user()->activeSocialCasinos()->count() ? 'social-casinos' : ''
                             @endphp
 
                             <div x-data="{ tab: window.location.hash ? window.location.hash.substring(1) : '{{ $defaultTab }}' }">
-                                @if (\Illuminate\Support\Facades\Auth::user()->socialCasinos()->count())
+                                @if (\Illuminate\Support\Facades\Auth::user()->activeSocialCasinos()->count())
                                     <x-filament::tabs label="Dashboard Tabs">
                                         <x-filament::tabs.item @click="tab = 'social-casinos';window.location.hash = 'social-casinos'" :alpine-active="'tab === \'social-casinos\''" active>
                                             <div class="flex items-center space-x-2">
@@ -61,7 +61,7 @@
                                 @endif
 
                                 <div class="mt-2">
-                                    @if (\Illuminate\Support\Facades\Auth::user()->socialCasinos()->count())
+                                    @if (\Illuminate\Support\Facades\Auth::user()->activeSocialCasinos()->count())
                                         <div x-show="tab === 'social-casinos'">
                                             <livewire:client.passive.social-casino.my-social-casinos />
                                         </div>

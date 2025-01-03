@@ -76,6 +76,12 @@
                         <x-slot name="content">
                             <x-dropdown-link wire:navigate href="#">
                                 <span class="flex items-center space-x-1">
+                                    <span>{{ __('Affiliates') }}</span>
+                                </span>
+                            </x-dropdown-link>
+
+                            <x-dropdown-link wire:navigate href="#">
+                                <span class="flex items-center space-x-1">
                                     <span>{{ __('Investing') }}</span>
                                 </span>
                             </x-dropdown-link>

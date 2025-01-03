@@ -7,7 +7,7 @@
         <div class="lg:flex justify-between items-center">
             <h2 class="font-semibold text-xl text-primary-800 dark:text-white leading-tight">
                 @if ($url = $socialCasino->getFirstMediaUrl('logo'))
-                    <img src="{{ $url }}" style="max-width:100px" />
+                    <img src="{{ $url }}" style="max-width:100px" class="bg-gray-800 p-2 rounded-md dark:bg-transparent dark:p-0 dark:rounded-none" />
                 @else
                     {{ $socialCasino->name }}
                 @endif
@@ -84,6 +84,8 @@
                             @default
                                 {{ $socialCasino->tier }}
                         @endswitch
+
+                        <x-heroicon-o-information-circle class="w-4 h-4 dark:text-gray-500" x-tooltip="{theme: $store.theme, content: 'Lower numbers indicate better qualities overall, i.e.: Daily bonus, ease of use, minimum redemption, redemption time, etc.'}" />
                     </p>
 
                     @if ($socialCasino->best_playthrough_game)
@@ -105,8 +107,9 @@
 
                 <div class="space-y-2">
                     <p class="flex items-center space-x-2"><span>Daily Bonus:</span> <x-filament::badge color="success" class="inline-flex">${{ $socialCasino->daily_bonus }}</x-filament::badge></p>
+                    @if ($socialCasino->daily_bonus_reset_timing)<p>Daily Bonus Reset: {{ $socialCasino->daily_bonus_reset_timing }}</p>@endif
                     <p>Signup Bonus: {{ $socialCasino->signup_bonus ?? 'None' }}</p>
-                    <p>Referral Bonus: {{ $socialCasino->referral_bonus ?? 'None' }}</p>
+                    @if ($socialCasino->referral_bonus)<p>Referral Bonus: {{ $socialCasino->referral_bonus }}</p>@endif
                     <p>Minimum Redemption Amount: {{ $socialCasino->minimum_redemption }}</p>
                     <p>Token Type: {{ $socialCasino->token_type }}</p>
                     <p>Token Amount Per Dollar: {{ $socialCasino->token_amount_per_dollar }}</p>
@@ -140,27 +143,29 @@
         </div>
 
         <div class="lg:mt-3 mt-4 lg:grid grid-cols-2 gap-3 lg:space-y-0 space-y-4 max-w-7xl mx-auto sm:px-6 lg:px-8">
-            {{-- TODO: Show None instead of hiding --}}
-            @if ($socialCasino->daily_location)
-                <div>
-                    <div class="p-6 text-gray-900 dark:text-gray-100 bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
-                        <h2 class="mb-4 text-xl font-bold">Daily Bonus Location</h2>
+            <div>
+                <div class="p-6 text-gray-900 dark:text-gray-100 bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
+                    <h2 class="mb-4 text-xl font-bold">Daily Bonus Location</h2>
 
+                    @if ($socialCasino->daily_location)
                         {{ new \Illuminate\Support\HtmlString($socialCasino->daily_location) }}
-                    </div>
+                    @else
+                        None Specified
+                    @endif
                 </div>
-            @endif
+            </div>
 
-            {{-- TODO: Show None instead of hiding --}}
-            @if ($socialCasino->notes)
-                <div>
-                    <div class="p-6 text-gray-900 dark:text-gray-100 bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
-                        <h2 class="mb-4 text-xl font-bold">Notes</h2>
+            <div>
+                <div class="p-6 text-gray-900 dark:text-gray-100 bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
+                    <h2 class="mb-4 text-xl font-bold">Notes</h2>
 
+                    @if ($socialCasino->notes)
                         {{ new \Illuminate\Support\HtmlString($socialCasino->notes) }}
-                    </div>
+                    @else
+                        None
+                    @endif
                 </div>
-            @endif
+            </div>
         </div>
 
         <div class="lg:mt-3 mt-4 lg:grid grid-cols-2 gap-3 lg:space-y-0 space-y-4 max-w-7xl mx-auto sm:px-6 lg:px-8">

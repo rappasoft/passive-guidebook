@@ -2,10 +2,13 @@
 
 namespace App\Models\Pivots;
 
+use App\Models\Traits\Scopes\SocialCasinoUserScope;
 use Illuminate\Database\Eloquent\Relations\Pivot;
 
 class SocialCasinoUser extends Pivot
 {
+    use SocialCasinoUserScope;
+
     protected $table = 'social_casino_user';
 
     protected $fillable = [
