@@ -34,7 +34,7 @@
                                 <span class="flex items-center space-x-2">
                                     <span>{{ __('Social Casinos') }}</span>
 
-                                    @if (\Illuminate\Support\Facades\Auth::user()->socialCasinos()->count())
+                                    @if (\Illuminate\Support\Facades\Auth::user()->activeSocialCasinos()->count())
                                         <x-filament::badge color="success">Enabled</x-filament::badge>
                                     @endif
                                 </span>
@@ -222,7 +222,7 @@
                <span class="flex items-center space-x-2">
                     <span>{{ __('Social Casinos') }}</span>
 
-                    @if (\Illuminate\Support\Facades\Auth::user()->socialCasinos()->count())
+                    @if (\Illuminate\Support\Facades\Auth::user()->activeSocialCasinos()->count())
                         <x-filament::badge color="success">Enabled</x-filament::badge>
                     @endif
                </span>

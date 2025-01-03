@@ -27,7 +27,7 @@ class Index extends Component implements HasForms, HasTable
     public function table(Table $table): Table
     {
         return $table
-            ->query(SocialCasino::query()->active()->orderBy('daily_bonus', 'desc')->orderBy('tier'))
+            ->query(SocialCasino::query()->active()->orderBy('tier')->orderBy('daily_bonus', 'desc'))
             ->paginated(false)
             ->recordUrl(
                 fn (Model $record): string => route('passive.social-casinos.show', ['socialCasino' => $record]),

@@ -342,5 +342,43 @@ class SocialCasinoSeeder extends Seeder
             ->preservingOriginal()
             ->toMediaCollection('logo');
         $media->update(['uuid' => Uuid::uuid4()]);
+
+        $wowVegas = SocialCasino::create([
+            'active' => true,
+            'tier' => 1,
+            'name' => 'Wow Vegas',
+            'slug' => 'wow-vegas',
+            'url' => 'https://www.wowvegas.com',
+            'referral_url' => 'https://www.wowvegas.com/?raf=7145855',
+            'sweeps_extension_eligible' => true,
+            'daily_bonus' => .3,
+            'daily_bonus_reset_timing' => null,
+            'daily_location' => null,
+            'signup_bonus' => '4.5 SC',
+            'referral_bonus' => '5k WOW & 30 SC',
+            'minimum_redemption' => '$100',
+            'token_type' => 'SC',
+            'token_amount_per_dollar' => 1,
+            'real_money_payout' => true,
+            'usa_allowed' => true,
+            'canada_allowed' => true,
+            'usa_excluded' => ['ID', 'NV', 'WA'],
+            'canada_excluded' => ['Quebec'],
+            'redemption_time' => '3-5 days',
+            'must_play_before_redemption' => true,
+            'best_playthrough_game' => 'AutoRoulette > 888 Dragon / Wilds of Fortune',
+            'best_playthrough_game_url' => '',
+            'notes' => '" - Daily $ scales with VIP level.<br/>
+ - Free spins are dropped daily in the early morning and evening<br/>
+ - Find them in the WowVegas chat or get alerts via our discord.<br/>
+ - Free to enter bingo for up to 10SC every 30min.<br/>
+ - Great happy hours 5 days per week."',
+            'terms_url' => 'https://www.wowvegas.com/terms-and-conditions',
+        ]);
+
+        $media = $wowVegas->addMedia(public_path('img/casinos/wow-vegas.png'))
+            ->preservingOriginal()
+            ->toMediaCollection('logo');
+        $media->update(['uuid' => Uuid::uuid4()]);
     }
 }
