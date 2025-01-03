@@ -14,8 +14,8 @@ use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Concerns\InteractsWithTable;
 use Filament\Tables\Contracts\HasTable;
 use Filament\Tables\Table;
-use Illuminate\Database\Query\Builder as QueryBuilder;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Query\Builder as QueryBuilder;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
 
