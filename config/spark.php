@@ -89,7 +89,7 @@ return [
 
     'features' => [
         // Features::billingAddressCollection(['required' => true]),
-        // Features::mustAcceptTerms(),
+        // Features::mustAcceptTerms(), // TODO
         // Features::euVatCollection(['home-country' => 'BE']),
         Features::invoiceEmails(['custom-addresses' => true]),
         Features::paymentNotificationEmails(),
@@ -134,9 +134,9 @@ return [
         'user' => [
             'model' => User::class,
 
-            'trial_days' => 5,
+            'trial_days' => 7,
 
-            'default_interval' => 'monthly',
+            'default_interval' => 'yearly',
 
             'plans' => [
                 [

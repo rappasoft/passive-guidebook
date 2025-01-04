@@ -114,7 +114,7 @@ class SocialCasinoSeeder extends Seeder
             'referral_url' => 'https://www.fortunecoins.com/signup/48f0767e-ea42-4c1d-8b81-e0ab9c169588',
             'sweeps_extension_eligible' => true,
             'daily_bonus' => 1,
-            'daily_bonus_reset_timing' => null,
+            'daily_bonus_reset_timing' => 'Once a day. Resets overnight.',
             'daily_location' => '- Log in<br/>- Click the "Get Coins" gold button on top.<br/>- Click collect under "CLAIM FREE REWARDS"',
             'signup_bonus' => '1000 FC',
             'referral_bonus' => 'On referrals first purchase',
@@ -148,7 +148,7 @@ class SocialCasinoSeeder extends Seeder
             'referral_url' => 'https://sportzino.com/signup/9535e2c1-8d6f-45b9-af1e-8d45023ce1ec',
             'sweeps_extension_eligible' => true,
             'daily_bonus' => 1,
-            'daily_bonus_reset_timing' => null,
+            'daily_bonus_reset_timing' => 'Once a day. Resets overnight.',
             'daily_location' => '- Log in<br/>If your daily bonus is ready you will receive a pop-up.<br/>- Click the button<br/>- In the new pop-up scroll to "CLAIM FREE REWARDS" and hit collect on the "Progressive Daily Bonus" button.',
             'signup_bonus' => '7 SC',
             'referral_bonus' => 'On referrals first purchase',
@@ -182,7 +182,7 @@ class SocialCasinoSeeder extends Seeder
             'referral_url' => 'https://crowncoinscasino.com/?utm_campaign=5a92009f-aa9c-40d9-9b1a-1b08c838f75f&utm_source=friends',
             'sweeps_extension_eligible' => true,
             'daily_bonus' => .7,
-            'daily_bonus_reset_timing' => null,
+            'daily_bonus_reset_timing' => 'Once a day. Resets overnight.',
             'daily_location' => null,
             'signup_bonus' => '2 SC',
             'referral_bonus' => null,
@@ -318,7 +318,7 @@ class SocialCasinoSeeder extends Seeder
             'referral_url' => 'https://spree.com/?r=787395',
             'sweeps_extension_eligible' => true,
             'daily_bonus' => .3,
-            'daily_bonus_reset_timing' => null,
+            'daily_bonus_reset_timing' => '24 hours since last redemption.',
             'daily_location' => '"Claim Daily Coins" button in left navigation.',
             'signup_bonus' => '2.5 SC',
             'referral_bonus' => '10 SC',
@@ -352,7 +352,7 @@ class SocialCasinoSeeder extends Seeder
             'referral_url' => 'https://www.wowvegas.com/?raf=7145855',
             'sweeps_extension_eligible' => true,
             'daily_bonus' => .3,
-            'daily_bonus_reset_timing' => null,
+            'daily_bonus_reset_timing' => 'Once a day. Resets overnight.',
             'daily_location' => null,
             'signup_bonus' => '4.5 SC',
             'referral_bonus' => '5k WOW & 30 SC',
@@ -377,6 +377,74 @@ class SocialCasinoSeeder extends Seeder
         ]);
 
         $media = $wowVegas->addMedia(public_path('img/casinos/wow-vegas.png'))
+            ->preservingOriginal()
+            ->toMediaCollection('logo');
+        $media->update(['uuid' => Uuid::uuid4()]);
+
+        $realprize = SocialCasino::create([
+            'active' => true,
+            'tier' => 1,
+            'name' => 'Real Prize',
+            'slug' => 'real-prize',
+            'url' => 'https://www.realprize.com',
+            'referral_url' => 'https://www.realprize.com/refer/617863',
+            'sweeps_extension_eligible' => true,
+            'daily_bonus' => .3,
+            'daily_bonus_reset_timing' => 'Once a day. Resets overnight.',
+            'daily_location' => null,
+            'signup_bonus' => '2 SC',
+            'referral_bonus' => '200k GC & 70 SC',
+            'minimum_redemption' => '$100',
+            'token_type' => 'SC',
+            'token_amount_per_dollar' => 1,
+            'real_money_payout' => true,
+            'usa_allowed' => true,
+            'canada_allowed' => false,
+            'usa_excluded' => null,
+            'canada_excluded' => null,
+            'redemption_time' => '3-5 days',
+            'must_play_before_redemption' => true,
+            'best_playthrough_game' => 'Joker\'s Jewels Wild',
+            'best_playthrough_game_url' => 'https://realprize.com/#!c/Slots/Jokers%20Jewels%20Wild/21304956/real',
+            'notes' => '0.30 SC daily - Good package deals, good slot selection, first deposit offer + 2.2 SC free',
+            'terms_url' => 'https://realprize.com/p/terms-of-use-service-agreement/',
+        ]);
+
+        $media = $realprize->addMedia(public_path('img/casinos/real-prize.png'))
+            ->preservingOriginal()
+            ->toMediaCollection('logo');
+        $media->update(['uuid' => Uuid::uuid4()]);
+
+        $pulsz = SocialCasino::create([
+            'active' => true,
+            'tier' => 1,
+            'name' => 'Pulsz',
+            'slug' => 'pulsz',
+            'url' => 'http://www.pulsz.com',
+            'referral_url' => 'http://www.pulsz.com/?invited_by=1qwp7n',
+            'sweeps_extension_eligible' => true,
+            'daily_bonus' => .8,
+            'daily_bonus_reset_timing' => '24 hours since last redemption.',
+            'daily_location' => null,
+            'signup_bonus' => null,
+            'referral_bonus' => '8k GC & 40 SC',
+            'minimum_redemption' => '$100',
+            'token_type' => 'SC',
+            'token_amount_per_dollar' => 1,
+            'real_money_payout' => true,
+            'usa_allowed' => true,
+            'canada_allowed' => false,
+            'usa_excluded' => ['MI', 'NV', 'WA', 'ID', 'MT', 'AL', 'TN'],
+            'canada_excluded' => null,
+            'redemption_time' => '3-5 days',
+            'must_play_before_redemption' => true,
+            'best_playthrough_game' => 'Blackjack',
+            'best_playthrough_game_url' => 'https://www.pulsz.com/table-games/multihand-blackjack/sweepstake/play?category=&gameIndex=',
+            'notes' => 'Fast deposit and withdraws - Daily progressive reward (Starts at 30c)',
+            'terms_url' => 'https://www.pulsz.com/terms-of-use',
+        ]);
+
+        $media = $pulsz->addMedia(public_path('img/casinos/pulsz.png'))
             ->preservingOriginal()
             ->toMediaCollection('logo');
         $media->update(['uuid' => Uuid::uuid4()]);

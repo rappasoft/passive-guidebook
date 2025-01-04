@@ -13,7 +13,9 @@ use Filament\Tables\Columns\Summarizers\Summarizer;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Concerns\InteractsWithTable;
 use Filament\Tables\Contracts\HasTable;
+use Filament\Tables\Filters\Filter;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Query\Builder as QueryBuilder;
 use Livewire\Attributes\Layout;
@@ -36,6 +38,8 @@ class Index extends Component implements HasForms, HasTable
                 SpatieMediaLibraryImageColumn::make('logo')
                     ->collection('logo')
                     ->label(''),
+//                    ->extraAttributes(['style' => 'max-width:200px']) // TODO
+//                    ->extraHeaderAttributes(['style' => 'max-width:200px']),
                 TextColumn::make('name')
                     ->searchable()
                     ->sortable(),
@@ -85,6 +89,11 @@ class Index extends Component implements HasForms, HasTable
                         auth()->user()->removeSocialCasino($record);
                     })
                     ->visible(fn (SocialCasino $record) => auth()->user()->hasActiveSocialCasino($record)),
+            ])
+            ->filters([
+                Filter::make('tier_1')->query(fn (Builder $query): Builder => $query->where('tier', 1)),
+                Filter::make('tier_2')->query(fn (Builder $query): Builder => $query->where('tier', 2)),
+                Filter::make('tier_3')->query(fn (Builder $query): Builder => $query->where('tier', 3))
             ]);
     }
 

@@ -24,6 +24,7 @@ return new class extends Migration
             $table->boolean('hide_expired_bonuses')->default(false);
             $table->boolean('notify_new_promotions')->default(false);
             $table->boolean('notify_new_bonuses')->default(false);
+            $table->text('notes')->nullable();
             $table->timestamps();
         });
     }

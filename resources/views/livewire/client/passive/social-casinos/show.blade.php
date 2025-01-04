@@ -237,7 +237,7 @@
                 @endif
             </div>
 
-            <div class="p-6 col-span-2 text-gray-900 dark:text-gray-100 bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
+            <div class="p-6 text-gray-900 dark:text-gray-100 bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                 <h2 class="mb-4 text-xl font-bold">{{ $socialCasino->name }} News</h2>
 
                 @if ($socialCasino->news->count())
@@ -253,6 +253,12 @@
                 @else
                     <p>None</p>
                 @endif
+            </div>
+
+            <div class="p-6 text-gray-900 dark:text-gray-100 bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
+                <h2 class="mb-4 text-xl font-bold">My Notes</h2>
+
+                <livewire:client.passive.social-casino.my-notes :$socialCasino />
             </div>
 
             <div class="p-6 col-span-2 text-gray-900 bg-white overflow-hidden shadow-sm sm:rounded-lg">

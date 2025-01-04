@@ -19,6 +19,7 @@ class SocialCasinoUser extends Pivot
         'hide_expired_bonuses',
         'notify_new_promotions',
         'notify_new_bonuses',
+        'notes',
     ];
 
     protected $casts = [
