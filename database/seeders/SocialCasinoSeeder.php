@@ -448,5 +448,108 @@ class SocialCasinoSeeder extends Seeder
             ->preservingOriginal()
             ->toMediaCollection('logo');
         $media->update(['uuid' => Uuid::uuid4()]);
+
+        $pulszBingo = SocialCasino::create([
+            'active' => true,
+            'tier' => 1,
+            'name' => 'Pulsz Bingo',
+            'slug' => 'pulsz-bingo',
+            'url' => 'http://www.pulszbingo.com',
+            'referral_url' => 'http://www.pulszbingo.com/?invited_by=v914ej',
+            'sweeps_extension_eligible' => true,
+            'daily_bonus' => .8,
+            'daily_bonus_reset_timing' => '24 hours since last redemption.',
+            'daily_location' => 'If it\'s ready a "Wheel of Winners" will pop up.',
+            'signup_bonus' => '2 SC',
+            'referral_bonus' => '6k GC & 30 SC',
+            'minimum_redemption' => '$100',
+            'token_type' => 'SC',
+            'token_amount_per_dollar' => 1,
+            'real_money_payout' => true,
+            'usa_allowed' => true,
+            'canada_allowed' => false,
+            'usa_excluded' => ['WA', 'ID', 'MI', 'NV', 'MT', 'AL', 'TN'],
+            'canada_excluded' => null,
+            'redemption_time' => '3-5 days',
+            'must_play_before_redemption' => true,
+            'best_playthrough_game' => 'Blackjack',
+            'best_playthrough_game_url' => 'https://www.pulszbingo.com/table-games/multihand-blackjack/sweepstake/play?category=&gameIndex=',
+            'notes' => 'Daily login wheel spin. Best Bingo / Free bingo cards often via email',
+            'terms_url' => 'https://www.pulszbingo.com/terms-of-use',
+        ]);
+
+        $media = $pulszBingo->addMedia(public_path('img/casinos/pulsz-bingo.png'))
+            ->preservingOriginal()
+            ->toMediaCollection('logo');
+        $media->update(['uuid' => Uuid::uuid4()]);
+
+        $modo = SocialCasino::create([
+            'active' => true,
+            'tier' => 1,
+            'name' => 'Modo',
+            'slug' => 'modo',
+            'url' => 'https://modo.us',
+            'referral_url' => 'https://modo.us?referralCode=USuYo_WTXl_O',
+            'sweeps_extension_eligible' => true,
+            'daily_bonus' => 1,
+            'daily_bonus_reset_timing' => '24 hours since last redemption.',
+            'daily_location' => 'Bottom of left navigation.',
+            'signup_bonus' => '1 SC',
+            'referral_bonus' => '100k GC & 15 SC',
+            'minimum_redemption' => '$100',
+            'token_type' => 'SC',
+            'token_amount_per_dollar' => 1,
+            'real_money_payout' => true,
+            'usa_allowed' => true,
+            'canada_allowed' => false,
+            'usa_excluded' => ['WA', 'MT', 'MD', 'PA', 'NJ', 'CT', 'WV', 'LA', 'RI', 'DE', 'NV', 'MI', 'ID'],
+            'canada_excluded' => null,
+            'redemption_time' => '3-7 days',
+            'must_play_before_redemption' => true,
+            'best_playthrough_game' => 'Blackjack',
+            'best_playthrough_game_url' => 'https://modo.us/play/blackjack-lucky-sevens',
+            'notes' => 'Great welcome bonus offers. Good slot selection from multiple providers including Hacksaw',
+            'terms_url' => 'https://modo.us/terms-and-conditions.pdf',
+        ]);
+
+        $media = $modo->addMedia(public_path('img/casinos/modo.png'))
+            ->preservingOriginal()
+            ->toMediaCollection('logo');
+        $media->update(['uuid' => Uuid::uuid4()]);
+
+        $moozi = SocialCasino::create([
+            'active' => true,
+            'tier' => 3,
+            'name' => 'Moozi',
+            'slug' => 'moozi',
+            'url' => 'https://moozi.com',
+            'referral_url' => 'https://moozi.com/signup?referral_code=9138335352',
+            'sweeps_extension_eligible' => true,
+            'daily_bonus' => .5,
+            'daily_bonus_reset_timing' => null,
+            'daily_location' => 'Left side navigation.',
+            'signup_bonus' => '2 SC',
+            'referral_bonus' => '300k GC & 30 SC',
+            'minimum_redemption' => '$75',
+            'token_type' => 'SC',
+            'token_amount_per_dollar' => 1,
+            'real_money_payout' => true,
+            'usa_allowed' => true,
+            'canada_allowed' => false,
+            'usa_excluded' => null,
+            'canada_excluded' => null,
+            'redemption_time' => '',
+            'must_play_before_redemption' => true,
+            'best_playthrough_game' => 'Top Card Trumps',
+            'best_playthrough_game_url' => 'https://moozi.com/play/bs_48/45/Njk5NzY4/silver',
+            'notes' => '',
+            'terms_url' => 'https://moozi.com/terms-of-use',
+        ]);
+
+        $media = $moozi->addMedia(public_path('img/casinos/moozi.png'))
+            ->preservingOriginal()
+            ->toMediaCollection('logo');
+        $media->update(['uuid' => Uuid::uuid4()]);
+
     }
 }
