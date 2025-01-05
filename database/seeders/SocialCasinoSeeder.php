@@ -551,5 +551,107 @@ class SocialCasinoSeeder extends Seeder
             ->toMediaCollection('logo');
         $media->update(['uuid' => Uuid::uuid4()]);
 
+        $chumba = SocialCasino::create([
+            'active' => true,
+            'tier' => 1,
+            'name' => 'Chumba',
+            'slug' => 'chumba',
+            'url' => 'https://lobby.chumbacasino.com/',
+            'referral_url' => null,
+            'sweeps_extension_eligible' => true,
+            'daily_bonus' => 1,
+            'daily_bonus_reset_timing' => 'Once a day. Resets overnight.',
+            'daily_location' => '- Click "Get Coins" on top<br/>- Switch to 3rd tab "Daily Bonus"<br/>- Click CLAIM',
+            'signup_bonus' => '2 SC',
+            'referral_bonus' => null,
+            'minimum_redemption' => '$100',
+            'token_type' => 'SC',
+            'token_amount_per_dollar' => 1,
+            'real_money_payout' => true,
+            'usa_allowed' => true,
+            'canada_allowed' => true,
+            'usa_excluded' => ['CT', 'ID', 'MI', 'MT', 'WA'],
+            'canada_excluded' => ['Quebec'],
+            'redemption_time' => '3-5 days',
+            'must_play_before_redemption' => true,
+            'best_playthrough_game' => 'Blackjack',
+            'best_playthrough_game_url' => 'https://lobby.chumbacasino.com/games/blackJack',
+            'notes' => '1 SC Daily - One of the origional sweepstake casino site. Classic site with all house games',
+            'terms_url' => 'https://www.chumbacasino.com/documents/240916-POL-CHU-T&Cs-10.0.pdf',
+        ]);
+
+        $media = $chumba->addMedia(public_path('img/casinos/chumba.png'))
+            ->preservingOriginal()
+            ->toMediaCollection('logo');
+        $media->update(['uuid' => Uuid::uuid4()]);
+
+        $chanced = SocialCasino::create([
+            'active' => true,
+            'tier' => 2,
+            'name' => 'Chanced',
+            'slug' => 'chanced',
+            'url' => 'https://chanced.com',
+            'referral_url' => 'https://chanced.com/c/2zppvl',
+            'sweeps_extension_eligible' => true,
+            'daily_bonus' => .5,
+            'daily_bonus_reset_timing' => '24 hours since last redemption.',
+            'daily_location' => '- Click "Wallet" on top<br/>- Switch to 3rd tab "Daily Bonus"<br/>- Click "Claim Daily Bonus" at the bottom.',
+            'signup_bonus' => null,
+            'referral_bonus' => '100k GC & 15 SC',
+            'minimum_redemption' => '$100',
+            'token_type' => 'SC',
+            'token_amount_per_dollar' => 1,
+            'real_money_payout' => true,
+            'usa_allowed' => true,
+            'canada_allowed' => false,
+            'usa_excluded' => ['MI', 'NV', 'WA', 'ID', 'KY'],
+            'canada_excluded' => null,
+            'redemption_time' => 'Instant',
+            'must_play_before_redemption' => true,
+            'best_playthrough_game' => 'Joker\'s Jewels Wild',
+            'best_playthrough_game_url' => 'https://chanced.com/pragmatic/casino/games/vs5jjwild',
+            'notes' => '3x playthrough on all deposits - Claim a small SC bonus each hour + Livestream codes',
+            'terms_url' => 'https://chanced.com/docs/Terms-And-Conditions.pdf',
+        ]);
+
+        $media = $chanced->addMedia(public_path('img/casinos/chanced.png'))
+            ->preservingOriginal()
+            ->toMediaCollection('logo');
+        $media->update(['uuid' => Uuid::uuid4()]);
+
+        $rollingriches = SocialCasino::create([
+            'active' => true,
+            'tier' => 2,
+            'name' => 'Rolling Riches',
+            'slug' => 'rolling-riches',
+            'url' => 'https://www.rollingriches.com',
+            'referral_url' => null,
+            'sweeps_extension_eligible' => true,
+            'daily_bonus' => .8,
+            'daily_bonus_reset_timing' => '6 hours since last redemption.',
+            'daily_location' => '- Click "GET COINS" on the left navigation<br/>- Click the "BONUSES" tab',
+            'signup_bonus' => '5 SC',
+            'referral_bonus' => null,
+            'minimum_redemption' => '$100',
+            'token_type' => 'SC',
+            'token_amount_per_dollar' => 1,
+            'real_money_payout' => true,
+            'usa_allowed' => true,
+            'canada_allowed' => false,
+            'usa_excluded' => ['CT', 'DE', 'HI', 'ID', 'KY', 'MI', 'MT', 'NV', 'WA'],
+            'canada_excluded' => null,
+            'redemption_time' => null,
+            'must_play_before_redemption' => true,
+            'best_playthrough_game' => 'Gravity Blackjack > Joker\'s Jewels Wild',
+            'best_playthrough_game_url' => null,
+            'notes' => '$0.20 every 6 hours',
+            'terms_url' => 'https://s3.us-west-1.amazonaws.com/aws.rollingriches.com/rollingriches/PDFs/Rolling+Riches+Terms+and+Conditions+FINAL+1-8.pdf',
+        ]);
+
+        $media = $rollingriches->addMedia(public_path('img/casinos/rolling-riches.png'))
+            ->preservingOriginal()
+            ->toMediaCollection('logo');
+        $media->update(['uuid' => Uuid::uuid4()]);
+
     }
 }
