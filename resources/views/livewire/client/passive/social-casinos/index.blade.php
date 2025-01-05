@@ -1,24 +1,36 @@
 <div>
     <x-slot name="header">
         <div class="lg:flex justify-between items-center">
-            <h2 class="font-semibold text-xl text-primary-800 dark:text-white leading-tight">
-                {{ __('Social Casinos') }}
-            </h2>
-
             <div class="lg:mt-0 mt-4 flex space-x-4">
-                <div class="flex flex-grow-0 items-center space-x-2">
-                    <span class="dark:text-white whitespace-nowrap text-sm">Upfront Cost:</span>
-                    <x-filament::badge color="success">$0</x-filament::badge>
-                </div>
+                <h2 class="font-semibold text-xl text-primary-800 dark:text-white leading-tight">
+                    {{ __('Social Casinos') }}
+                </h2>
 
-                <div class="flex flex-grow-0 items-center space-x-2">
-                    <span class="dark:text-white whitespace-nowrap text-sm">Passive Meter:</span>
-                    <div class="w-[100px] overflow-hidden rounded-full bg-gray-200">
-                        <div class="h-2 rounded-full bg-green-600" style="width: 80%"></div>
+                @if ($source && $userSource)
+                    <div class="flex flex-grow-0 items-center space-x-2">
+                        <span class="dark:text-white whitespace-nowrap text-sm">My Monthly:</span>
+                        <x-filament::badge color="success">${{ number_format($userSource->monthly_amount, 2) }}</x-filament::badge>
+                        <x-heroicon-o-information-circle class="w-4 h-4 dark:text-gray-500" x-tooltip="{theme: $store.theme, content: 'Monthly amounts are based off of 30 days/month.'}" />
                     </div>
-                    <x-heroicon-o-information-circle class="w-4 h-4 dark:text-gray-500" x-tooltip="{theme: $store.theme, content: 'Upfront setup required (a couple days) and then you must log in to each account every day to redeem the daily bonus. You can use the sweeps extension to do this automatically for 30 or so sites. For the other sites, see the guide on optimization.'}" />
-                </div>
+                @endif
             </div>
+
+            @if ($source)
+                <div class="lg:mt-0 mt-4 flex space-x-4">
+                    <div class="flex flex-grow-0 items-center space-x-2">
+                        <span class="dark:text-white whitespace-nowrap text-sm">Upfront Cost:</span>
+                        <x-filament::badge color="success">${{ $source->upfront_cost }}</x-filament::badge>
+                    </div>
+
+                    <div class="flex flex-grow-0 items-center space-x-2">
+                        <span class="dark:text-white whitespace-nowrap text-sm">Passive Meter:</span>
+                        <div class="w-[100px] overflow-hidden rounded-full bg-gray-200">
+                            <div class="h-2 rounded-full bg-green-600" style="width: {{ $source->passive_percentage }}%"></div>
+                        </div>
+                        <x-heroicon-o-information-circle class="w-4 h-4 dark:text-gray-500" x-tooltip="{theme: $store.theme, content: 'Upfront setup required (a couple days) and then you must log in to each account every day to redeem the daily bonus. You can use the sweeps extension to do this automatically for 30 or so sites. For the other sites, see the guide on optimization.'}" />
+                    </div>
+                </div>
+            @endif
         </div>
     </x-slot>
 

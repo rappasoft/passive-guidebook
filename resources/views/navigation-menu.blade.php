@@ -16,105 +16,87 @@
                         {{ __('Dashboard') }}
                     </x-nav-link>
 
-                    <x-nav-dropdown :active="request()->routeIs('passive.social-casinos.*')">
-                        <x-slot name="trigger">
-                            <button class="inline-flex items-center py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 dark:text-gray-400 bg-white dark:bg-gray-800 hover:text-gray-700 dark:hover:text-gray-300 focus:outline-none transition ease-in-out duration-150">
-                                <span>Easy</span>
+                    @if (\App\Models\PassiveSource::where('level', 1)->count())
+                        <x-nav-dropdown :active="request()->routeIs('passive.social-casinos.*')">
+                            <x-slot name="trigger">
+                                <button class="inline-flex items-center py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 dark:text-gray-400 bg-white dark:bg-gray-800 hover:text-gray-700 dark:hover:text-gray-300 focus:outline-none transition ease-in-out duration-150">
+                                    <span>Easy</span>
 
-                                <span class="ml-1">
-                                    <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
-                                        <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
-                                    </svg>
-                                </span>
-                            </button>
-                        </x-slot>
+                                    <span class="ml-1">
+                                        <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+                                            <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
+                                        </svg>
+                                    </span>
+                                </button>
+                            </x-slot>
 
-                        <x-slot name="content">
-                            <x-dropdown-link wire:navigate :href="route('passive.social-casinos.index')">
-                                <span class="flex items-center space-x-2">
-                                    <span>{{ __('Social Casinos') }}</span>
+                            <x-slot name="content">
+                                @foreach(\App\Models\PassiveSource::where('level', 1)->orderBy('sort')->get() as $passiveItem)
+                                    <x-dropdown-link wire:navigate :href="route('passive.'.$passiveItem->slug.'.index')">
+                                    <span class="flex items-center space-x-2">
+                                        <span>{{ $passiveItem->name }}</span>
 
-                                    @if (\Illuminate\Support\Facades\Auth::user()->activeSocialCasinos()->count())
-                                        <x-filament::badge color="success">Enabled</x-filament::badge>
-                                    @endif
-                                </span>
-                            </x-dropdown-link>
+                                        @if ($passiveItem->slug === 'social-casinos' && \Illuminate\Support\Facades\Auth::user()->activeSocialCasinos()->count())
+                                            <x-filament::badge color="success">Enabled</x-filament::badge>
+                                        @endif
+                                    </span>
+                                    </x-dropdown-link>
+                                @endforeach
+                            </x-slot>
+                        </x-nav-dropdown>
+                    @endif
 
-                            <x-dropdown-link wire:navigate href="#">
-                                <span class="flex items-center space-x-1">
-                                    <span>{{ __('HYSA') }}</span>
-                                </span>
-                            </x-dropdown-link>
+                    @if (\App\Models\PassiveSource::where('level', 2)->count())
+                        <x-nav-dropdown :active="false">
+                            <x-slot name="trigger">
+                                <button class="inline-flex items-center py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 dark:text-gray-400 bg-white dark:bg-gray-800 hover:text-gray-700 dark:hover:text-gray-300 focus:outline-none transition ease-in-out duration-150">
+                                    <span>Medium</span>
 
-                            <x-dropdown-link wire:navigate href="#">
-                                <span class="flex items-center space-x-1">
-                                    <span>{{ __('Dividends') }}</span>
-                                </span>
-                            </x-dropdown-link>
+                                    <span class="ml-1">
+                                        <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+                                            <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
+                                        </svg>
+                                    </span>
+                                </button>
+                            </x-slot>
 
-                            <x-dropdown-link wire:navigate href="#">
-                                <span class="flex items-center space-x-1">
-                                    <span>{{ __('Grass.io') }}</span>
-                                </span>
-                            </x-dropdown-link>
-                        </x-slot>
-                    </x-nav-dropdown>
+                            <x-slot name="content">
+                                @foreach(\App\Models\PassiveSource::where('level', 2)->orderBy('sort')->get() as $passiveItem)
+                                    <x-dropdown-link wire:navigate :href="route('passive.'.$passiveItem->slug.'.index')">
+                                    <span class="flex items-center space-x-2">
+                                        <span>{{ $passiveItem->name }}</span>
+                                    </span>
+                                    </x-dropdown-link>
+                                @endforeach
+                            </x-slot>
+                        </x-nav-dropdown>
+                    @endif
 
-                    <x-nav-dropdown :active="false">
-                        <x-slot name="trigger">
-                            <button class="inline-flex items-center py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 dark:text-gray-400 bg-white dark:bg-gray-800 hover:text-gray-700 dark:hover:text-gray-300 focus:outline-none transition ease-in-out duration-150">
-                                <span>Medium</span>
+                    @if (\App\Models\PassiveSource::where('level', 3)->count())
+                        <x-nav-dropdown :active="false">
+                            <x-slot name="trigger">
+                                <button class="inline-flex items-center py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 dark:text-gray-400 bg-white dark:bg-gray-800 hover:text-gray-700 dark:hover:text-gray-300 focus:outline-none transition ease-in-out duration-150">
+                                    <span>Hard</span>
 
-                                <span class="ml-1">
-                                    <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
-                                        <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
-                                    </svg>
-                                </span>
-                            </button>
-                        </x-slot>
+                                    <span class="ml-1">
+                                        <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+                                            <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
+                                        </svg>
+                                    </span>
+                                </button>
+                            </x-slot>
 
-                        <x-slot name="content">
-                            <x-dropdown-link wire:navigate href="#">
-                                <span class="flex items-center space-x-1">
-                                    <span>{{ __('Affiliates') }}</span>
-                                </span>
-                            </x-dropdown-link>
-
-                            <x-dropdown-link wire:navigate href="#">
-                                <span class="flex items-center space-x-1">
-                                    <span>{{ __('Investing') }}</span>
-                                </span>
-                            </x-dropdown-link>
-
-                            <x-dropdown-link wire:navigate href="#">
-                                <span class="flex items-center space-x-1">
-                                    <span>{{ __('FreeCash.com') }}</span>
-                                </span>
-                            </x-dropdown-link>
-                        </x-slot>
-                    </x-nav-dropdown>
-
-                    <x-nav-dropdown :active="false">
-                        <x-slot name="trigger">
-                            <button class="inline-flex items-center py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 dark:text-gray-400 bg-white dark:bg-gray-800 hover:text-gray-700 dark:hover:text-gray-300 focus:outline-none transition ease-in-out duration-150">
-                                <span>Hard</span>
-
-                                <span class="ml-1">
-                                    <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
-                                        <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
-                                    </svg>
-                                </span>
-                            </button>
-                        </x-slot>
-
-                        <x-slot name="content">
-                            <x-dropdown-link wire:navigate href="#">
-                                <span class="flex items-center space-x-1">
-                                    <span>{{ __('Crypto') }}</span>
-                                </span>
-                            </x-dropdown-link>
-                        </x-slot>
-                    </x-nav-dropdown>
+                            <x-slot name="content">
+                                @foreach(\App\Models\PassiveSource::where('level', 3)->orderBy('sort')->get() as $passiveItem)
+                                    <x-dropdown-link wire:navigate :href="route('passive.'.$passiveItem->slug.'.index')">
+                                    <span class="flex items-center space-x-2">
+                                        <span>{{ $passiveItem->name }}</span>
+                                    </span>
+                                    </x-dropdown-link>
+                                @endforeach
+                            </x-slot>
+                        </x-nav-dropdown>
+                    @endif
                 </div>
             </div>
 
@@ -218,6 +200,7 @@
                 {{ __('Dashboard') }}
             </x-responsive-nav-link>
 
+            {{-- TODO: Dynamic --}}
             <x-responsive-nav-link wire:navigate href="{{ route('passive.social-casinos.index') }}" :active="request()->routeIs('passive.social-casinos.*')">
                <span class="flex items-center space-x-2">
                     <span>{{ __('Social Casinos') }}</span>
@@ -227,22 +210,6 @@
                     @endif
                </span>
             </x-responsive-nav-link>
-
-{{--            <x-responsive-nav-link href="" :active="false">--}}
-{{--                Grass.io--}}
-{{--            </x-responsive-nav-link>--}}
-
-{{--            <x-responsive-nav-link href="" :active="false">--}}
-{{--                HYSA--}}
-{{--            </x-responsive-nav-link>--}}
-
-{{--            <x-responsive-nav-link href="" :active="false">--}}
-{{--                Investing/Dividends--}}
-{{--            </x-responsive-nav-link>--}}
-
-{{--            <x-responsive-nav-link href="" :active="false">--}}
-{{--                Crypto--}}
-{{--            </x-responsive-nav-link>--}}
         </div>
 
         <!-- Responsive Settings Options -->

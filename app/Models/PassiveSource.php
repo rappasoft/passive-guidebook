@@ -2,16 +2,26 @@
 
 namespace App\Models;
 
+use App\Models\Traits\Relationships\PassiveSourceRelationship;
 use Illuminate\Database\Eloquent\Model;
 
 class PassiveSource extends Model
 {
+    use PassiveSourceRelationship;
+
     protected $fillable = [
-        'source',
-        'monthly_amount',
+        'name',
+        'slug',
+        'sort',
+        'upfront_cost',
+        'passive_percentage',
+        'level',
     ];
 
     protected $casts = [
-        'monthly_amount' => 'integer',
+        'sort' => 'integer',
+        'upfront_cost' => 'integer',
+        'passive_percentage' => 'integer',
+        'level' => 'integer',
     ];
 }

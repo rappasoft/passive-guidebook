@@ -2,7 +2,7 @@
 
 namespace App\Models\Traits\Relationships;
 
-use App\Models\PassiveSource;
+use App\Models\PassiveSourceUser;
 use App\Models\Pivots\SocialCasinoUser;
 use App\Models\SocialCasino;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -25,6 +25,6 @@ trait UserRelationship
 
     public function passiveSources(): HasMany
     {
-        return $this->hasMany(PassiveSource::class);
+        return $this->hasMany(PassiveSourceUser::class);
     }
 }

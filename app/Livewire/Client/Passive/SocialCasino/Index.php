@@ -2,6 +2,8 @@
 
 namespace App\Livewire\Client\Passive\SocialCasino;
 
+use App\Models\PassiveSource;
+use App\Models\PassiveSourceUser;
 use App\Models\SocialCasino;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Forms\Contracts\HasForms;
@@ -38,8 +40,6 @@ class Index extends Component implements HasForms, HasTable
                 SpatieMediaLibraryImageColumn::make('logo')
                     ->collection('logo')
                     ->label(''),
-                //                    ->extraAttributes(['style' => 'max-width:200px']) // TODO
-                //                    ->extraHeaderAttributes(['style' => 'max-width:200px']),
                 TextColumn::make('name')
                     ->searchable()
                     ->sortable(),
@@ -100,6 +100,11 @@ class Index extends Component implements HasForms, HasTable
     #[Layout('layouts.app')]
     public function render()
     {
-        return view('livewire.client.passive.social-casinos.index');
+        return view('livewire.client.passive.social-casinos.index')
+            ->withSource($source = PassiveSource::where('slug', 'social-casinos')->firstOrFail())
+            ->withUserSource(PassiveSourceUser::query()->forSource($source)->forUser(auth()->user())->firstOrCreate([
+                'user_id' => auth()->id(),
+                'passive_source_id' => $source->id,
+            ]));
     }
 }

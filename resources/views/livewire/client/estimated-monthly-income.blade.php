@@ -1,5 +1,5 @@
 <a href="/dashboard">
     <x-filament::badge color="success">
-        Estimated Monthly Income: ${{ $this->monthlyIncome }}
+        Total Estimated Monthly Income: ${{ $this->monthlyIncome }}
     </x-filament::badge>
 </a>

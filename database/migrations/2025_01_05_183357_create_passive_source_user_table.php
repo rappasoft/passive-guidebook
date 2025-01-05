@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\PassiveSource;
 use App\Models\User;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
@@ -12,14 +13,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('passive_sources', function (Blueprint $table) {
+        Schema::create('passive_source_user', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->string('slug')->unique();
-            $table->tinyInteger('sort')->default(0);
-            $table->integer('upfront_cost')->default(0);
-            $table->tinyInteger('passive_percentage')->default(0);
-            $table->tinyInteger('level')->default(1);
+            $table->foreignIdFor(User::class);
+            $table->foreignIdFor(PassiveSource::class);
+            $table->decimal('monthly_amount')->default(0);
             $table->timestamps();
         });
     }
@@ -29,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('passive_sources');
+        Schema::dropIfExists('passive_source_user');
     }
 };
