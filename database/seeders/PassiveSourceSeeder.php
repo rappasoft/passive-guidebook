@@ -8,7 +8,6 @@ use Illuminate\Database\Seeder;
 
 class PassiveSourceSeeder extends Seeder
 {
-
     use WithoutModelEvents;
 
     /**
