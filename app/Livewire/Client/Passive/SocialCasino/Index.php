@@ -38,8 +38,8 @@ class Index extends Component implements HasForms, HasTable
                 SpatieMediaLibraryImageColumn::make('logo')
                     ->collection('logo')
                     ->label(''),
-//                    ->extraAttributes(['style' => 'max-width:200px']) // TODO
-//                    ->extraHeaderAttributes(['style' => 'max-width:200px']),
+                //                    ->extraAttributes(['style' => 'max-width:200px']) // TODO
+                //                    ->extraHeaderAttributes(['style' => 'max-width:200px']),
                 TextColumn::make('name')
                     ->searchable()
                     ->sortable(),
@@ -93,7 +93,7 @@ class Index extends Component implements HasForms, HasTable
             ->filters([
                 Filter::make('tier_1')->query(fn (Builder $query): Builder => $query->where('tier', 1)),
                 Filter::make('tier_2')->query(fn (Builder $query): Builder => $query->where('tier', 2)),
-                Filter::make('tier_3')->query(fn (Builder $query): Builder => $query->where('tier', 3))
+                Filter::make('tier_3')->query(fn (Builder $query): Builder => $query->where('tier', 3)),
             ]);
     }
 
