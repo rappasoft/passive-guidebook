@@ -14,7 +14,7 @@ return new class extends Migration
     {
         Schema::create('social_casino_news', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(SocialCasino::class);
+            $table->foreignIdFor(SocialCasino::class)->constrained()->onDelete('cascade');
             $table->string('title', 500);
             $table->string('url', 500);
             $table->timestamps();

@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::create('social_casino_promotions', function (Blueprint $table) {
             $table->id();
             $table->enum('type', [SocialCasinoPromotion::TYPE_PROMOTION, SocialCasinoPromotion::TYPE_BONUS])->default(SocialCasinoPromotion::TYPE_PROMOTION);
-            $table->foreignIdFor(SocialCasino::class);
+            $table->foreignIdFor(SocialCasino::class)->constrained()->onDelete('cascade');
             $table->string('title', 500);
             $table->string('url', 500);
             $table->string('rewards');

@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('social_casino_promotion_user', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(SocialCasinoPromotion::class);
+            $table->foreignIdFor(SocialCasinoPromotion::class)->constrained()->onDelete('cascade');
             $table->foreignIdFor(User::class);
             $table->unique(['social_casino_promotion_id', 'user_id'], 'social_casino_promotion_id_user_id_unique');
             $table->timestamp('redeemed_at')->nullable();

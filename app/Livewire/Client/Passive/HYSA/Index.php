@@ -30,7 +30,7 @@ class Index extends Component implements HasForms, HasTable
         return $table
             ->query(PassiveSourceUser::query()->forSlug(PassiveSource::SOCIAL_HYSA)->forUser(auth()->user())->with('hysaDetails')->whereHas('hysaDetails'))
             ->paginated(false)
-            ->emptyStateHeading('You have no HYSA accounts')
+            ->emptyStateHeading('You have no HYSA accounts.')
             ->emptyStateDescription(null)
             ->emptyStateIcon('heroicon-o-face-frown')
             ->columns([
