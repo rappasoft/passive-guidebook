@@ -10,6 +10,7 @@ class PassiveSource extends Model
     use PassiveSourceRelationship;
 
     public const SOCIAL_CASINOS = 'social-casinos';
+
     public const SOCIAL_HYSA = 'hysa';
 
     protected $fillable = [
