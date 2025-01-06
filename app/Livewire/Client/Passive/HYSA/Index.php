@@ -5,6 +5,7 @@ namespace App\Livewire\Client\Passive\HYSA;
 use App\Models\PassiveSource;
 use App\Models\PassiveSourceUser;
 use App\Services\HYSAService;
+use Exception;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Forms\Contracts\HasForms;
@@ -18,7 +19,6 @@ use Filament\Tables\Table;
 use Illuminate\Database\Query\Builder as QueryBuilder;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
-use Exception;
 
 class Index extends Component implements HasForms, HasTable
 {
@@ -104,18 +104,18 @@ class Index extends Component implements HasForms, HasTable
                     ->form([
                         TextInput::make('bank_name')
                             ->label('Bank')
-                            ->default(fn(PassiveSourceUser $record) => $record->hysaDetails?->bank_name)
+                            ->default(fn (PassiveSourceUser $record) => $record->hysaDetails?->bank_name)
                             ->required(),
                         TextInput::make('apy')
                             ->postfix('%')
                             ->label('APY')
-                            ->default(fn(PassiveSourceUser $record) => $record->hysaDetails?->apy)
+                            ->default(fn (PassiveSourceUser $record) => $record->hysaDetails?->apy)
                             ->numeric()
                             ->minValue(0)
                             ->maxValue(100)
                             ->required(),
                         TextInput::make('amount')
-                            ->default(fn(PassiveSourceUser $record) => $record->hysaDetails?->amount)
+                            ->default(fn (PassiveSourceUser $record) => $record->hysaDetails?->amount)
                             ->numeric()
                             ->label('Amount Saved')
                             ->minValue(0)
