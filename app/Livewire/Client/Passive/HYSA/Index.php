@@ -136,7 +136,16 @@ class Index extends Component implements HasForms, HasTable
                 Action::make('delete')
                     ->requiresConfirmation()
                     ->color('danger')
-                    ->action(fn(PassiveSourceUser $record) => resolve(HYSAService::class)->deleteHYSAForUser(auth()->user(), $record)),
+                    ->action(function (array $data, PassiveSourceUser $record): void {
+                        try {
+                            resolve(HYSAService::class)->deleteHYSAForUser(auth()->user(), $record);
+                        } catch (Exception) {
+                            Notification::make()
+                                ->title('There was a problem deleting your HYSA account.')
+                                ->danger()
+                                ->send();
+                        }
+                    }),
             ]);
     }
 
