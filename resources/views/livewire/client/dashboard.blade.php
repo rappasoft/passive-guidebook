@@ -86,7 +86,7 @@
 
                                     @if (\Illuminate\Support\Facades\Auth::user()->passiveSources()->inUse()->forSlug(\App\Models\PassiveSource::SOCIAL_HYSA)->count())
                                         <div x-show="tab === '{{ \App\Models\PassiveSource::SOCIAL_HYSA }}'">
-                                            <livewire:client.passive.hysa.my-hysa />
+                                            <livewire:client.passive.h_y_s_a.my-h_y_s_a />
                                         </div>
                                     @endif
 

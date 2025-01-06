@@ -12,7 +12,6 @@ use Filament\Navigation\NavigationItem;
 use Filament\Pages;
 use Filament\Panel;
 use Filament\PanelProvider;
-use Filament\SpatieLaravelTranslatablePlugin;
 use Filament\Support\Colors\Color;
 use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
 use Illuminate\Cookie\Middleware\EncryptCookies;
@@ -21,7 +20,6 @@ use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\Session\Middleware\AuthenticateSession;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
-use LaraZeus\Sky\SkyPlugin;
 use RickDBCN\FilamentEmail\FilamentEmail;
 use ShuvroRoy\FilamentSpatieLaravelBackup\FilamentSpatieLaravelBackupPlugin;
 use ShuvroRoy\FilamentSpatieLaravelHealth\FilamentSpatieLaravelHealthPlugin;
@@ -99,15 +97,6 @@ class AdminPanelProvider extends PanelProvider
             ->plugin(FilamentSpatieLaravelHealthPlugin::make()->usingPage(HealthCheckResults::class))
             ->plugin(FilamentSpatieLaravelBackupPlugin::make()->usingPage(Backups::class))
             ->plugin(\Mvenghaus\FilamentScheduleMonitor\FilamentPlugin::make())
-            ->plugin(SpatieLaravelTranslatablePlugin::make()->defaultLocales([config('app.locale')]))
-            ->plugin(
-                SkyPlugin::make()
-                    ->navigationGroupLabel('CMS')
-                    ->navigationResource(false)
-                    ->libraryResource(false)
-                    ->tagResource(false)
-                    ->hideNavigationBadges()
-            )
             ->plugin(FilamentEmail::make())
             ->viteTheme('resources/css/filament/admin/theme.css')
             ->globalSearchKeyBindings(['command+k', 'ctrl+k']);
