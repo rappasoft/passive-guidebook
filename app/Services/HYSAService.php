@@ -5,8 +5,8 @@ namespace App\Services;
 use App\Models\PassiveSource;
 use App\Models\PassiveSourceUser;
 use App\Models\User;
-use Illuminate\Support\Facades\DB;
 use Exception;
+use Illuminate\Support\Facades\DB;
 
 class HYSAService
 {
@@ -82,6 +82,6 @@ class HYSAService
 
     private function calculateMonthlyInterest($apy, $amount): float
     {
-        return ((float)$amount * ((float)$apy / 100)) / 12;
+        return ((float) $amount * ((float) $apy / 100)) / 12;
     }
 }
