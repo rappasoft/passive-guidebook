@@ -17,4 +17,9 @@ trait PassiveSourceUserScope
     {
         return $builder->where('passive_source_id', $passiveSource->id);
     }
+
+    public function scopeForSlug(Builder $builder, string $source): Builder
+    {
+        return $builder->whereRelation('source', 'slug', '=', $source);
+    }
 }

@@ -16,13 +16,13 @@ trait MoneyCalculations
             ->sum('social_casino_promotions.dollar_value');
     }
 
-    public function getSocialCasinosDailyIncome(): float
-    {
-        return $this->activeSocialCasinos()->sum('daily_bonus');
-    }
-
     public function getEstimatedMonthlyIncome(): float
     {
         return $this->passiveSources()->sum('monthly_amount');
+    }
+
+    public function getMonthlyIncomeForSource(string $source): float
+    {
+        return $this->passiveSources()->forSlug($source)->sole()->monthly_amount ?? 0;
     }
 }

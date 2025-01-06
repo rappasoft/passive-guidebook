@@ -32,14 +32,18 @@
 
                             <x-slot name="content">
                                 @foreach(\App\Models\PassiveSource::where('level', 1)->orderBy('sort')->get() as $passiveItem)
-                                    <x-dropdown-link wire:navigate :href="route('passive.'.$passiveItem->slug.'.index')">
-                                    <span class="flex items-center space-x-2">
-                                        <span>{{ $passiveItem->name }}</span>
+                                    @continue(! \Illuminate\Support\Facades\Route::has('passive.'.$passiveItem->slug.'.index'))
 
-                                        @if ($passiveItem->slug === 'social-casinos' && \Illuminate\Support\Facades\Auth::user()->activeSocialCasinos()->count())
-                                            <x-filament::badge color="success">Enabled</x-filament::badge>
-                                        @endif
-                                    </span>
+                                    <x-dropdown-link wire:navigate :href="route('passive.'.$passiveItem->slug.'.index')">
+                                        <span class="flex items-center space-x-2">
+                                            <span>{{ $passiveItem->name }}</span>
+
+                                            @if(\Illuminate\Support\Facades\Auth::user()->passiveSources()->forSlug($passiveItem->slug)->where('monthly_amount', '>', 0)->count())
+                                                <x-filament::badge color="success">
+                                                    <x-heroicon-o-check class="w-3 h-3" />
+                                                </x-filament::badge>
+                                            @endif
+                                        </span>
                                     </x-dropdown-link>
                                 @endforeach
                             </x-slot>
@@ -62,10 +66,18 @@
 
                             <x-slot name="content">
                                 @foreach(\App\Models\PassiveSource::where('level', 2)->orderBy('sort')->get() as $passiveItem)
+                                    @continue(! \Illuminate\Support\Facades\Route::has('passive.'.$passiveItem->slug.'.index'))
+
                                     <x-dropdown-link wire:navigate :href="route('passive.'.$passiveItem->slug.'.index')">
-                                    <span class="flex items-center space-x-2">
-                                        <span>{{ $passiveItem->name }}</span>
-                                    </span>
+                                        <span class="flex items-center space-x-2">
+                                            <span>{{ $passiveItem->name }}</span>
+
+                                            @if(\Illuminate\Support\Facades\Auth::user()->passiveSources()->forSlug($passiveItem->slug)->where('monthly_amount', '>', 0)->count())
+                                                <x-filament::badge color="success">
+                                                    <x-heroicon-o-check class="w-3 h-3" />
+                                                </x-filament::badge>
+                                            @endif
+                                        </span>
                                     </x-dropdown-link>
                                 @endforeach
                             </x-slot>
@@ -88,10 +100,18 @@
 
                             <x-slot name="content">
                                 @foreach(\App\Models\PassiveSource::where('level', 3)->orderBy('sort')->get() as $passiveItem)
+                                    @continue(! \Illuminate\Support\Facades\Route::has('passive.'.$passiveItem->slug.'.index'))
+
                                     <x-dropdown-link wire:navigate :href="route('passive.'.$passiveItem->slug.'.index')">
-                                    <span class="flex items-center space-x-2">
-                                        <span>{{ $passiveItem->name }}</span>
-                                    </span>
+                                        <span class="flex items-center space-x-2">
+                                            <span>{{ $passiveItem->name }}</span>
+
+                                            @if(\Illuminate\Support\Facades\Auth::user()->passiveSources()->forSlug($passiveItem->slug)->where('monthly_amount', '>', 0)->count())
+                                                <x-filament::badge color="success">
+                                                    <x-heroicon-o-check class="w-3 h-3" />
+                                                </x-filament::badge>
+                                            @endif
+                                        </span>
                                     </x-dropdown-link>
                                 @endforeach
                             </x-slot>

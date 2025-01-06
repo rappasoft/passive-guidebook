@@ -2,6 +2,7 @@
 
 namespace App\Models\Traits\User;
 
+use App\Models\PassiveSource;
 use App\Models\Pivots\SocialCasinoUser;
 use App\Models\SocialCasino;
 
@@ -15,7 +16,7 @@ trait SocialCasinos
             SocialCasinoUser::query()->where('user_id', auth()->id())->where('social_casino_id', $socialCasino->id)->update(['is_using' => true]);
         }
 
-        $this->passiveSources()->whereRelation('source', 'slug', 'social-casinos')->sole()->update(['monthly_amount' => $this->activeSocialCasinos()->sum('daily_bonus') * 30]);
+        $this->passiveSources()->forSlug(PassiveSource::SOCIAL_CASINOS)->sole()->update(['monthly_amount' => $this->activeSocialCasinos()->sum('daily_bonus') * config('sources.days_in_month')]);
     }
 
     public function removeSocialCasino(SocialCasino $socialCasino): void
@@ -26,7 +27,7 @@ trait SocialCasinos
             SocialCasinoUser::query()->where('user_id', auth()->id())->where('social_casino_id', $socialCasino->id)->update(['is_using' => false]);
         }
 
-        $this->passiveSources()->whereRelation('source', 'slug', 'social-casinos')->sole()->update(['monthly_amount' => $this->activeSocialCasinos()->sum('daily_bonus') * 30]);
+        $this->passiveSources()->forSlug(PassiveSource::SOCIAL_CASINOS)->sole()->update(['monthly_amount' => $this->activeSocialCasinos()->sum('daily_bonus') * config('sources.days_in_month')]);
     }
 
     public function hasSocialCasino(SocialCasino $socialCasino): bool

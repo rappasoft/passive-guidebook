@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('name');
             $table->string('slug')->unique();
             $table->tinyInteger('sort')->default(0);
-            $table->integer('upfront_cost')->default(0);
+            $table->integer('upfront_cost')->nullable();
             $table->tinyInteger('passive_percentage')->default(0);
             $table->tinyInteger('level')->default(1);
             $table->timestamps();

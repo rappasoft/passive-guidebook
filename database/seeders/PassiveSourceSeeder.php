@@ -17,8 +17,101 @@ class PassiveSourceSeeder extends Seeder
     {
         PassiveSource::create([
             'name' => 'Social Casinos',
-            'slug' => 'social-casinos',
+            'slug' => PassiveSource::SOCIAL_CASINOS,
+            'sort' => 0,
             'passive_percentage' => 75,
+            'upfront_cost' => 0,
+            'level' => 1,
         ]);
+
+        PassiveSource::create([
+            'name' => 'HYSA',
+            'slug' => PassiveSource::SOCIAL_HYSA,
+            'passive_percentage' => 100,
+            'sort' => 1,
+            'upfront_cost' => null,
+            'level' => 1,
+        ]);
+
+//        PassiveSource::create([
+//            'name' => 'Grass.io',
+//            'slug' => 'grass-io',
+//            'passive_percentage' => 100,
+//            'sort' => 2,
+//            'upfront_cost' => 0,
+//            'level' => 1,
+//        ]);
+//
+//        PassiveSource::create([
+//            'name' => '',
+//            'slug' => '',
+//            'passive_percentage' => 75,
+//            'sort' => 1,
+//            'upfront_cost' => 0,
+//            'level' => 1,
+//        ]);
+//
+//        PassiveSource::create([
+//            'name' => '',
+//            'slug' => '',
+//            'passive_percentage' => 75,
+//            'sort' => 1,
+//            'upfront_cost' => 0,
+//            'level' => 1,
+//        ]);
+//
+//        PassiveSource::create([
+//            'name' => '',
+//            'slug' => '',
+//            'passive_percentage' => 75,
+//            'sort' => 1,
+//            'upfront_cost' => 0,
+//            'level' => 1,
+//        ]);
+//
+//        PassiveSource::create([
+//            'name' => '',
+//            'slug' => '',
+//            'passive_percentage' => 75,
+//            'sort' => 1,
+//            'upfront_cost' => 0,
+//            'level' => 1,
+//        ]);
+//
+//        PassiveSource::create([
+//            'name' => '',
+//            'slug' => '',
+//            'passive_percentage' => 75,
+//            'sort' => 1,
+//            'upfront_cost' => 0,
+//            'level' => 1,
+//        ]);
+//
+//        PassiveSource::create([
+//            'name' => '',
+//            'slug' => '',
+//            'passive_percentage' => 75,
+//            'sort' => 1,
+//            'upfront_cost' => 0,
+//            'level' => 1,
+//        ]);
+//
+//        PassiveSource::create([
+//            'name' => '',
+//            'slug' => '',
+//            'passive_percentage' => 75,
+//            'sort' => 1,
+//            'upfront_cost' => 0,
+//            'level' => 1,
+//        ]);
+//
+//        PassiveSource::create([
+//            'name' => '',
+//            'slug' => '',
+//            'passive_percentage' => 75,
+//            'sort' => 1,
+//            'upfront_cost' => 0,
+//            'level' => 1,
+//        ]);
     }
 }

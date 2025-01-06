@@ -66,13 +66,13 @@ class Index extends Component implements HasForms, HasTable
                     ->summarize([
                         Sum::make()->label('Total Daily')->prefix('$'),
                         Summarizer::make()
-                            ->label('Total Monthly (30d)')
+                            ->label('Total Monthly')
                             ->prefix('$')
-                            ->using(fn (QueryBuilder $query): string => number_format($query->sum('daily_bonus') * 30, 2)),
+                            ->using(fn (QueryBuilder $query): string => number_format($query->sum('daily_bonus') * config('sources.days_in_month'), 2)),
                         Summarizer::make()
                             ->label('Total Yearly')
                             ->prefix('$')
-                            ->using(fn (QueryBuilder $query): string => number_format($query->sum('daily_bonus') * 365, 2)),
+                            ->using(fn (QueryBuilder $query): string => number_format($query->sum('daily_bonus') * config('sources.days_in_year'), 2)),
                     ]),
             ])
             ->actions([
@@ -101,7 +101,7 @@ class Index extends Component implements HasForms, HasTable
     public function render()
     {
         return view('livewire.client.passive.social-casinos.index')
-            ->withSource($source = PassiveSource::where('slug', 'social-casinos')->firstOrFail())
+            ->withSource($source = PassiveSource::where('slug', PassiveSource::SOCIAL_CASINOS)->firstOrFail())
             ->withUserSource(PassiveSourceUser::query()->forSource($source)->forUser(auth()->user())->firstOrCreate([
                 'user_id' => auth()->id(),
                 'passive_source_id' => $source->id,
