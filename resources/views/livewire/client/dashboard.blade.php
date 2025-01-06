@@ -38,19 +38,28 @@
                     <div class="mt-4 bg-white dark:bg-gray-800 overflow-hidden shadow-xl sm:rounded-lg">
                         <div class="mt-4 p-6 text-gray-900 dark:text-gray-100 bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                             @php
-                                $defaultTab = \Illuminate\Support\Facades\Auth::user()->activeSocialCasinos()->count() ? \App\Models\PassiveSource::SOCIAL_CASINOS : ''
+                                $defaultTab = \Illuminate\Support\Facades\Auth::user()->activeSocialCasinos()->count() ? \App\Models\PassiveSource::SOCIAL_CASINOS : '';
+
+                                if ($defaultTab === '') {
+                                    $defaultTab = \Illuminate\Support\Facades\Auth::user()->passiveSources()->inUse()->forSlug(\App\Models\PassiveSource::SOCIAL_HYSA)->count() ? \App\Models\PassiveSource::SOCIAL_HYSA : '';
+                                }
                             @endphp
 
                             <div x-data="{ tab: window.location.hash ? window.location.hash.substring(1) : '{{ $defaultTab }}' }">
-                                @if (\Illuminate\Support\Facades\Auth::user()->activeSocialCasinos()->count())
+                                @if (
+                                    \Illuminate\Support\Facades\Auth::user()->passiveSources()->inUse()->forSlug(\App\Models\PassiveSource::SOCIAL_CASINOS)->count() ||
+                                    \Illuminate\Support\Facades\Auth::user()->passiveSources()->inUse()->forSlug(\App\Models\PassiveSource::SOCIAL_HYSA)->count()
+                                )
                                     <x-filament::tabs label="Dashboard Tabs">
-                                        <x-filament::tabs.item @click="tab = '{{ \App\Models\PassiveSource::SOCIAL_CASINOS }}';window.location.hash = '{{ \App\Models\PassiveSource::SOCIAL_CASINOS }}'" :alpine-active="'tab === \'{{ \App\Models\PassiveSource::SOCIAL_CASINOS }}\''" active>
-                                            <div class="flex items-center space-x-2">
-                                                <span>My Social Casinos</span>
+                                        @if (\Illuminate\Support\Facades\Auth::user()->passiveSources()->inUse()->forSlug(\App\Models\PassiveSource::SOCIAL_CASINOS)->count())
+                                            <x-filament::tabs.item @click="tab = '{{ \App\Models\PassiveSource::SOCIAL_CASINOS }}';window.location.hash = '{{ \App\Models\PassiveSource::SOCIAL_CASINOS }}'" :alpine-active="'tab === \'{{ \App\Models\PassiveSource::SOCIAL_CASINOS }}\''" active>
+                                                <div class="flex items-center space-x-2">
+                                                    <span>My Social Casinos</span>
 
-                                                <x-filament::badge color="success">${{ number_format(\Illuminate\Support\Facades\Auth::user()->getMonthlyIncomeForSource(\App\Models\PassiveSource::SOCIAL_CASINOS), 2) }}/mo</x-filament::badge>
-                                            </div>
-                                        </x-filament::tabs.item>
+                                                    <x-filament::badge color="success">${{ number_format(\Illuminate\Support\Facades\Auth::user()->getMonthlyIncomeForSource(\App\Models\PassiveSource::SOCIAL_CASINOS), 2) }}/mo</x-filament::badge>
+                                                </div>
+                                            </x-filament::tabs.item>
+                                        @endif
 
                                         <x-filament::tabs.item @click="tab = 'custom';window.location.hash = 'custom'" :alpine-active="'tab === \'custom\''" active>
                                             <div class="flex items-center space-x-2">
@@ -61,9 +70,15 @@
                                 @endif
 
                                 <div class="mt-2">
-                                    @if (\Illuminate\Support\Facades\Auth::user()->activeSocialCasinos()->count())
+                                    @if (\Illuminate\Support\Facades\Auth::user()->passiveSources()->inUse()->forSlug(\App\Models\PassiveSource::SOCIAL_CASINOS)->count())
                                         <div x-show="tab === '{{ \App\Models\PassiveSource::SOCIAL_CASINOS }}'">
                                             <livewire:client.passive.social-casino.my-social-casinos />
+                                        </div>
+                                    @endif
+
+                                    @if (\Illuminate\Support\Facades\Auth::user()->passiveSources()->inUse()->forSlug(\App\Models\PassiveSource::SOCIAL_HYSA)->count())
+                                        <div x-show="tab === '{{ \App\Models\PassiveSource::SOCIAL_HYSA }}'">
+                                            HYSA
                                         </div>
                                     @endif
 

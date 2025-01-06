@@ -38,7 +38,7 @@
                                         <span class="flex items-center space-x-2">
                                             <span>{{ $passiveItem->name }}</span>
 
-                                            @if(\Illuminate\Support\Facades\Auth::user()->passiveSources()->forSlug($passiveItem->slug)->where('monthly_amount', '>', 0)->count())
+                                            @if(\Illuminate\Support\Facades\Auth::user()->passiveSources()->forSlug($passiveItem->slug)->inUse()->count())
                                                 <x-filament::badge color="success">
                                                     <x-heroicon-o-check class="w-3 h-3" />
                                                 </x-filament::badge>
@@ -72,7 +72,7 @@
                                         <span class="flex items-center space-x-2">
                                             <span>{{ $passiveItem->name }}</span>
 
-                                            @if(\Illuminate\Support\Facades\Auth::user()->passiveSources()->forSlug($passiveItem->slug)->where('monthly_amount', '>', 0)->count())
+                                            @if(\Illuminate\Support\Facades\Auth::user()->passiveSources()->forSlug($passiveItem->slug)->inUse()->count())
                                                 <x-filament::badge color="success">
                                                     <x-heroicon-o-check class="w-3 h-3" />
                                                 </x-filament::badge>
@@ -106,7 +106,7 @@
                                         <span class="flex items-center space-x-2">
                                             <span>{{ $passiveItem->name }}</span>
 
-                                            @if(\Illuminate\Support\Facades\Auth::user()->passiveSources()->forSlug($passiveItem->slug)->where('monthly_amount', '>', 0)->count())
+                                            @if(\Illuminate\Support\Facades\Auth::user()->passiveSources()->forSlug($passiveItem->slug)->inUse()->count())
                                                 <x-filament::badge color="success">
                                                     <x-heroicon-o-check class="w-3 h-3" />
                                                 </x-filament::badge>

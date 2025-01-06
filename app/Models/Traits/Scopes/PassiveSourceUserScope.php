@@ -22,4 +22,9 @@ trait PassiveSourceUserScope
     {
         return $builder->whereRelation('source', 'slug', '=', $source);
     }
+
+    public function scopeInUse(Builder $builder): Builder
+    {
+        return $builder->where('monthly_amount', '>', 0);
+    }
 }
