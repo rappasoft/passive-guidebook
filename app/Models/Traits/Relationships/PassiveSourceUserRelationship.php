@@ -2,9 +2,11 @@
 
 namespace App\Models\Traits\Relationships;
 
+use App\Models\HYSADetails;
 use App\Models\PassiveSource;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 trait PassiveSourceUserRelationship
 {
@@ -16,5 +18,10 @@ trait PassiveSourceUserRelationship
     public function source(): BelongsTo
     {
         return $this->belongsTo(PassiveSource::class, 'passive_source_id');
+    }
+
+    public function hysaDetails(): HasOne
+    {
+        return $this->hasOne(HYSADetails::class);
     }
 }

@@ -23,6 +23,6 @@ trait MoneyCalculations
 
     public function getMonthlyIncomeForSource(string $source): float
     {
-        return $this->passiveSources()->forSlug($source)->sole()->monthly_amount ?? 0;
+        return $this->passiveSources()->forSlug($source)->sum('monthly_amount') ?? 0;
     }
 }

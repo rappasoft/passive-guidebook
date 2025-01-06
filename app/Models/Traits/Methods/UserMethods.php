@@ -45,6 +45,6 @@ trait UserMethods
 
     public function getPassiveIncomeSources(): int
     {
-        return $this->passiveSources()->count();
+        return $this->passiveSources()->where('monthly_amount', '>', 0)->count();
     }
 }

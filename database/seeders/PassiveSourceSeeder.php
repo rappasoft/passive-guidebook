@@ -25,7 +25,7 @@ class PassiveSourceSeeder extends Seeder
         ]);
 
         PassiveSource::create([
-            'name' => 'HYSA',
+            'name' => 'High-Yield Savings Accounts',
             'slug' => PassiveSource::SOCIAL_HYSA,
             'passive_percentage' => 100,
             'sort' => 1,

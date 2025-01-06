@@ -31,7 +31,7 @@
                             </x-slot>
 
                             <x-slot name="content">
-                                @foreach(\App\Models\PassiveSource::where('level', 1)->orderBy('sort')->get() as $passiveItem)
+                                @foreach(\App\Models\PassiveSource::where('level', 1)->orderBy('passive_percentage', 'desc')->get() as $passiveItem)
                                     @continue(! \Illuminate\Support\Facades\Route::has('passive.'.$passiveItem->slug.'.index'))
 
                                     <x-dropdown-link wire:navigate :href="route('passive.'.$passiveItem->slug.'.index')">
@@ -65,7 +65,7 @@
                             </x-slot>
 
                             <x-slot name="content">
-                                @foreach(\App\Models\PassiveSource::where('level', 2)->orderBy('sort')->get() as $passiveItem)
+                                @foreach(\App\Models\PassiveSource::where('level', 2)->orderBy('passive_percentage', 'desc')->get() as $passiveItem)
                                     @continue(! \Illuminate\Support\Facades\Route::has('passive.'.$passiveItem->slug.'.index'))
 
                                     <x-dropdown-link wire:navigate :href="route('passive.'.$passiveItem->slug.'.index')">
@@ -99,7 +99,7 @@
                             </x-slot>
 
                             <x-slot name="content">
-                                @foreach(\App\Models\PassiveSource::where('level', 3)->orderBy('sort')->get() as $passiveItem)
+                                @foreach(\App\Models\PassiveSource::where('level', 3)->orderBy('passive_percentage', 'desc')->get() as $passiveItem)
                                     @continue(! \Illuminate\Support\Facades\Route::has('passive.'.$passiveItem->slug.'.index'))
 
                                     <x-dropdown-link wire:navigate :href="route('passive.'.$passiveItem->slug.'.index')">

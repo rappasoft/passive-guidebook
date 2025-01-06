@@ -3,11 +3,13 @@
 namespace App\Models;
 
 use App\Models\Traits\Relationships\PassiveSourceRelationship;
+use App\Models\Traits\Scopes\PassiveSourceScope;
 use Illuminate\Database\Eloquent\Model;
 
 class PassiveSource extends Model
 {
-    use PassiveSourceRelationship;
+    use PassiveSourceRelationship,
+        PassiveSourceScope;
 
     public const SOCIAL_CASINOS = 'social-casinos';
 
