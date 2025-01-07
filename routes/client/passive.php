@@ -4,6 +4,7 @@ use App\Livewire\Client\Passive\Dividends\Index as DividendIndex;
 use App\Livewire\Client\Passive\HYSA\Index as HYSAIndex;
 use App\Livewire\Client\Passive\SocialCasino\Index as SocialCasinoIndex;
 use App\Livewire\Client\Passive\SocialCasino\Show as ViewSocialCasino;
+use App\Livewire\Client\Passive\CDBonds\Index as CDBondIndex;
 use App\Models\PassiveSource;
 use Illuminate\Support\Facades\Route;
 use Spark\Http\Middleware\VerifyBillableIsSubscribed;
@@ -21,6 +22,10 @@ Route::as('passive.')->middleware(VerifyBillableIsSubscribed::class)->group(func
 
     Route::prefix(PassiveSource::HYSA)->as(PassiveSource::HYSA.'.')->group(function () {
         Route::get('/', HYSAIndex::class)->name('index');
+    });
+
+    Route::prefix(PassiveSource::CD_BONDS)->as(PassiveSource::CD_BONDS.'.')->group(function () {
+        Route::get('/', CDBondIndex::class)->name('index');
     });
 
     Route::prefix(PassiveSource::DIVIDENDS)->as(PassiveSource::DIVIDENDS.'.')->group(function () {

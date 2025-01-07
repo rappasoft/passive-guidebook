@@ -15,10 +15,13 @@ class PassiveSource extends Model
 
     public const HYSA = 'hysa';
 
+    public const CD_BONDS = 'cd-bonds';
+
     public const DIVIDENDS = 'dividends';
 
     protected $fillable = [
         'name',
+        'short_name',
         'slug',
         'sort',
         'upfront_cost',

@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('passive_sources', function (Blueprint $table) {
             $table->id();
             $table->string('name');
+            $table->string('short_name')->nullable();
             $table->string('slug')->unique();
             $table->tinyInteger('sort')->default(0);
             $table->integer('upfront_cost')->nullable();

@@ -36,7 +36,7 @@
 
                                     <x-dropdown-link wire:navigate :href="route('passive.'.$passiveItem->slug.'.index')">
                                         <span class="flex items-center space-x-2">
-                                            <span>{{ $passiveItem->name }}</span>
+                                            <span>{{ $passiveItem->short_name ?? $passiveItem->name }}</span>
 
                                             @if(\Illuminate\Support\Facades\Auth::user()->passiveSources()->forSlug($passiveItem->slug)->inUse()->count())
                                                 <x-filament::badge color="success">
