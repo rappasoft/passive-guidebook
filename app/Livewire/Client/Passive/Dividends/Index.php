@@ -5,6 +5,7 @@ namespace App\Livewire\Client\Passive\Dividends;
 use App\Models\PassiveSource;
 use App\Models\PassiveSourceUser;
 use App\Services\DividendService;
+use Exception;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Forms\Contracts\HasForms;
@@ -18,7 +19,6 @@ use Filament\Tables\Table;
 use Illuminate\Database\Query\Builder as QueryBuilder;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
-use Exception;
 
 class Index extends Component implements HasForms, HasTable
 {

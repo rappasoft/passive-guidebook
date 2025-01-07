@@ -91,11 +91,11 @@ class Index extends Component implements HasForms, HasTable
                     ->action(function (array $data): void {
                         try {
                             resolve(HYSAService::class)->createHYSAForUser(auth()->user(), $data);
-//                            $this->dispatch('refresh')->to(EstimatedMonthlyIncome::class);
-//                            $this->dispatch('refresh')->to(MyMonthlyIncomeForSource::class); // TODO
-//                        if (request()->routeIs('dashboard')) {
-//                            $this->dispatch('refresh')->to(Dashboard::class);
-//                        }
+                            //                            $this->dispatch('refresh')->to(EstimatedMonthlyIncome::class);
+                            //                            $this->dispatch('refresh')->to(MyMonthlyIncomeForSource::class); // TODO
+                            //                        if (request()->routeIs('dashboard')) {
+                            //                            $this->dispatch('refresh')->to(Dashboard::class);
+                            //                        }
                         } catch (Exception) {
                             Notification::make()
                                 ->title('There was a problem saving your HYSA account.')
@@ -133,11 +133,11 @@ class Index extends Component implements HasForms, HasTable
                     ->action(function (array $data, PassiveSourceUser $record): void {
                         try {
                             resolve(HYSAService::class)->updateHYSAForUser(auth()->user(), $record, $data);
-//                            $this->dispatch('refresh')->to(EstimatedMonthlyIncome::class);
-//                            $this->dispatch('refresh')->to(MyMonthlyIncomeForSource::class); // TODO
-//                        if (request()->routeIs('dashboard')) {
-//                            $this->dispatch('refresh')->to(Dashboard::class);
-//                        }
+                            //                            $this->dispatch('refresh')->to(EstimatedMonthlyIncome::class);
+                            //                            $this->dispatch('refresh')->to(MyMonthlyIncomeForSource::class); // TODO
+                            //                        if (request()->routeIs('dashboard')) {
+                            //                            $this->dispatch('refresh')->to(Dashboard::class);
+                            //                        }
                         } catch (Exception) {
                             Notification::make()
                                 ->title('There was a problem updating your HYSA account.')
@@ -151,11 +151,11 @@ class Index extends Component implements HasForms, HasTable
                     ->action(function (array $data, PassiveSourceUser $record): void {
                         try {
                             resolve(HYSAService::class)->deleteHYSAForUser(auth()->user(), $record);
-//                            $this->dispatch('refresh')->to(EstimatedMonthlyIncome::class);
-//                            $this->dispatch('refresh')->to(MyMonthlyIncomeForSource::class); // TODO
-//                        if (request()->routeIs('dashboard')) {
-//                            $this->dispatch('refresh')->to(Dashboard::class);
-//                        }
+                            //                            $this->dispatch('refresh')->to(EstimatedMonthlyIncome::class);
+                            //                            $this->dispatch('refresh')->to(MyMonthlyIncomeForSource::class); // TODO
+                            //                        if (request()->routeIs('dashboard')) {
+                            //                            $this->dispatch('refresh')->to(Dashboard::class);
+                            //                        }
                         } catch (Exception) {
                             Notification::make()
                                 ->title('There was a problem deleting your HYSA account.')
