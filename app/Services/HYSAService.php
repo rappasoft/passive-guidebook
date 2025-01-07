@@ -12,7 +12,7 @@ class HYSAService
 {
     public function getSource()
     {
-        return PassiveSource::query()->forSlug(PassiveSource::SOCIAL_HYSA)->sole();
+        return PassiveSource::query()->forSlug(PassiveSource::HYSA)->sole();
     }
 
     /**
@@ -80,7 +80,7 @@ class HYSAService
         return $passiveSourceUser->delete();
     }
 
-    private function calculateMonthlyInterest($apy, $amount): float
+    private function calculateMonthlyInterest($amount, $apy): float
     {
         return ((float) $amount * ((float) $apy / 100)) / 12;
     }

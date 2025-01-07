@@ -2,6 +2,7 @@
 
 namespace App\Models\Traits\Relationships;
 
+use App\Models\DividendDetails;
 use App\Models\HYSADetails;
 use App\Models\PassiveSource;
 use App\Models\User;
@@ -23,5 +24,10 @@ trait PassiveSourceUserRelationship
     public function hysaDetails(): HasOne
     {
         return $this->hasOne(HYSADetails::class);
+    }
+
+    public function dividendDetails(): HasOne
+    {
+        return $this->hasOne(DividendDetails::class);
     }
 }

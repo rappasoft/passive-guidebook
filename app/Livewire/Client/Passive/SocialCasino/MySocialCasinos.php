@@ -21,6 +21,9 @@ class MySocialCasinos extends Component implements HasForms, HasTable
     {
         return resolve(Index::class)
             ->table($table)
+            ->emptyStateHeading('You have no Social Casino accounts.')
+            ->emptyStateDescription(null)
+            ->emptyStateIcon('heroicon-o-face-frown')
             ->query(SocialCasino::query()->whereHas('users', fn (Builder $query) => $query->where('users.id', auth()->id())->where('is_using', true))->active()->orderBy('name')->orderBy('tier'));
     }
 

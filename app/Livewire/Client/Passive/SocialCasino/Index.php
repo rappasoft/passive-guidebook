@@ -2,6 +2,9 @@
 
 namespace App\Livewire\Client\Passive\SocialCasino;
 
+use App\Livewire\Client\Dashboard;
+use App\Livewire\Client\EstimatedMonthlyIncome;
+use App\Livewire\Client\MyMonthlyIncomeForSource;
 use App\Models\PassiveSource;
 use App\Models\PassiveSourceUser;
 use App\Models\SocialCasino;
@@ -81,12 +84,22 @@ class Index extends Component implements HasForms, HasTable
                     ->tooltip('Add this to your dashboard to keep track of your daily earnings.')
                     ->action(function (SocialCasino $record) {
                         auth()->user()->addSocialCasino($record);
+//                        $this->dispatch('refresh')->to(EstimatedMonthlyIncome::class);
+//                        $this->dispatch('refresh')->to(MyMonthlyIncomeForSource::class); // TODO
+//                        if (request()->routeIs('dashboard')) {
+//                            $this->dispatch('refresh')->to(Dashboard::class);
+//                        }
                     })
                     ->visible(fn (SocialCasino $record) => ! auth()->user()->hasActiveSocialCasino($record)),
                 Action::make('not-using')
                     ->label('Remove')
                     ->action(function (SocialCasino $record) {
                         auth()->user()->removeSocialCasino($record);
+//                        $this->dispatch('refresh')->to(EstimatedMonthlyIncome::class);
+//                        $this->dispatch('refresh')->to(MyMonthlyIncomeForSource::class); // TODO
+//                        if (request()->routeIs('dashboard')) {
+//                            $this->dispatch('refresh')->to(Dashboard::class);
+//                        }
                     })
                     ->visible(fn (SocialCasino $record) => auth()->user()->hasActiveSocialCasino($record)),
             ])

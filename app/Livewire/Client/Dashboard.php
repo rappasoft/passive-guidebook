@@ -7,6 +7,8 @@ use Livewire\Component;
 
 class Dashboard extends Component
 {
+    protected $listeners = ['refresh' => '$refresh'];
+
     #[Layout('layouts.app')]
     public function render()
     {

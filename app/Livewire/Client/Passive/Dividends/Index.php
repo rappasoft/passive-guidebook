@@ -1,13 +1,10 @@
 <?php
 
-namespace App\Livewire\Client\Passive\HYSA;
+namespace App\Livewire\Client\Passive\Dividends;
 
-use App\Livewire\Client\EstimatedMonthlyIncome;
-use App\Livewire\Client\MyMonthlyIncomeForSource;
 use App\Models\PassiveSource;
 use App\Models\PassiveSourceUser;
-use App\Services\HYSAService;
-use Exception;
+use App\Services\DividendService;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Forms\Contracts\HasForms;
@@ -21,6 +18,7 @@ use Filament\Tables\Table;
 use Illuminate\Database\Query\Builder as QueryBuilder;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
+use Exception;
 
 class Index extends Component implements HasForms, HasTable
 {
@@ -30,22 +28,22 @@ class Index extends Component implements HasForms, HasTable
     public function table(Table $table): Table
     {
         return $table
-            ->query(PassiveSourceUser::query()->forSlug(PassiveSource::HYSA)->forUser(auth()->user())->with('hysaDetails')->whereHas('hysaDetails'))
+            ->query(PassiveSourceUser::query()->forSlug(PassiveSource::DIVIDENDS)->forUser(auth()->user())->with('dividendDetails')->whereHas('dividendDetails'))
             ->paginated(false)
-            ->emptyStateHeading('You have no HYSA accounts.')
+            ->emptyStateHeading('You have no dividend stocks.')
             ->emptyStateDescription(null)
             ->emptyStateIcon('heroicon-o-face-frown')
             ->columns([
-                TextColumn::make('hysaDetails.bank_name')
-                    ->label('Bank')
+                TextColumn::make('dividendDetails.ticker')
+                    ->label('Ticker')
                     ->sortable()
                     ->searchable(),
-                TextColumn::make('hysaDetails.apy')
-                    ->label('APY')
+                TextColumn::make('dividendDetails.yield')
+                    ->label('Yield')
                     ->sortable()
                     ->searchable(),
-                TextColumn::make('hysaDetails.amount')
-                    ->label('Amount Saved')
+                TextColumn::make('dividendDetails.amount')
+                    ->label('Amount Invested')
                     ->sortable()
                     ->money()
                     ->searchable(),
@@ -67,22 +65,21 @@ class Index extends Component implements HasForms, HasTable
             ])
             ->headerActions([
                 Action::make('create')
-                    ->modalHeading('Add HYSA Account')
-                    ->modalDescription('Add the details of your HYSA account to have Passive Guidebook account for your monthly interest.')
+                    ->modalHeading('Add Dividend Stock')
+                    ->modalDescription('Add the details of your dividend stocks to have Passive Guidebook account for your yields.')
                     ->form([
-                        TextInput::make('bank_name')
-                            ->label('Bank')
+                        TextInput::make('ticker')
+                            ->maxLength(5)
                             ->required(),
-                        TextInput::make('apy')
+                        TextInput::make('yield')
                             ->postfix('%')
-                            ->label('APY')
                             ->numeric()
                             ->minValue(0)
                             ->maxValue(100)
                             ->required(),
                         TextInput::make('amount')
                             ->numeric()
-                            ->label('Amount Saved')
+                            ->label('Amount Invested')
                             ->minValue(0)
                             ->maxValue(999999999)
                             ->required(),
@@ -90,15 +87,10 @@ class Index extends Component implements HasForms, HasTable
                     ->slideOver()
                     ->action(function (array $data): void {
                         try {
-                            resolve(HYSAService::class)->createHYSAForUser(auth()->user(), $data);
-//                            $this->dispatch('refresh')->to(EstimatedMonthlyIncome::class);
-//                            $this->dispatch('refresh')->to(MyMonthlyIncomeForSource::class); // TODO
-//                        if (request()->routeIs('dashboard')) {
-//                            $this->dispatch('refresh')->to(Dashboard::class);
-//                        }
+                            resolve(DividendService::class)->createDividendForUser(auth()->user(), $data);
                         } catch (Exception) {
                             Notification::make()
-                                ->title('There was a problem saving your HYSA account.')
+                                ->title('There was a problem adding your dividend stock.')
                                 ->danger()
                                 ->send();
                         }
@@ -106,25 +98,24 @@ class Index extends Component implements HasForms, HasTable
             ])
             ->actions([
                 Action::make('edit')
-                    ->modalHeading('Update HYSA Account')
-                    ->modalDescription('Update the details of your HYSA account to have Passive Guidebook account for your monthly interest.')
+                    ->modalHeading('Update Dividend Stock')
+                    ->modalDescription('Update the details of your dividend stock to have Passive Guidebook account for your monthly interest.')
                     ->form([
-                        TextInput::make('bank_name')
-                            ->label('Bank')
-                            ->default(fn (PassiveSourceUser $record) => $record->hysaDetails?->bank_name)
+                        TextInput::make('ticker')
+                            ->default(fn (PassiveSourceUser $record) => $record->dividendDetails?->ticker)
+                            ->maxLength(5)
                             ->required(),
-                        TextInput::make('apy')
+                        TextInput::make('yield')
                             ->postfix('%')
-                            ->label('APY')
-                            ->default(fn (PassiveSourceUser $record) => $record->hysaDetails?->apy)
+                            ->default(fn (PassiveSourceUser $record) => $record->dividendDetails?->yield)
                             ->numeric()
                             ->minValue(0)
                             ->maxValue(100)
                             ->required(),
                         TextInput::make('amount')
-                            ->default(fn (PassiveSourceUser $record) => $record->hysaDetails?->amount)
+                            ->default(fn (PassiveSourceUser $record) => $record->dividendDetails?->amount)
                             ->numeric()
-                            ->label('Amount Saved')
+                            ->label('Amount Invested')
                             ->minValue(0)
                             ->maxValue(999999999)
                             ->required(),
@@ -132,15 +123,10 @@ class Index extends Component implements HasForms, HasTable
                     ->slideOver()
                     ->action(function (array $data, PassiveSourceUser $record): void {
                         try {
-                            resolve(HYSAService::class)->updateHYSAForUser(auth()->user(), $record, $data);
-//                            $this->dispatch('refresh')->to(EstimatedMonthlyIncome::class);
-//                            $this->dispatch('refresh')->to(MyMonthlyIncomeForSource::class); // TODO
-//                        if (request()->routeIs('dashboard')) {
-//                            $this->dispatch('refresh')->to(Dashboard::class);
-//                        }
+                            resolve(DividendService::class)->updateDividendForUser(auth()->user(), $record, $data);
                         } catch (Exception) {
                             Notification::make()
-                                ->title('There was a problem updating your HYSA account.')
+                                ->title('There was a problem updating your dividend stock.')
                                 ->danger()
                                 ->send();
                         }
@@ -150,15 +136,10 @@ class Index extends Component implements HasForms, HasTable
                     ->color('danger')
                     ->action(function (array $data, PassiveSourceUser $record): void {
                         try {
-                            resolve(HYSAService::class)->deleteHYSAForUser(auth()->user(), $record);
-//                            $this->dispatch('refresh')->to(EstimatedMonthlyIncome::class);
-//                            $this->dispatch('refresh')->to(MyMonthlyIncomeForSource::class); // TODO
-//                        if (request()->routeIs('dashboard')) {
-//                            $this->dispatch('refresh')->to(Dashboard::class);
-//                        }
+                            resolve(DividendService::class)->deleteDividendForUser(auth()->user(), $record);
                         } catch (Exception) {
                             Notification::make()
-                                ->title('There was a problem deleting your HYSA account.')
+                                ->title('There was a problem deleting your dividend stock.')
                                 ->danger()
                                 ->send();
                         }
@@ -170,7 +151,7 @@ class Index extends Component implements HasForms, HasTable
     public function render()
     {
         return view('livewire.client.passive.hysa.index')
-            ->withSource($source = PassiveSource::where('slug', PassiveSource::HYSA)->firstOrFail())
+            ->withSource($source = PassiveSource::where('slug', PassiveSource::DIVIDENDS)->firstOrFail())
             ->withUserSource(PassiveSourceUser::query()->forSource($source)->forUser(auth()->user())->get());
     }
 }

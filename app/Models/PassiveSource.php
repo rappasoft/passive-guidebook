@@ -13,7 +13,9 @@ class PassiveSource extends Model
 
     public const SOCIAL_CASINOS = 'social-casinos';
 
-    public const SOCIAL_HYSA = 'hysa';
+    public const HYSA = 'hysa';
+
+    public const DIVIDENDS = 'dividends';
 
     protected $fillable = [
         'name',

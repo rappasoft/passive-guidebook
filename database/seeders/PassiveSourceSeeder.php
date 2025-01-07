@@ -26,9 +26,18 @@ class PassiveSourceSeeder extends Seeder
 
         PassiveSource::create([
             'name' => 'High-Yield Savings Accounts',
-            'slug' => PassiveSource::SOCIAL_HYSA,
+            'slug' => PassiveSource::HYSA,
             'passive_percentage' => 100,
             'sort' => 1,
+            'upfront_cost' => null,
+            'level' => 1,
+        ]);
+
+        PassiveSource::create([
+            'name' => 'Dividend Stocks',
+            'slug' => PassiveSource::DIVIDENDS,
+            'passive_percentage' => 100,
+            'sort' => 2,
             'upfront_cost' => null,
             'level' => 1,
         ]);
