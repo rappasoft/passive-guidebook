@@ -1,10 +1,10 @@
 <?php
 
+use App\Livewire\Client\Passive\CDBonds\Index as CDBondIndex;
 use App\Livewire\Client\Passive\Dividends\Index as DividendIndex;
 use App\Livewire\Client\Passive\HYSA\Index as HYSAIndex;
 use App\Livewire\Client\Passive\SocialCasino\Index as SocialCasinoIndex;
 use App\Livewire\Client\Passive\SocialCasino\Show as ViewSocialCasino;
-use App\Livewire\Client\Passive\CDBonds\Index as CDBondIndex;
 use App\Models\PassiveSource;
 use Illuminate\Support\Facades\Route;
 use Spark\Http\Middleware\VerifyBillableIsSubscribed;
