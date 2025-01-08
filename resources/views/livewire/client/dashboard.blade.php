@@ -73,13 +73,15 @@
                                 }
                             @endphp
 
+                            {{-- TODO: Fix active tab state --}}
+
                             <div
                                 x-data="{ tab: window.location.hash ? window.location.hash.substring(1) : '{{ $defaultTab }}' }">
                                 <x-filament::tabs label="Dashboard Tabs">
                                     @if (\Illuminate\Support\Facades\Auth::user()->passiveSources()->inUse()->forSlug(\App\Models\PassiveSource::HYSA)->count())
                                         <x-filament::tabs.item
-                                            @click="tab = '{{ \App\Models\PassiveSource::HYSA }}';window.location.hash = '{{ \App\Models\PassiveSource::HYSA }}'"
-                                            :alpine-active="'tab === \'{{ \App\Models\PassiveSource::HYSA }}\''">
+                                            @click="tab = 'hysa';window.location.hash = 'hysa'"
+                                            :alpine-active="'tab === \'hysa\''">
                                             <div class="flex items-center space-x-2">
                                                 <span>HYSA</span>
 
@@ -93,8 +95,8 @@
 
                                     @if (\Illuminate\Support\Facades\Auth::user()->passiveSources()->inUse()->forSlug(\App\Models\PassiveSource::CD_BONDS)->count())
                                         <x-filament::tabs.item
-                                            @click="tab = '{{ \App\Models\PassiveSource::CD_BONDS }}';window.location.hash = '{{ \App\Models\PassiveSource::CD_BONDS }}'"
-                                            :alpine-active="'tab === \'{{ \App\Models\PassiveSource::CD_BONDS }}\''">
+                                            @click="tab = 'cd-bonds';window.location.hash = 'cd-bonds'"
+                                            :alpine-active="'tab === \'cd-bonds\''">
                                             <div class="flex items-center space-x-2">
                                                 <span>CDs/Bonds</span>
 
@@ -108,8 +110,8 @@
 
                                     @if (\Illuminate\Support\Facades\Auth::user()->passiveSources()->inUse()->forSlug(\App\Models\PassiveSource::DIVIDENDS)->count())
                                         <x-filament::tabs.item
-                                            @click="tab = '{{ \App\Models\PassiveSource::DIVIDENDS }}';window.location.hash = '{{ \App\Models\PassiveSource::DIVIDENDS }}'"
-                                            :alpine-active="'tab === \'{{ \App\Models\PassiveSource::DIVIDENDS }}\''">
+                                            @click="tab = 'dividends';window.location.hash = 'dividends'"
+                                            :alpine-active="'tab === \'dividends\''">
                                             <div class="flex items-center space-x-2">
                                                 <span>Dividend Stocks</span>
 
@@ -123,8 +125,8 @@
 
                                     @if (\Illuminate\Support\Facades\Auth::user()->passiveSources()->inUse()->forSlug(\App\Models\PassiveSource::SOCIAL_CASINOS)->count())
                                         <x-filament::tabs.item
-                                            @click="tab = '{{ \App\Models\PassiveSource::SOCIAL_CASINOS }}';window.location.hash = '{{ \App\Models\PassiveSource::SOCIAL_CASINOS }}'"
-                                            :alpine-active="'tab === \'{{ \App\Models\PassiveSource::SOCIAL_CASINOS }}\''">
+                                            @click="tab = 'social-casinos';window.location.hash = 'social-casinos'"
+                                            :alpine-active="'tab === \'social-casinos\''">
                                             <div class="flex items-center space-x-2">
                                                 <span>Social Casinos</span>
 

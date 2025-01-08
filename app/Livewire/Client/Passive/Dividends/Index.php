@@ -150,7 +150,7 @@ class Index extends Component implements HasForms, HasTable
     #[Layout('layouts.app')]
     public function render()
     {
-        return view('livewire.client.passive.hysa.index')
+        return view('livewire.client.passive.dividends.index')
             ->withSource($source = PassiveSource::where('slug', PassiveSource::DIVIDENDS)->firstOrFail())
             ->withUserSource(PassiveSourceUser::query()->forSource($source)->forUser(auth()->user())->get());
     }

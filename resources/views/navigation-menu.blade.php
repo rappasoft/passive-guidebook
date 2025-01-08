@@ -35,7 +35,7 @@
                                     @continue(! \Illuminate\Support\Facades\Route::has('passive.'.$passiveItem->slug.'.index'))
 
                                     <x-dropdown-link wire:navigate :href="route('passive.'.$passiveItem->slug.'.index')">
-                                        <span class="flex items-center space-x-2">
+                                        <span class="flex justify-between items-center space-x-2">
                                             <span>{{ $passiveItem->short_name ?? $passiveItem->name }}</span>
 
                                             @if(\Illuminate\Support\Facades\Auth::user()->passiveSources()->forSlug($passiveItem->slug)->inUse()->count())
@@ -69,7 +69,7 @@
                                     @continue(! \Illuminate\Support\Facades\Route::has('passive.'.$passiveItem->slug.'.index'))
 
                                     <x-dropdown-link wire:navigate :href="route('passive.'.$passiveItem->slug.'.index')">
-                                        <span class="flex items-center space-x-2">
+                                        <span class="flex justify-between items-center space-x-2">
                                             <span>{{ $passiveItem->name }}</span>
 
                                             @if(\Illuminate\Support\Facades\Auth::user()->passiveSources()->forSlug($passiveItem->slug)->inUse()->count())
@@ -103,7 +103,7 @@
                                     @continue(! \Illuminate\Support\Facades\Route::has('passive.'.$passiveItem->slug.'.index'))
 
                                     <x-dropdown-link wire:navigate :href="route('passive.'.$passiveItem->slug.'.index')">
-                                        <span class="flex items-center space-x-2">
+                                        <span class="flex justify-between items-center space-x-2">
                                             <span>{{ $passiveItem->name }}</span>
 
                                             @if(\Illuminate\Support\Facades\Auth::user()->passiveSources()->forSlug($passiveItem->slug)->inUse()->count())

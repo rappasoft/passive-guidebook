@@ -9,7 +9,7 @@
                 <div class="flex justify-between mb-4">
                     <div>
                         <x-filament::button
-                            href="https://www.helpguide.org/mental-health/addiction/gambling-addiction-and-problem-gambling"
+                            href="{{ route('link.track', ['url' => urlencode('https://www.helpguide.org/mental-health/addiction/gambling-addiction-and-problem-gambling')]) }}"
                             target="_blank"
                             tag="a"
                             outlined
@@ -55,7 +55,7 @@
 
                             <x-filament::dropdown.list>
                                 <x-filament::dropdown.list.item
-                                    href="https://discord.gg/8XVzdqBP"
+                                    href="{{ route('link.track', ['url' => urlencode('https://discord.gg/8XVzdqBP')]) }}"
                                     tag="a"
                                     target="_blank"
                                     badge-color="info"
@@ -67,7 +67,7 @@
                                     </x-slot>
                                 </x-filament::dropdown.list.item>
                                 <x-filament::dropdown.list.item
-                                    href="https://discord.gg/MHs4wE5J"
+                                    href="{{ route('link.track', ['url' => urlencode('https://discord.gg/MHs4wE5J')]) }}"
                                     tag="a"
                                     target="_blank"
                                     badge-color="info"
@@ -90,7 +90,7 @@
 
                             <x-filament::dropdown.list>
                                 <x-filament::dropdown.list.item
-                                    href="https://sweeps-app.vercel.app?via=anthony88"
+                                    href="{{ route('link.track', ['url' => urlencode('https://sweeps-app.vercel.app?via=anthony88')]) }}"
                                     tag="a"
                                     target="_blank"
                                     badge-color="success"
@@ -101,21 +101,17 @@
                                         Free to $18/mo
                                     </x-slot>
                                 </x-filament::dropdown.list.item>
-                            </x-filament::dropdown.list>
 
-                            <x-filament::dropdown.list>
                                 <x-filament::dropdown.list.item
-                                    href="https://sweeps-app.vercel.app/SweepsHandbook.pdf"
+                                    href="{{ route('link.track', ['url' => urlencode('https://sweeps-app.vercel.app/SweepsHandbook.pdf')]) }}"
                                     tag="a"
                                     target="_blank"
                                 >
                                     Sweeps Handbook
                                 </x-filament::dropdown.list.item>
-                            </x-filament::dropdown.list>
 
-                            <x-filament::dropdown.list>
                                 <x-filament::dropdown.list.item
-                                    href="https://chromewebstore.google.com/detail/nopecha-captcha-solver/dknlfmjaanfblgfdfebhijalfmhmjjjo"
+                                    href="{{ route('link.track', ['url' => urlencode('https://chromewebstore.google.com/detail/nopecha-captcha-solver/dknlfmjaanfblgfdfebhijalfmhmjjjo')]) }}"
                                     tag="a"
                                     target="_blank"
                                     badge-color="success"
