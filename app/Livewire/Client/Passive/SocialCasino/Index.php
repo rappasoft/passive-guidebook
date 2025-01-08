@@ -16,6 +16,7 @@ use Filament\Tables\Columns\SpatieMediaLibraryImageColumn;
 use Filament\Tables\Columns\Summarizers\Sum;
 use Filament\Tables\Columns\Summarizers\Summarizer;
 use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Columns\ViewColumn;
 use Filament\Tables\Concerns\InteractsWithTable;
 use Filament\Tables\Contracts\HasTable;
 use Filament\Tables\Filters\Filter;
@@ -40,8 +41,8 @@ class Index extends Component implements HasForms, HasTable
                 fn (Model $record): string => route('passive.social-casinos.show', ['socialCasino' => $record]),
             )
             ->columns([
-                SpatieMediaLibraryImageColumn::make('logo')
-                    ->collection('logo')
+                ViewColumn::make('logo')
+                    ->view('livewire.client.passive.social-casinos.partials.logo-column')
                     ->label(''),
                 TextColumn::make('name')
                     ->searchable()

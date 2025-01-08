@@ -16,15 +16,6 @@ class PassiveSourceSeeder extends Seeder
     public function run(): void
     {
         PassiveSource::create([
-            'name' => 'Social Casinos',
-            'slug' => PassiveSource::SOCIAL_CASINOS,
-            'sort' => 0,
-            'passive_percentage' => 75,
-            'upfront_cost' => 0,
-            'level' => 1,
-        ]);
-
-        PassiveSource::create([
             'name' => 'High-Yield Savings Accounts',
             'short_name' => 'HYSA',
             'slug' => PassiveSource::HYSA,
@@ -50,6 +41,15 @@ class PassiveSourceSeeder extends Seeder
             'sort' => 3,
             'upfront_cost' => null,
             'level' => 1,
+        ]);
+
+        PassiveSource::create([
+            'name' => 'Social Casinos',
+            'slug' => PassiveSource::SOCIAL_CASINOS,
+            'sort' => 0,
+            'passive_percentage' => 60,
+            'upfront_cost' => 0,
+            'level' => 2,
         ]);
 
         //        PassiveSource::create([
