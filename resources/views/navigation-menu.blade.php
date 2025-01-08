@@ -5,7 +5,7 @@
             <div class="flex">
                 <!-- Logo -->
                 <div class="shrink-0 flex items-center">
-                    <a wire:navigate href="{{ route('dashboard') }}">
+                    <a wire:navigate href="/">
                         <x-application-mark class="block h-9 w-auto" />
                     </a>
                 </div>

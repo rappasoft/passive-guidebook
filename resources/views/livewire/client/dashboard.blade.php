@@ -40,8 +40,7 @@
                         class="overflow-hidden rounded-none sm:rounded-lg bg-white px-4 py-5 shadow sm:p-6 dark:bg-gray-800">
                         <dt class="flex items-center space-x-2 truncate text-sm font-medium text-gray-500 dark:text-gray-300">
                             <span>One-Time Passive Income</span>
-                            <x-heroicon-o-information-circle class="w-4 h-4 dark:text-gray-500"
-                                                             x-tooltip="{content: 'Accumulated from items such as redeemed promotions or bonuses on social casinos, etc.'}"/>
+                            <x-heroicon-o-information-circle class="w-4 h-4 dark:text-gray-500" x-tooltip="{content: 'Accumulated from items such as redeemed promotions or bonuses on social casinos, etc.'}"/>
                         </dt>
                         <dd class="mt-1 text-3xl font-semibold tracking-tight text-gray-900 dark:text-white">
                             ${{ number_format(\Illuminate\Support\Facades\Auth::user()->getOneTimeIncome(), 2) }}</dd>
@@ -85,7 +84,7 @@
                                             <div class="flex items-center space-x-2">
                                                 <span>HYSA</span>
 
-                                                <x-filament::badge color="success">
+                                                <x-filament::badge color="success" class="hidden lg:block">
                                                     ${{ number_format(\Illuminate\Support\Facades\Auth::user()->getMonthlyIncomeForSource(\App\Models\PassiveSource::HYSA), 2) }}
                                                     /mo
                                                 </x-filament::badge>
@@ -100,7 +99,7 @@
                                             <div class="flex items-center space-x-2">
                                                 <span>CDs/Bonds</span>
 
-                                                <x-filament::badge color="success">
+                                                <x-filament::badge color="success" class="hidden lg:block">
                                                     ${{ number_format(\Illuminate\Support\Facades\Auth::user()->getMonthlyIncomeForSource(\App\Models\PassiveSource::CD_BONDS), 2) }}
                                                     /mo
                                                 </x-filament::badge>
@@ -115,7 +114,7 @@
                                             <div class="flex items-center space-x-2">
                                                 <span>Dividend Stocks</span>
 
-                                                <x-filament::badge color="success">
+                                                <x-filament::badge color="success" class="hidden lg:block">
                                                     ${{ number_format(\Illuminate\Support\Facades\Auth::user()->getMonthlyIncomeForSource(\App\Models\PassiveSource::DIVIDENDS), 2) }}
                                                     /mo
                                                 </x-filament::badge>
@@ -130,7 +129,7 @@
                                             <div class="flex items-center space-x-2">
                                                 <span>Social Casinos</span>
 
-                                                <x-filament::badge color="success">
+                                                <x-filament::badge color="success" class="hidden lg:block">
                                                     ${{ number_format(\Illuminate\Support\Facades\Auth::user()->getMonthlyIncomeForSource(\App\Models\PassiveSource::SOCIAL_CASINOS), 2) }}
                                                     /mo
                                                 </x-filament::badge>
