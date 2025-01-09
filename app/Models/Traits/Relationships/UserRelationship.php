@@ -2,6 +2,7 @@
 
 namespace App\Models\Traits\Relationships;
 
+use App\Models\OneTimePassiveIncome;
 use App\Models\PassiveSourceUser;
 use App\Models\Pivots\SocialCasinoUser;
 use App\Models\SocialCasino;
@@ -26,5 +27,10 @@ trait UserRelationship
     public function passiveSources(): HasMany
     {
         return $this->hasMany(PassiveSourceUser::class);
+    }
+
+    public function oneTimePassiveIncome(): HasMany
+    {
+        return $this->hasMany(OneTimePassiveIncome::class);
     }
 }

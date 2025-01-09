@@ -35,7 +35,19 @@ class AdminPanelProvider extends PanelProvider
             ->login()
             ->globalSearchKeyBindings(['command+k', 'ctrl+k'])
             ->colors([
-                'primary' => '#A7C924',
+                'primary' => [
+                    50 => '#fafce9',
+                    100 => '#f3f9ce',
+                    200 => '#e6f3a3',
+                    300 => '#d2e86e',
+                    400 => '#bdda41',
+                    500 => '#a7c924',
+                    600 => '#7c9917',
+                    700 => '#5e7516',
+                    800 => '#4b5d17',
+                    900 => '#404f18',
+                    950 => '#212b08',
+                ],
                 'gray' => Color::Slate,
             ])
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\\Filament\\Resources')
@@ -98,7 +110,6 @@ class AdminPanelProvider extends PanelProvider
             ->plugin(FilamentSpatieLaravelBackupPlugin::make()->usingPage(Backups::class))
             ->plugin(\Mvenghaus\FilamentScheduleMonitor\FilamentPlugin::make())
             ->plugin(FilamentEmail::make())
-            ->viteTheme('resources/css/filament/admin/theme.css')
             ->globalSearchKeyBindings(['command+k', 'ctrl+k']);
     }
 }

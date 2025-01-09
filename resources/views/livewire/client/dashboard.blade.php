@@ -1,4 +1,20 @@
-<div>
+@php
+    $defaultTab = \Illuminate\Support\Facades\Auth::user()->passiveSources()->inUse()->forSlug(\App\Models\PassiveSource::HYSA)->count() ? \App\Models\PassiveSource::HYSA : '';
+
+    if ($defaultTab === '') {
+        $defaultTab = \Illuminate\Support\Facades\Auth::user()->passiveSources()->inUse()->forSlug(\App\Models\PassiveSource::CD_BONDS)->count() ? \App\Models\PassiveSource::CD_BONDS : '';
+    }
+
+    if ($defaultTab === '') {
+        $defaultTab = \Illuminate\Support\Facades\Auth::user()->passiveSources()->inUse()->forSlug(\App\Models\PassiveSource::DIVIDENDS)->count() ? \App\Models\PassiveSource::DIVIDENDS : '';
+    }
+
+    if ($defaultTab === '') {
+        $defaultTab = \Illuminate\Support\Facades\Auth::user()->passiveSources()->inUse()->forSlug(\App\Models\PassiveSource::SOCIAL_CASINOS)->count() ? \App\Models\PassiveSource::SOCIAL_CASINOS : '';
+    }
+@endphp
+
+<div x-data="{ tab: window.location.hash ? window.location.hash.substring(1) : '{{ $defaultTab }}' }">
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
             {{ __('Dashboard') }}
@@ -42,7 +58,7 @@
                         <dd class="mt-1 flex justify-between items-center font-semibold tracking-tight text-gray-900 dark:text-white">
                             <span class="text-3xl">${{ number_format(\Illuminate\Support\Facades\Auth::user()->getOneTimeIncome(), 2) }}</span>
 
-                            <x-filament::button size="xs" outlined>
+                            <x-filament::button size="xs" outlined @click="tab = 'one-time';window.location.hash = 'one-time'">
                                 Add
                             </x-filament::button>
                         </dd>
@@ -56,28 +72,8 @@
                     \Illuminate\Support\Facades\Auth::user()->passiveSources()->inUse()->forSlug(\App\Models\PassiveSource::SOCIAL_CASINOS)->count()
                 )
                     <div class="mt-4 bg-white dark:bg-gray-800 overflow-hidden shadow-xl sm:rounded-lg">
-                        <div
-                            class="mt-4 p-6 text-gray-900 dark:text-gray-100 bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
-                            @php
-                                $defaultTab = \Illuminate\Support\Facades\Auth::user()->passiveSources()->inUse()->forSlug(\App\Models\PassiveSource::HYSA)->count() ? \App\Models\PassiveSource::HYSA : '';
-
-                                if ($defaultTab === '') {
-                                    $defaultTab = \Illuminate\Support\Facades\Auth::user()->passiveSources()->inUse()->forSlug(\App\Models\PassiveSource::CD_BONDS)->count() ? \App\Models\PassiveSource::CD_BONDS : '';
-                                }
-
-                                if ($defaultTab === '') {
-                                    $defaultTab = \Illuminate\Support\Facades\Auth::user()->passiveSources()->inUse()->forSlug(\App\Models\PassiveSource::DIVIDENDS)->count() ? \App\Models\PassiveSource::DIVIDENDS : '';
-                                }
-
-                                if ($defaultTab === '') {
-                                    $defaultTab = \Illuminate\Support\Facades\Auth::user()->passiveSources()->inUse()->forSlug(\App\Models\PassiveSource::SOCIAL_CASINOS)->count() ? \App\Models\PassiveSource::SOCIAL_CASINOS : '';
-                                }
-                            @endphp
-
-                            {{-- TODO: Fix active tab state --}}
-
-                            <div
-                                x-data="{ tab: window.location.hash ? window.location.hash.substring(1) : '{{ $defaultTab }}' }">
+                        <div class="mt-4 p-6 text-gray-900 dark:text-gray-100 bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
+                            <div>
                                 <x-filament::tabs label="Dashboard Tabs">
                                     @if (\Illuminate\Support\Facades\Auth::user()->passiveSources()->inUse()->forSlug(\App\Models\PassiveSource::HYSA)->count())
                                         <x-filament::tabs.item
@@ -180,7 +176,7 @@
                                     @endif
 
                                     <div x-show="tab === 'one-time'">
-                                        {{-- TODO --}}
+                                        <livewire:client.passive.one-time-passive-income />
                                     </div>
 
                                     <div x-show="tab === 'custom'">
