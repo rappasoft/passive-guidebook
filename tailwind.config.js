@@ -22,6 +22,19 @@ export default {
                 sans: ['Figtree', ...defaultTheme.fontFamily.sans],
             },
             colors: {
+                primary: {
+                    '50': '#fafce9',
+                    '100': '#f3f9ce',
+                    '200': '#e6f3a3',
+                    '300': '#d2e86e',
+                    '400': '#bdda41',
+                    '500': '#a7c924',
+                    '600': '#7c9917',
+                    '700': '#5e7516',
+                    '800': '#4b5d17',
+                    '900': '#404f18',
+                    '950': '#212b08',
+                },
                 custom: {
                     50: 'rgba(var(--c-50), <alpha-value>)',
                     100: 'rgba(var(--c-100), <alpha-value>)',
@@ -86,7 +99,7 @@ export default {
                     800: 'rgba(var(--warning-800), <alpha-value>)',
                     900: 'rgba(var(--warning-900), <alpha-value>)',
                     950: 'rgba(var(--warning-950), <alpha-value>)',
-                }
+                },
             },
         },
     },

@@ -35,7 +35,7 @@ class AdminPanelProvider extends PanelProvider
             ->login()
             ->globalSearchKeyBindings(['command+k', 'ctrl+k'])
             ->colors([
-                'primary' => Color::Blue,
+                'primary' => '#A7C924',
                 'gray' => Color::Slate,
             ])
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\\Filament\\Resources')

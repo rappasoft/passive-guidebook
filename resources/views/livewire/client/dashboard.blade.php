@@ -9,10 +9,7 @@
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             @if (! \Illuminate\Support\Facades\Auth::user()->onTrial() && ! \Illuminate\Support\Facades\Auth::user()->subscribed())
                 <x-alerts.info>
-                    <p>Your trial period has ended. Please <a href="/billing" class="underline hover:no-underline">purchase
-                                                                                                                   a
-                                                                                                                   membership</a>
-                       to continue.</p>
+                    <p>Your trial period has ended. Please <a href="/billing" class="underline hover:no-underline">purchase a membership</a> to continue.</p>
                 </x-alerts.info>
             @else
                 <x-alerts.info>
@@ -40,10 +37,15 @@
                         class="overflow-hidden rounded-none sm:rounded-lg bg-white px-4 py-5 shadow sm:p-6 dark:bg-gray-800">
                         <dt class="flex items-center space-x-2 truncate text-sm font-medium text-gray-500 dark:text-gray-300">
                             <span>One-Time Passive Income</span>
-                            <x-heroicon-o-information-circle class="w-4 h-4 dark:text-gray-500" x-tooltip="{content: 'Accumulated from items such as redeemed promotions or bonuses on social casinos, etc.'}"/>
+                            <x-heroicon-o-information-circle class="w-4 h-4 dark:text-gray-500" x-tooltip="{content: 'Accumulated from items such as redeemed promotions or bonuses on social casinos, your custom logged one-time wins, etc.'}"/>
                         </dt>
-                        <dd class="mt-1 text-3xl font-semibold tracking-tight text-gray-900 dark:text-white">
-                            ${{ number_format(\Illuminate\Support\Facades\Auth::user()->getOneTimeIncome(), 2) }}</dd>
+                        <dd class="mt-1 flex justify-between items-center font-semibold tracking-tight text-gray-900 dark:text-white">
+                            <span class="text-3xl">${{ number_format(\Illuminate\Support\Facades\Auth::user()->getOneTimeIncome(), 2) }}</span>
+
+                            <x-filament::button size="xs" outlined>
+                                Add
+                            </x-filament::button>
+                        </dd>
                     </div>
                 </dl>
 
@@ -137,6 +139,13 @@
                                         </x-filament::tabs.item>
                                     @endif
 
+                                    <x-filament::tabs.item @click="tab = 'one-time';window.location.hash = 'one-time'"
+                                                           :alpine-active="'tab === \'one-time\''">
+                                        <div class="flex items-center space-x-2">
+                                            <span>One Time</span>
+                                        </div>
+                                    </x-filament::tabs.item>
+
                                     <x-filament::tabs.item @click="tab = 'custom';window.location.hash = 'custom'"
                                                            :alpine-active="'tab === \'custom\''">
                                         <div class="flex items-center space-x-2">
@@ -169,6 +178,10 @@
                                             <livewire:client.passive.social-casino.my-social-casinos/>
                                         </div>
                                     @endif
+
+                                    <div x-show="tab === 'one-time'">
+                                        {{-- TODO --}}
+                                    </div>
 
                                     <div x-show="tab === 'custom'">
                                         {{-- TODO --}}
