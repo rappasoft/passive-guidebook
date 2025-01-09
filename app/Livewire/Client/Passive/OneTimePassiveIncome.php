@@ -4,6 +4,7 @@ namespace App\Livewire\Client\Passive;
 
 use App\Models\OneTimePassiveIncome as OneTimePassiveIncomeModel;
 use App\Services\OneTimePassiveIncomeService;
+use Exception;
 use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Concerns\InteractsWithForms;
@@ -16,7 +17,6 @@ use Filament\Tables\Contracts\HasTable;
 use Filament\Tables\Table;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
-use Exception;
 
 class OneTimePassiveIncome extends Component implements HasForms, HasTable
 {
@@ -47,7 +47,7 @@ class OneTimePassiveIncome extends Component implements HasForms, HasTable
                     ->label('Added')
                     ->sortable()
                     ->dateTime()
-                    ->timezone(auth()->user()->timezone ?? config('app.timezone'))
+                    ->timezone(auth()->user()->timezone ?? config('app.timezone')),
             ])
             ->headerActions([
                 Action::make('create')
