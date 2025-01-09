@@ -65,6 +65,7 @@ class Index extends Component implements HasForms, HasTable
             ])
             ->headerActions([
                 Action::make('create')
+                    ->label('Add')
                     ->modalHeading('Add Dividend Stock')
                     ->modalDescription('Add the details of your dividend stocks to have Passive Guidebook account for your yields.')
                     ->form([

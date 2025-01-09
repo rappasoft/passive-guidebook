@@ -70,6 +70,7 @@ class Index extends Component implements HasForms, HasTable
             ])
             ->headerActions([
                 Action::make('create')
+                    ->label('Add')
                     ->modalHeading('Add CD/Bond Account')
                     ->modalDescription('Add the details of your CD/Bond account to have Passive Guidebook account for your monthly interest.')
                     ->form([

@@ -67,6 +67,7 @@ class Index extends Component implements HasForms, HasTable
             ])
             ->headerActions([
                 Action::make('create')
+                    ->label('Add')
                     ->modalHeading('Add HYSA Account')
                     ->modalDescription('Add the details of your HYSA account to have Passive Guidebook account for your monthly interest.')
                     ->form([

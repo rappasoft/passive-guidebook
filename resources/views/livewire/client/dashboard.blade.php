@@ -58,7 +58,7 @@
                         <dd class="mt-1 flex justify-between items-center font-semibold tracking-tight text-gray-900 dark:text-white">
                             <span class="text-3xl">${{ number_format(\Illuminate\Support\Facades\Auth::user()->getOneTimeIncome(), 2) }}</span>
 
-                            <x-filament::button size="xs" outlined @click="tab = 'one-time';window.location.hash = 'one-time'">
+                            <x-filament::button size="xs" outlined @click="tab = 'one-time';window.location.hash = 'one-time';" >
                                 Add
                             </x-filament::button>
                         </dd>

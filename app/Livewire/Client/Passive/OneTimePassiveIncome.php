@@ -51,6 +51,7 @@ class OneTimePassiveIncome extends Component implements HasForms, HasTable
             ])
             ->headerActions([
                 Action::make('create')
+                    ->label('Add')
                     ->modalHeading('Add One-Time Income')
                     ->form([
                         TextInput::make('source')
