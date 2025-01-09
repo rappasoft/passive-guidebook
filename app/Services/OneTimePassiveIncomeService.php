@@ -9,7 +9,6 @@ use Illuminate\Support\Facades\DB;
 
 class OneTimePassiveIncomeService
 {
-
     /**
      * @throws Exception
      */
