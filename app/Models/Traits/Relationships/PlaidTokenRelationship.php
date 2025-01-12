@@ -4,7 +4,6 @@ namespace App\Models\Traits\Relationships;
 
 use App\Models\PlaidAccount;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Relations\HasOne;
 
 trait PlaidTokenRelationship
 {

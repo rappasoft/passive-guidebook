@@ -40,13 +40,13 @@ class Index extends Component implements HasForms, HasTable
                     ->searchable(),
                 TextColumn::make('plaidAccount.name')
                     ->label('Account')
-                    ->formatStateUsing(fn(PassiveSourceUser $record) => $record->plaidAccount->name . ' ('.$record->plaidAccount->mask.')')
+                    ->formatStateUsing(fn (PassiveSourceUser $record) => $record->plaidAccount->name.' ('.$record->plaidAccount->mask.')')
                     ->sortable()
                     ->searchable(),
                 TextColumn::make('hysaDetails.apy')
                     ->label('APY')
-                    ->color(fn(PassiveSourceUser $record) => (int)$record->hysaDetails->apy === 0 ? 'danger' : 'success')
-                    ->formatStateUsing(fn(PassiveSourceUser $record) => $record->hysaDetails->apy . '%')
+                    ->color(fn (PassiveSourceUser $record) => (int) $record->hysaDetails->apy === 0 ? 'danger' : 'success')
+                    ->formatStateUsing(fn (PassiveSourceUser $record) => $record->hysaDetails->apy.'%')
                     ->badge()
                     ->sortable()
                     ->searchable(),

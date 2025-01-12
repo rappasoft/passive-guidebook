@@ -37,6 +37,6 @@ return [
         'secret' => env('PLAID_SECRET'),
         'env' => env('PLAID_ENV'),
         'base_url' => env('PLAID_BASE_URL'),
-        'webhook_url' => env('PLAID_WEBHOOK')
+        'webhook_url' => env('PLAID_WEBHOOK'),
     ],
 ];

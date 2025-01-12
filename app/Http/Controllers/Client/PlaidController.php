@@ -12,7 +12,8 @@ class PlaidController extends Controller
 {
     public PlaidService $plaidService;
 
-    public function __construct(PlaidService $plaidService) {
+    public function __construct(PlaidService $plaidService)
+    {
         $this->plaidService = $plaidService;
     }
 
@@ -35,7 +36,7 @@ class PlaidController extends Controller
 
         return response()->json([
             'result' => 'success',
-            'link_token' => $this->plaidService->createLinkToken(auth()->id(), [$type], $filters)?->link_token ?? null
+            'link_token' => $this->plaidService->createLinkToken(auth()->id(), [$type], $filters)?->link_token ?? null,
         ]);
     }
 
@@ -46,11 +47,11 @@ class PlaidController extends Controller
         ])) {
             return response()->json([
                 'result' => 'error',
-                'message' => 'You must supply a public token to exchange.'
+                'message' => 'You must supply a public token to exchange.',
             ]);
         }
 
-        $exchange =  $this->plaidService->exchangePublicToken($request->public_token);
+        $exchange = $this->plaidService->exchangePublicToken($request->public_token);
 
         $plaidToken = $request->user()->plaidTokens()->where('institution_id', $request->metadata['institution']['institution_id'])->first();
 
@@ -66,7 +67,7 @@ class PlaidController extends Controller
                 'institution_id' => $request->metadata['institution']['institution_id'],
             ]);
 
-            foreach($this->plaidService->getAccounts($token->access_token)->accounts as $account) {
+            foreach ($this->plaidService->getAccounts($token->access_token)->accounts as $account) {
                 $account = $token->accounts()->create([
                     'account_id' => $account->account_id,
                     'name' => $account->name,
