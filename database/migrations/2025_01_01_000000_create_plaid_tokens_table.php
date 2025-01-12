@@ -1,6 +1,5 @@
 <?php
 
-use App\Models\PassiveSourceUser;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -12,10 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('hysa_details', function (Blueprint $table) {
+        Schema::create('plaid_tokens', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(PassiveSourceUser::class)->constrained()->onDelete('cascade');
-            $table->decimal('apy')->default(0);
+            $table->foreignIdFor(\App\Models\User::class);
+            $table->text('access_token');
+            $table->string('item_id')->unique();
+            $table->string('institution_name');
+            $table->string('institution_id')->unique();
             $table->timestamps();
         });
     }
@@ -25,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('hysa_details');
+        Schema::dropIfExists('plaid_tokens');
     }
 };

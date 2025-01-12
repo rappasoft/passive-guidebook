@@ -16,4 +16,5 @@ Route::middleware([
     Route::get('/dashboard', Dashboard::class)->name('dashboard');
 
     require __DIR__.'/client/passive.php';
+    require __DIR__.'/client/plaid.php';
 });

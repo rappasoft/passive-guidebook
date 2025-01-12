@@ -18,23 +18,21 @@ class HYSAService
     /**
      * @throws Exception
      */
-    public function createHYSAForUser(User $user, array $data): PassiveSourceUser
+    public function create(User $user, array $data = []): PassiveSourceUser
     {
         if ($user->id !== auth()->id()) {
             throw new Exception('This HYSA account does not belong to the specified user.');
         }
-
-        $monthlyInterest = $this->calculateMonthlyInterest($data['amount'], $data['apy']);
 
         DB::beginTransaction();
 
         try {
             $passiveSourceUser = $user->passiveSources()->create([
                 'passive_source_id' => $this->getSource()->id,
-                'monthly_amount' => $monthlyInterest,
+                'plaid_account_id' => $data['plaid_account_id'],
             ]);
 
-            $passiveSourceUser->hysaDetails()->create($data);
+            $passiveSourceUser->hysaDetails()->create();
         } catch (Exception $e) {
             DB::rollBack();
 
@@ -49,13 +47,13 @@ class HYSAService
     /**
      * @throws Exception
      */
-    public function updateHYSAForUser(User $user, PassiveSourceUser $passiveSourceUser, array $data): PassiveSourceUser
+    public function update(User $user, PassiveSourceUser $passiveSourceUser, array $data): PassiveSourceUser
     {
         if ($user->id !== $passiveSourceUser->user_id) {
             throw new Exception('This HYSA account does not belong to the specified user.');
         }
 
-        $monthlyInterest = $this->calculateMonthlyInterest($data['amount'], $data['apy']);
+        $monthlyInterest = $this->calculateMonthlyInterest($passiveSourceUser->plaidAccount->balance, $data['apy']);
 
         try {
             $passiveSourceUser->update(['monthly_amount' => $monthlyInterest]);
@@ -71,13 +69,19 @@ class HYSAService
         return $passiveSourceUser;
     }
 
-    public function deleteHYSAForUser(User $user, PassiveSourceUser $passiveSourceUser): bool
+    public function delete(User $user, PassiveSourceUser $passiveSourceUser): bool
     {
         if ($user->id !== $passiveSourceUser->user_id) {
             throw new Exception('This HYSA account does not belong to the specified user.');
         }
 
-        return $passiveSourceUser->delete();
+        if (resolve(PlaidService::class)->removeAccount($passiveSourceUser->plaidAccount->token->access_token)) {
+            $token = $passiveSourceUser->plaidAccount->token;
+            $passiveSourceUser->delete();
+            $token->delete();
+        }
+
+        throw new Exception('There was a problem contacting Plaid to remove the account.');
     }
 
     private function calculateMonthlyInterest($amount, $apy): float

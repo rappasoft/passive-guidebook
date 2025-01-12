@@ -31,4 +31,12 @@ return [
         'region' => env('AWS_DEFAULT_REGION', 'us-east-1'),
     ],
 
+    'plaid' => [
+        'api_url' => env('PLAID_API_URL'),
+        'client' => env('PLAID_CLIENT_ID'),
+        'secret' => env('PLAID_SECRET'),
+        'env' => env('PLAID_ENV'),
+        'base_url' => env('PLAID_BASE_URL'),
+        'webhook_url' => env('PLAID_WEBHOOK')
+    ],
 ];

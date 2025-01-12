@@ -5,9 +5,11 @@ namespace App\Models\Traits\Relationships;
 use App\Models\OneTimePassiveIncome;
 use App\Models\PassiveSourceUser;
 use App\Models\Pivots\SocialCasinoUser;
+use App\Models\PlaidToken;
 use App\Models\SocialCasino;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 trait UserRelationship
 {
@@ -32,5 +34,10 @@ trait UserRelationship
     public function oneTimePassiveIncome(): HasMany
     {
         return $this->hasMany(OneTimePassiveIncome::class);
+    }
+
+    public function plaidTokens(): HasMany
+    {
+        return $this->hasMany(PlaidToken::class);
     }
 }

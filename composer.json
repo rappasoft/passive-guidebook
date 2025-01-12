@@ -61,7 +61,8 @@
         "stechstudio/filament-impersonate": "^3.5",
         "symfony/http-client": "^7.2",
         "symfony/mailgun-mailer": "^7.2",
-        "tapp/filament-timezone-field": "^3.0"
+        "tapp/filament-timezone-field": "^3.0",
+        "tomorrow-ideas/plaid-sdk-php": "^1.0"
     },
     "require-dev": {
         "barryvdh/laravel-debugbar": "^3.9",

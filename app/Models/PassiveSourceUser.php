@@ -14,6 +14,7 @@ class PassiveSourceUser extends Model
     protected $table = 'passive_source_user';
 
     protected $fillable = [
+        'plaid_account_id',
         'user_id',
         'passive_source_id',
         'monthly_amount',

@@ -39,6 +39,8 @@
                                 </x-filament::button>
                             </x-slot>
                         </x-filament::dropdown>
+
+                        <x-filament::button class="plaid-link-bank-account">Connect a Bank Account</x-filament::button>
                     </div>
                 </div>
 

@@ -15,6 +15,7 @@ return new class extends Migration
     {
         Schema::create('passive_source_user', function (Blueprint $table) {
             $table->id();
+            $table->foreignIdFor(\App\Models\PlaidAccount::class)->nullable()->constrained()->onDelete('cascade');
             $table->foreignIdFor(User::class);
             $table->foreignIdFor(PassiveSource::class)->constrained()->onDelete('cascade');
             $table->decimal('monthly_amount')->default(0);

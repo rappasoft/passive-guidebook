@@ -12,6 +12,10 @@
     if ($defaultTab === '') {
         $defaultTab = \Illuminate\Support\Facades\Auth::user()->passiveSources()->inUse()->forSlug(\App\Models\PassiveSource::SOCIAL_CASINOS)->count() ? \App\Models\PassiveSource::SOCIAL_CASINOS : '';
     }
+
+    if ($defaultTab === '') {
+        $defaultTab = 'one-time';
+    }
 @endphp
 
 <div x-data="{ tab: window.location.hash ? window.location.hash.substring(1) : '{{ $defaultTab }}' }">
@@ -65,128 +69,121 @@
                     </div>
                 </dl>
 
-                @if (
-                    \Illuminate\Support\Facades\Auth::user()->passiveSources()->inUse()->forSlug(\App\Models\PassiveSource::HYSA)->count() ||
-                    \Illuminate\Support\Facades\Auth::user()->passiveSources()->inUse()->forSlug(\App\Models\PassiveSource::CD_BONDS)->count() ||
-                    \Illuminate\Support\Facades\Auth::user()->passiveSources()->inUse()->forSlug(\App\Models\PassiveSource::DIVIDENDS)->count() ||
-                    \Illuminate\Support\Facades\Auth::user()->passiveSources()->inUse()->forSlug(\App\Models\PassiveSource::SOCIAL_CASINOS)->count()
-                )
-                    <div class="mt-4 bg-white dark:bg-gray-800 overflow-hidden shadow-xl sm:rounded-lg">
-                        <div class="mt-4 p-6 text-gray-900 dark:text-gray-100 bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
-                            <div>
-                                <x-filament::tabs label="Dashboard Tabs">
-                                    @if (\Illuminate\Support\Facades\Auth::user()->passiveSources()->inUse()->forSlug(\App\Models\PassiveSource::HYSA)->count())
-                                        <x-filament::tabs.item
-                                            @click="tab = 'hysa';window.location.hash = 'hysa'"
-                                            :alpine-active="'tab === \'hysa\''">
-                                            <div class="flex items-center space-x-2">
-                                                <span>HYSA</span>
-
-                                                <x-filament::badge color="success" class="hidden lg:block">
-                                                    ${{ number_format(\Illuminate\Support\Facades\Auth::user()->getMonthlyIncomeForSource(\App\Models\PassiveSource::HYSA), 2) }}
-                                                    /mo
-                                                </x-filament::badge>
-                                            </div>
-                                        </x-filament::tabs.item>
-                                    @endif
-
-                                    @if (\Illuminate\Support\Facades\Auth::user()->passiveSources()->inUse()->forSlug(\App\Models\PassiveSource::CD_BONDS)->count())
-                                        <x-filament::tabs.item
-                                            @click="tab = 'cd-bonds';window.location.hash = 'cd-bonds'"
-                                            :alpine-active="'tab === \'cd-bonds\''">
-                                            <div class="flex items-center space-x-2">
-                                                <span>CDs/Bonds</span>
-
-                                                <x-filament::badge color="success" class="hidden lg:block">
-                                                    ${{ number_format(\Illuminate\Support\Facades\Auth::user()->getMonthlyIncomeForSource(\App\Models\PassiveSource::CD_BONDS), 2) }}
-                                                    /mo
-                                                </x-filament::badge>
-                                            </div>
-                                        </x-filament::tabs.item>
-                                    @endif
-
-                                    @if (\Illuminate\Support\Facades\Auth::user()->passiveSources()->inUse()->forSlug(\App\Models\PassiveSource::DIVIDENDS)->count())
-                                        <x-filament::tabs.item
-                                            @click="tab = 'dividends';window.location.hash = 'dividends'"
-                                            :alpine-active="'tab === \'dividends\''">
-                                            <div class="flex items-center space-x-2">
-                                                <span>Dividend Stocks</span>
-
-                                                <x-filament::badge color="success" class="hidden lg:block">
-                                                    ${{ number_format(\Illuminate\Support\Facades\Auth::user()->getMonthlyIncomeForSource(\App\Models\PassiveSource::DIVIDENDS), 2) }}
-                                                    /mo
-                                                </x-filament::badge>
-                                            </div>
-                                        </x-filament::tabs.item>
-                                    @endif
-
-                                    @if (\Illuminate\Support\Facades\Auth::user()->passiveSources()->inUse()->forSlug(\App\Models\PassiveSource::SOCIAL_CASINOS)->count())
-                                        <x-filament::tabs.item
-                                            @click="tab = 'social-casinos';window.location.hash = 'social-casinos'"
-                                            :alpine-active="'tab === \'social-casinos\''">
-                                            <div class="flex items-center space-x-2">
-                                                <span>Social Casinos</span>
-
-                                                <x-filament::badge color="success" class="hidden lg:block">
-                                                    ${{ number_format(\Illuminate\Support\Facades\Auth::user()->getMonthlyIncomeForSource(\App\Models\PassiveSource::SOCIAL_CASINOS), 2) }}
-                                                    /mo
-                                                </x-filament::badge>
-                                            </div>
-                                        </x-filament::tabs.item>
-                                    @endif
-
-                                    <x-filament::tabs.item @click="tab = 'one-time';window.location.hash = 'one-time'"
-                                                           :alpine-active="'tab === \'one-time\''">
+                <div class="mt-4 bg-white dark:bg-gray-800 overflow-hidden shadow-xl sm:rounded-lg">
+                    <div class="mt-4 p-6 text-gray-900 dark:text-gray-100 bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
+                        <div>
+                            <x-filament::tabs label="Dashboard Tabs">
+                                @if (\Illuminate\Support\Facades\Auth::user()->passiveSources()->inUse()->forSlug(\App\Models\PassiveSource::HYSA)->count())
+                                    <x-filament::tabs.item
+                                        @click="tab = 'hysa';window.location.hash = 'hysa'"
+                                        :alpine-active="'tab === \'hysa\''">
                                         <div class="flex items-center space-x-2">
-                                            <span>One Time</span>
+                                            <span>HYSA</span>
+
+                                            <x-filament::badge color="success" class="hidden lg:block">
+                                                ${{ number_format(\Illuminate\Support\Facades\Auth::user()->getMonthlyIncomeForSource(\App\Models\PassiveSource::HYSA), 2) }}
+                                                /mo
+                                            </x-filament::badge>
                                         </div>
                                     </x-filament::tabs.item>
+                                @endif
 
-                                    <x-filament::tabs.item @click="tab = 'custom';window.location.hash = 'custom'"
-                                                           :alpine-active="'tab === \'custom\''">
+                                @if (\Illuminate\Support\Facades\Auth::user()->passiveSources()->inUse()->forSlug(\App\Models\PassiveSource::CD_BONDS)->count())
+                                    <x-filament::tabs.item
+                                        @click="tab = 'cd-bonds';window.location.hash = 'cd-bonds'"
+                                        :alpine-active="'tab === \'cd-bonds\''">
                                         <div class="flex items-center space-x-2">
-                                            <span>Add Custom</span>
+                                            <span>CDs/Bonds</span>
+
+                                            <x-filament::badge color="success" class="hidden lg:block">
+                                                ${{ number_format(\Illuminate\Support\Facades\Auth::user()->getMonthlyIncomeForSource(\App\Models\PassiveSource::CD_BONDS), 2) }}
+                                                /mo
+                                            </x-filament::badge>
                                         </div>
                                     </x-filament::tabs.item>
-                                </x-filament::tabs>
+                                @endif
 
-                                <div class="mt-2">
-                                    @if (\Illuminate\Support\Facades\Auth::user()->passiveSources()->inUse()->forSlug(\App\Models\PassiveSource::HYSA)->count())
-                                        <div x-show="tab === '{{ \App\Models\PassiveSource::HYSA }}'">
-                                            <livewire:client.passive.h_y_s_a.my-h_y_s_a/>
+                                @if (\Illuminate\Support\Facades\Auth::user()->passiveSources()->inUse()->forSlug(\App\Models\PassiveSource::DIVIDENDS)->count())
+                                    <x-filament::tabs.item
+                                        @click="tab = 'dividends';window.location.hash = 'dividends'"
+                                        :alpine-active="'tab === \'dividends\''">
+                                        <div class="flex items-center space-x-2">
+                                            <span>Dividend Stocks</span>
+
+                                            <x-filament::badge color="success" class="hidden lg:block">
+                                                ${{ number_format(\Illuminate\Support\Facades\Auth::user()->getMonthlyIncomeForSource(\App\Models\PassiveSource::DIVIDENDS), 2) }}
+                                                /mo
+                                            </x-filament::badge>
                                         </div>
-                                    @endif
+                                    </x-filament::tabs.item>
+                                @endif
 
-                                    @if (\Illuminate\Support\Facades\Auth::user()->passiveSources()->inUse()->forSlug(\App\Models\PassiveSource::CD_BONDS)->count())
-                                        <div x-show="tab === '{{ \App\Models\PassiveSource::CD_BONDS }}'">
-                                            <livewire:client.passive.cd-bonds.my-c_d-b_onds />
+                                @if (\Illuminate\Support\Facades\Auth::user()->passiveSources()->inUse()->forSlug(\App\Models\PassiveSource::SOCIAL_CASINOS)->count())
+                                    <x-filament::tabs.item
+                                        @click="tab = 'social-casinos';window.location.hash = 'social-casinos'"
+                                        :alpine-active="'tab === \'social-casinos\''">
+                                        <div class="flex items-center space-x-2">
+                                            <span>Social Casinos</span>
+
+                                            <x-filament::badge color="success" class="hidden lg:block">
+                                                ${{ number_format(\Illuminate\Support\Facades\Auth::user()->getMonthlyIncomeForSource(\App\Models\PassiveSource::SOCIAL_CASINOS), 2) }}
+                                                /mo
+                                            </x-filament::badge>
                                         </div>
-                                    @endif
+                                    </x-filament::tabs.item>
+                                @endif
 
-                                    @if (\Illuminate\Support\Facades\Auth::user()->passiveSources()->inUse()->forSlug(\App\Models\PassiveSource::DIVIDENDS)->count())
-                                        <div x-show="tab === '{{ \App\Models\PassiveSource::DIVIDENDS }}'">
-                                            <livewire:client.passive.dividends.my-dividends />
-                                        </div>
-                                    @endif
-
-                                    @if (\Illuminate\Support\Facades\Auth::user()->passiveSources()->inUse()->forSlug(\App\Models\PassiveSource::SOCIAL_CASINOS)->count())
-                                        <div x-show="tab === '{{ \App\Models\PassiveSource::SOCIAL_CASINOS }}'">
-                                            <livewire:client.passive.social-casino.my-social-casinos/>
-                                        </div>
-                                    @endif
-
-                                    <div x-show="tab === 'one-time'">
-                                        <livewire:client.passive.one-time-passive-income />
+                                <x-filament::tabs.item @click="tab = 'one-time';window.location.hash = 'one-time'"
+                                                       :alpine-active="'tab === \'one-time\''">
+                                    <div class="flex items-center space-x-2">
+                                        <span>One Time</span>
                                     </div>
+                                </x-filament::tabs.item>
 
-                                    <div x-show="tab === 'custom'">
-                                        {{-- TODO --}}
+                                <x-filament::tabs.item @click="tab = 'custom';window.location.hash = 'custom'"
+                                                       :alpine-active="'tab === \'custom\''">
+                                    <div class="flex items-center space-x-2">
+                                        <span>Add Custom</span>
                                     </div>
+                                </x-filament::tabs.item>
+                            </x-filament::tabs>
+
+                            <div class="mt-2">
+                                @if (\Illuminate\Support\Facades\Auth::user()->passiveSources()->inUse()->forSlug(\App\Models\PassiveSource::HYSA)->count())
+                                    <div x-show="tab === '{{ \App\Models\PassiveSource::HYSA }}'">
+                                        <livewire:client.passive.h_y_s_a.my-h_y_s_a/>
+                                    </div>
+                                @endif
+
+                                @if (\Illuminate\Support\Facades\Auth::user()->passiveSources()->inUse()->forSlug(\App\Models\PassiveSource::CD_BONDS)->count())
+                                    <div x-show="tab === '{{ \App\Models\PassiveSource::CD_BONDS }}'">
+                                        <livewire:client.passive.cd-bonds.my-c_d-b_onds />
+                                    </div>
+                                @endif
+
+                                @if (\Illuminate\Support\Facades\Auth::user()->passiveSources()->inUse()->forSlug(\App\Models\PassiveSource::DIVIDENDS)->count())
+                                    <div x-show="tab === '{{ \App\Models\PassiveSource::DIVIDENDS }}'">
+                                        <livewire:client.passive.dividends.my-dividends />
+                                    </div>
+                                @endif
+
+                                @if (\Illuminate\Support\Facades\Auth::user()->passiveSources()->inUse()->forSlug(\App\Models\PassiveSource::SOCIAL_CASINOS)->count())
+                                    <div x-show="tab === '{{ \App\Models\PassiveSource::SOCIAL_CASINOS }}'">
+                                        <livewire:client.passive.social-casino.my-social-casinos/>
+                                    </div>
+                                @endif
+
+                                <div x-show="tab === 'one-time'">
+                                    <livewire:client.passive.one-time-passive-income />
+                                </div>
+
+                                <div x-show="tab === 'custom'">
+                                    {{-- TODO --}}
                                 </div>
                             </div>
                         </div>
                     </div>
-                @endif
+                </div>
             @endif
         </div>
     </div>

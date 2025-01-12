@@ -6,6 +6,7 @@ use App\Models\CDBondDetails;
 use App\Models\DividendDetails;
 use App\Models\HYSADetails;
 use App\Models\PassiveSource;
+use App\Models\PlaidAccount;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasOne;
@@ -20,6 +21,11 @@ trait PassiveSourceUserRelationship
     public function source(): BelongsTo
     {
         return $this->belongsTo(PassiveSource::class, 'passive_source_id');
+    }
+
+    public function plaidAccount(): BelongsTo
+    {
+        return $this->belongsTo(PlaidAccount::class);
     }
 
     public function hysaDetails(): HasOne

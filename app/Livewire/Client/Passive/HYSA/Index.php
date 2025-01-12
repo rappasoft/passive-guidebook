@@ -2,8 +2,6 @@
 
 namespace App\Livewire\Client\Passive\HYSA;
 
-use App\Livewire\Client\EstimatedMonthlyIncome;
-use App\Livewire\Client\MyMonthlyIncomeForSource;
 use App\Models\PassiveSource;
 use App\Models\PassiveSourceUser;
 use App\Services\HYSAService;
@@ -30,22 +28,30 @@ class Index extends Component implements HasForms, HasTable
     public function table(Table $table): Table
     {
         return $table
-            ->query(PassiveSourceUser::query()->forSlug(PassiveSource::HYSA)->forUser(auth()->user())->with('hysaDetails')->whereHas('hysaDetails'))
+            ->query(PassiveSourceUser::query()->forSlug(PassiveSource::HYSA)->forUser(auth()->user())->with('plaidAccount.token', 'hysaDetails')->whereHas('hysaDetails'))
             ->paginated(false)
             ->emptyStateHeading('You have no HYSA accounts.')
             ->emptyStateDescription(null)
             ->emptyStateIcon('heroicon-o-face-frown')
             ->columns([
-                TextColumn::make('hysaDetails.bank_name')
-                    ->label('Bank')
+                TextColumn::make('plaidAccount.token.institution_name')
+                    ->label('Institution')
+                    ->sortable()
+                    ->searchable(),
+                TextColumn::make('plaidAccount.name')
+                    ->label('Account')
+                    ->formatStateUsing(fn(PassiveSourceUser $record) => $record->plaidAccount->name . ' ('.$record->plaidAccount->mask.')')
                     ->sortable()
                     ->searchable(),
                 TextColumn::make('hysaDetails.apy')
                     ->label('APY')
+                    ->color(fn(PassiveSourceUser $record) => (int)$record->hysaDetails->apy === 0 ? 'danger' : 'success')
+                    ->formatStateUsing(fn(PassiveSourceUser $record) => $record->hysaDetails->apy . '%')
+                    ->badge()
                     ->sortable()
                     ->searchable(),
-                TextColumn::make('hysaDetails.amount')
-                    ->label('Amount Saved')
+                TextColumn::make('plaidAccount.balance')
+                    ->label('Balance')
                     ->sortable()
                     ->money()
                     ->searchable(),
@@ -65,55 +71,12 @@ class Index extends Component implements HasForms, HasTable
                             ->using(fn (QueryBuilder $query): string => number_format($query->sum('monthly_amount') * 12, 2)),
                     ]),
             ])
-            ->headerActions([
-                Action::make('create')
-                    ->label('Add')
-                    ->modalHeading('Add HYSA Account')
-                    ->modalDescription('Add the details of your HYSA account to have Passive Guidebook account for your monthly interest.')
-                    ->form([
-                        TextInput::make('bank_name')
-                            ->label('Bank')
-                            ->required(),
-                        TextInput::make('apy')
-                            ->postfix('%')
-                            ->label('APY')
-                            ->numeric()
-                            ->minValue(0)
-                            ->maxValue(100)
-                            ->required(),
-                        TextInput::make('amount')
-                            ->numeric()
-                            ->label('Amount Saved')
-                            ->minValue(0)
-                            ->maxValue(999999999)
-                            ->required(),
-                    ])
-                    ->slideOver()
-                    ->action(function (array $data): void {
-                        try {
-                            resolve(HYSAService::class)->createHYSAForUser(auth()->user(), $data);
-                            //                            $this->dispatch('refresh')->to(EstimatedMonthlyIncome::class);
-                            //                            $this->dispatch('refresh')->to(MyMonthlyIncomeForSource::class); // TODO
-                            //                        if (request()->routeIs('dashboard')) {
-                            //                            $this->dispatch('refresh')->to(Dashboard::class);
-                            //                        }
-                        } catch (Exception) {
-                            Notification::make()
-                                ->title('There was a problem saving your HYSA account.')
-                                ->danger()
-                                ->send();
-                        }
-                    }),
-            ])
             ->actions([
                 Action::make('edit')
+                    ->label('Edit')
                     ->modalHeading('Update HYSA Account')
                     ->modalDescription('Update the details of your HYSA account to have Passive Guidebook account for your monthly interest.')
                     ->form([
-                        TextInput::make('bank_name')
-                            ->label('Bank')
-                            ->default(fn (PassiveSourceUser $record) => $record->hysaDetails?->bank_name)
-                            ->required(),
                         TextInput::make('apy')
                             ->postfix('%')
                             ->label('APY')
@@ -122,43 +85,26 @@ class Index extends Component implements HasForms, HasTable
                             ->minValue(0)
                             ->maxValue(100)
                             ->required(),
-                        TextInput::make('amount')
-                            ->default(fn (PassiveSourceUser $record) => $record->hysaDetails?->amount)
-                            ->numeric()
-                            ->label('Amount Saved')
-                            ->minValue(0)
-                            ->maxValue(999999999)
-                            ->required(),
                     ])
                     ->slideOver()
                     ->action(function (array $data, PassiveSourceUser $record): void {
                         try {
-                            resolve(HYSAService::class)->updateHYSAForUser(auth()->user(), $record, $data);
-                            //                            $this->dispatch('refresh')->to(EstimatedMonthlyIncome::class);
-                            //                            $this->dispatch('refresh')->to(MyMonthlyIncomeForSource::class); // TODO
-                            //                        if (request()->routeIs('dashboard')) {
-                            //                            $this->dispatch('refresh')->to(Dashboard::class);
-                            //                        }
+                            resolve(HYSAService::class)->update(auth()->user(), $record, $data);
                         } catch (Exception) {
-                            Notification::make()
+                            Notification::make() // TODO: Not working
                                 ->title('There was a problem updating your HYSA account.')
                                 ->danger()
                                 ->send();
                         }
                     }),
-                Action::make('delete')
+                Action::make('unlink')
                     ->requiresConfirmation()
                     ->color('danger')
                     ->action(function (array $data, PassiveSourceUser $record): void {
                         try {
-                            resolve(HYSAService::class)->deleteHYSAForUser(auth()->user(), $record);
-                            //                            $this->dispatch('refresh')->to(EstimatedMonthlyIncome::class);
-                            //                            $this->dispatch('refresh')->to(MyMonthlyIncomeForSource::class); // TODO
-                            //                        if (request()->routeIs('dashboard')) {
-                            //                            $this->dispatch('refresh')->to(Dashboard::class);
-                            //                        }
+                            resolve(HYSAService::class)->delete(auth()->user(), $record);
                         } catch (Exception) {
-                            Notification::make()
+                            Notification::make() // TODO: Not working
                                 ->title('There was a problem deleting your HYSA account.')
                                 ->danger()
                                 ->send();
