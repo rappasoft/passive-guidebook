@@ -41,13 +41,13 @@ class Index extends Component implements HasForms, HasTable
                     ->label('Type')
                     ->sortable()
                     ->badge()
-                    ->state(fn(PassiveSourceUser $record) => $record->plaid_account_id ? 'Auto' : 'Manual')
-                    ->color(fn(PassiveSourceUser $record) => $record->plaid_account_id ? 'success' : 'info'),
+                    ->state(fn (PassiveSourceUser $record) => $record->plaid_account_id ? 'Auto' : 'Manual')
+                    ->color(fn (PassiveSourceUser $record) => $record->plaid_account_id ? 'success' : 'info'),
                 TextColumn::make('plaidAccount.token.institution_name')
                     ->label('Institution')
                     ->sortable()
                     ->searchable()
-                    ->state(fn(PassiveSourceUser $record) => $record->plaid_account_id ? $record->plaidAccount->token->institution_name : $record->hysaDetails->bank_name),
+                    ->state(fn (PassiveSourceUser $record) => $record->plaid_account_id ? $record->plaidAccount->token->institution_name : $record->hysaDetails->bank_name),
                 TextColumn::make('plaidAccount.name')
                     ->label('Account')
                     ->state(fn (PassiveSourceUser $record) => $record->plaid_account_id ? $record->plaidAccount->name.' ('.$record->plaidAccount->mask.')' : $record->hysaDetails->account_name)
@@ -137,12 +137,12 @@ class Index extends Component implements HasForms, HasTable
                         TextInput::make('bank_name')
                             ->label('Bank Name')
                             ->default(fn (PassiveSourceUser $record) => $record->hysaDetails?->bank_name)
-                            ->hidden(fn(PassiveSourceUser $record) => $record->plaid_account_id)
+                            ->hidden(fn (PassiveSourceUser $record) => $record->plaid_account_id)
                             ->required(),
                         TextInput::make('account_name')
                             ->label('Account Name')
                             ->default(fn (PassiveSourceUser $record) => $record->hysaDetails?->account_name)
-                            ->hidden(fn(PassiveSourceUser $record) => $record->plaid_account_id)
+                            ->hidden(fn (PassiveSourceUser $record) => $record->plaid_account_id)
                             ->required(),
                         TextInput::make('apy')
                             ->postfix('%')
@@ -154,7 +154,7 @@ class Index extends Component implements HasForms, HasTable
                             ->required(),
                         TextInput::make('amount')
                             ->default(fn (PassiveSourceUser $record) => $record->hysaDetails?->amount)
-                            ->hidden(fn(PassiveSourceUser $record) => $record->plaid_account_id)
+                            ->hidden(fn (PassiveSourceUser $record) => $record->plaid_account_id)
                             ->numeric()
                             ->label('Amount Saved')
                             ->minValue(0)
@@ -175,7 +175,7 @@ class Index extends Component implements HasForms, HasTable
                         }
                     }),
                 Action::make('unlink')
-                    ->label(fn(PassiveSourceUser $record) => $record->plaid_account_id ? 'Unlink' : 'Delete')
+                    ->label(fn (PassiveSourceUser $record) => $record->plaid_account_id ? 'Unlink' : 'Delete')
                     ->requiresConfirmation()
                     ->color('danger')
                     ->action(function (array $data, PassiveSourceUser $record): void {
