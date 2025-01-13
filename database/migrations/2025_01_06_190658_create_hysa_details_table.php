@@ -15,7 +15,10 @@ return new class extends Migration
         Schema::create('hysa_details', function (Blueprint $table) {
             $table->id();
             $table->foreignIdFor(PassiveSourceUser::class)->constrained()->onDelete('cascade');
+            $table->string('bank_name')->nullable();
+            $table->string('account_name')->nullable();
             $table->decimal('apy')->default(0);
+            $table->decimal('amount')->nullable();
             $table->timestamps();
         });
     }

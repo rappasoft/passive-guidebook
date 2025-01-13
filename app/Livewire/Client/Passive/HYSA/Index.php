@@ -34,13 +34,20 @@ class Index extends Component implements HasForms, HasTable
             ->emptyStateDescription(null)
             ->emptyStateIcon('heroicon-o-face-frown')
             ->columns([
+                TextColumn::make('plaid_account_id')
+                    ->label('Type')
+                    ->sortable()
+                    ->badge()
+                    ->state(fn(PassiveSourceUser $record) => $record->plaid_account_id ? 'Auto' : 'Manual')
+                    ->color(fn(PassiveSourceUser $record) => $record->plaid_account_id ? 'success' : 'info'),
                 TextColumn::make('plaidAccount.token.institution_name')
                     ->label('Institution')
                     ->sortable()
-                    ->searchable(),
+                    ->searchable()
+                    ->state(fn(PassiveSourceUser $record) => $record->plaid_account_id ? $record->plaidAccount->token->institution_name : $record->hysaDetails->bank_name),
                 TextColumn::make('plaidAccount.name')
                     ->label('Account')
-                    ->formatStateUsing(fn (PassiveSourceUser $record) => $record->plaidAccount->name.' ('.$record->plaidAccount->mask.')')
+                    ->state(fn (PassiveSourceUser $record) => $record->plaid_account_id ? $record->plaidAccount->name.' ('.$record->plaidAccount->mask.')' : $record->hysaDetails->account_name)
                     ->sortable()
                     ->searchable(),
                 TextColumn::make('hysaDetails.apy')
@@ -52,6 +59,7 @@ class Index extends Component implements HasForms, HasTable
                     ->searchable(),
                 TextColumn::make('plaidAccount.balance')
                     ->label('Balance')
+                    ->state(fn (PassiveSourceUser $record) => $record->plaid_account_id ? $record->plaidAccount->balance : $record->hysaDetails->amount)
                     ->sortable()
                     ->money()
                     ->searchable(),
@@ -71,12 +79,66 @@ class Index extends Component implements HasForms, HasTable
                             ->using(fn (QueryBuilder $query): string => number_format($query->sum('monthly_amount') * 12, 2)),
                     ]),
             ])
+            ->headerActions([
+                Action::make('connect-bank-account')
+                    ->label('Connect a Bank Account')
+                    ->extraAttributes(['class' => 'plaid-link-account']),
+                Action::make('add-manual-account')
+                    ->label('Add Manual Account')
+                    ->outlined()
+                    ->modalHeading('Add HYSA Account')
+                    ->modalDescription('Add the details of your HYSA account to have Passive Guidebook account for your monthly interest. When possible, connect your bank via the secure Plaid connection so Passive Guidebook can keep your balances updated automatically.')
+                    ->form([
+                        TextInput::make('bank_name')
+                            ->label('Bank Name')
+                            ->placeholder('Chase')
+                            ->required(),
+                        TextInput::make('account_name')
+                            ->label('Account Name')
+                            ->placeholder('Savings')
+                            ->required(),
+                        TextInput::make('apy')
+                            ->postfix('%')
+                            ->label('APY')
+                            ->numeric()
+                            ->minValue(0)
+                            ->maxValue(100)
+                            ->required(),
+                        TextInput::make('amount')
+                            ->numeric()
+                            ->label('Amount Saved')
+                            ->minValue(0)
+                            ->maxValue(999999999)
+                            ->required(),
+                    ])
+                    ->slideOver()
+                    ->action(function (array $data): void {
+                        try {
+                            resolve(HYSAService::class)->createManual(auth()->user(), $data);
+                        } catch (Exception) {
+                            Notification::make()
+                                ->title('There was a problem saving your HYSA account.')
+                                ->danger()
+                                ->send();
+                        }
+                    }),
+            ])
             ->actions([
                 Action::make('edit')
                     ->label('Edit')
                     ->modalHeading('Update HYSA Account')
                     ->modalDescription('Update the details of your HYSA account to have Passive Guidebook account for your monthly interest.')
                     ->form([
+                        TextInput::make('bank_name')
+                            ->label('Bank Name')
+                            ->default(fn (PassiveSourceUser $record) => $record->hysaDetails?->bank_name)
+                            ->hidden(fn(PassiveSourceUser $record) => $record->plaid_account_id)
+                            ->required(),
+                        TextInput::make('account_name')
+                            ->label('Account Name')
+                            ->default(fn (PassiveSourceUser $record) => $record->hysaDetails?->account_name)
+                            ->hidden(fn(PassiveSourceUser $record) => $record->plaid_account_id)
+                            ->required(),
                         TextInput::make('apy')
                             ->postfix('%')
                             ->label('APY')
@@ -85,26 +147,35 @@ class Index extends Component implements HasForms, HasTable
                             ->minValue(0)
                             ->maxValue(100)
                             ->required(),
+                        TextInput::make('amount')
+                            ->default(fn (PassiveSourceUser $record) => $record->hysaDetails?->amount)
+                            ->hidden(fn(PassiveSourceUser $record) => $record->plaid_account_id)
+                            ->numeric()
+                            ->label('Amount Saved')
+                            ->minValue(0)
+                            ->maxValue(999999999)
+                            ->required(),
                     ])
                     ->slideOver()
                     ->action(function (array $data, PassiveSourceUser $record): void {
                         try {
                             resolve(HYSAService::class)->update(auth()->user(), $record, $data);
                         } catch (Exception) {
-                            Notification::make() // TODO: Not working
+                            Notification::make()
                                 ->title('There was a problem updating your HYSA account.')
                                 ->danger()
                                 ->send();
                         }
                     }),
                 Action::make('unlink')
+                    ->label(fn(PassiveSourceUser $record) => $record->plaid_account_id ? 'Unlink' : 'Delete')
                     ->requiresConfirmation()
                     ->color('danger')
                     ->action(function (array $data, PassiveSourceUser $record): void {
                         try {
                             resolve(HYSAService::class)->delete(auth()->user(), $record);
                         } catch (Exception) {
-                            Notification::make() // TODO: Not working
+                            Notification::make()
                                 ->title('There was a problem deleting your HYSA account.')
                                 ->danger()
                                 ->send();

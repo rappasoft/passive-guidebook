@@ -17,26 +17,11 @@ class PlaidController extends Controller
         $this->plaidService = $plaidService;
     }
 
-    public function createLinkToken(string $type): JsonResponse
+    public function createLinkToken(): JsonResponse
     {
-        $filters = [];
-
-        if ($type === 'auth') {
-            $filters = ['depository' => ['savings']];
-        }
-
-        if ($type === 'investments') {
-            $filters = ['investment' => []];
-        }
-
-        // TODO: Type might have to be investments for this
-        if ($type === 'cd' || $type === 'bond') {
-            $filters = ['depository' => ['cd', 'bond']];
-        }
-
         return response()->json([
             'result' => 'success',
-            'link_token' => $this->plaidService->createLinkToken(auth()->id(), [$type], $filters)?->link_token ?? null,
+            'link_token' => $this->plaidService->createLinkToken(auth()->id())?->link_token ?? null,
         ]);
     }
 
@@ -78,6 +63,14 @@ class PlaidController extends Controller
 
                 if ($account->subtype === 'savings') {
                     resolve(HYSAService::class)->create(auth()->user(), ['plaid_account_id' => $account->id]);
+                }
+
+                if ($account->subtype === 'cd') {
+
+                }
+
+                if ($account->subtype === 'investment') {
+
                 }
             }
         }

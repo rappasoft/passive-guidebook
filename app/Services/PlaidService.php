@@ -17,7 +17,7 @@ class PlaidService
         $this->client = new Plaid(config('services.plaid.client'), config('services.plaid.secret'), config('services.plaid.env'));
     }
 
-    public function createLinkToken(int $userId, array $products = ['auth'], array $filters = []): ?object
+    public function createLinkToken(int $userId): object|array
     {
         try {
             return $this->client
@@ -27,12 +27,14 @@ class PlaidService
                     'en',
                     ['US'],
                     new User($userId),
-                    $products,
+                    ['auth', 'investments', 'transactions'],
                     config('services.plaid.webhook_url'),
-                    account_filters: count($filters) ? new AccountFilters($filters) : null,
                 );
-        } catch (Exception) {
-            return null;
+        } catch (Exception $e) {
+            return [
+                'success' => false,
+                'message' => $e->getMessage(),
+            ];
         }
     }
 

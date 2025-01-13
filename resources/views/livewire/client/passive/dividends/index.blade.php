@@ -1,4 +1,8 @@
 <div>
+    @push('before-header-scripts')
+        <script src="https://cdn.plaid.com/link/v2/stable/link-initialize.js"></script>
+    @endpush
+
     <x-slot name="header">
         @include('livewire.client.passive.partials.header')
     </x-slot>
@@ -39,6 +43,8 @@
                                 </x-filament::button>
                             </x-slot>
                         </x-filament::dropdown>
+
+                        <x-filament::button class="plaid-link-account">Connect an Investment Account</x-filament::button>
                     </div>
                 </div>
 

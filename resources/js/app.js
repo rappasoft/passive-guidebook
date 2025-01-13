@@ -1,12 +1,12 @@
 import './bootstrap';
 
 (async function () {
-    async function handler(endpoint) {
+    async function handler() {
         // Fetch the CSRF token from the meta tag
         const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute("content");
 
         // Fetch the link token from the server
-        const response = await fetch(`/plaid/createLinkToken/${endpoint}`, {
+        const response = await fetch(`/plaid/createLinkToken`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -44,16 +44,8 @@ import './bootstrap';
     }
 
     // Add click event listeners to buttons
-    document.querySelectorAll('.plaid-link-bank-account').forEach(element => {
-        element.addEventListener('click', () => handler('auth'));
-    });
-
-    document.querySelectorAll('.plaid-link-cd').forEach(element => {
-        element.addEventListener('click', () => handler('cd'));
-    });
-
-    document.querySelectorAll('.plaid-link-investment-account').forEach(element => {
-        element.addEventListener('click', () => handler('investments'));
+    document.querySelectorAll('.plaid-link-account').forEach(element => {
+        element.addEventListener('click', () => handler());
     });
 })();
 

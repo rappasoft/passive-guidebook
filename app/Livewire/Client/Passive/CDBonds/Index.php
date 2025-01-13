@@ -68,104 +68,104 @@ class Index extends Component implements HasForms, HasTable
                             ->using(fn (QueryBuilder $query): string => number_format($query->sum('monthly_amount') * 12, 2)),
                     ]),
             ])
-            ->headerActions([
-                Action::make('create')
-                    ->label('Add')
-                    ->modalHeading('Add CD/Bond Account')
-                    ->modalDescription('Add the details of your CD/Bond account to have Passive Guidebook account for your monthly interest.')
-                    ->form([
-                        Select::make('type')
-                            ->required()
-                            ->default('CD')
-                            ->options([
-                                'CD' => 'CD',
-                                'Bond' => 'Bond',
-                            ]),
-                        TextInput::make('bank_name')
-                            ->label('Bank')
-                            ->required(),
-                        TextInput::make('apy')
-                            ->postfix('%')
-                            ->label('APY')
-                            ->numeric()
-                            ->minValue(0)
-                            ->maxValue(100)
-                            ->required(),
-                        TextInput::make('amount')
-                            ->numeric()
-                            ->label('Amount Saved')
-                            ->minValue(0)
-                            ->maxValue(999999999)
-                            ->required(),
-                    ])
-                    ->slideOver()
-                    ->action(function (array $data): void {
-                        try {
-                            resolve(CDBondService::class)->create(auth()->user(), $data);
-                        } catch (Exception) {
-                            Notification::make()
-                                ->title('There was a problem saving your CD/Bond account.')
-                                ->danger()
-                                ->send();
-                        }
-                    }),
-            ])
+//            ->headerActions([
+//                Action::make('create')
+//                    ->label('Add')
+//                    ->modalHeading('Add CD/Bond Account')
+//                    ->modalDescription('Add the details of your CD/Bond account to have Passive Guidebook account for your monthly interest.')
+//                    ->form([
+//                        Select::make('type')
+//                            ->required()
+//                            ->default('CD')
+//                            ->options([
+//                                'CD' => 'CD',
+//                                'Bond' => 'Bond',
+//                            ]),
+//                        TextInput::make('bank_name')
+//                            ->label('Bank')
+//                            ->required(),
+//                        TextInput::make('apy')
+//                            ->postfix('%')
+//                            ->label('APY')
+//                            ->numeric()
+//                            ->minValue(0)
+//                            ->maxValue(100)
+//                            ->required(),
+//                        TextInput::make('amount')
+//                            ->numeric()
+//                            ->label('Amount Saved')
+//                            ->minValue(0)
+//                            ->maxValue(999999999)
+//                            ->required(),
+//                    ])
+//                    ->slideOver()
+//                    ->action(function (array $data): void {
+//                        try {
+//                            resolve(CDBondService::class)->create(auth()->user(), $data);
+//                        } catch (Exception) {
+//                            Notification::make()
+//                                ->title('There was a problem saving your CD/Bond account.')
+//                                ->danger()
+//                                ->send();
+//                        }
+//                    }),
+//            ])
             ->actions([
-                Action::make('edit')
-                    ->modalHeading('Update CD/Bond Account')
-                    ->modalDescription('Update the details of your CD/Bond account to have Passive Guidebook account for your monthly interest.')
-                    ->form([
-                        Select::make('type')
-                            ->required()
-                            ->default(fn (PassiveSourceUser $record) => $record->cdBondDetails?->type)
-                            ->options([
-                                'CD' => 'CD',
-                                'Bond' => 'Bond',
-                            ]),
-                        TextInput::make('bank_name')
-                            ->label('Bank')
-                            ->default(fn (PassiveSourceUser $record) => $record->cdBondDetails?->bank_name)
-                            ->required(),
-                        TextInput::make('apy')
-                            ->postfix('%')
-                            ->label('APY')
-                            ->default(fn (PassiveSourceUser $record) => $record->cdBondDetails?->apy)
-                            ->numeric()
-                            ->minValue(0)
-                            ->maxValue(100)
-                            ->required(),
-                        TextInput::make('amount')
-                            ->default(fn (PassiveSourceUser $record) => $record->cdBondDetails?->amount)
-                            ->numeric()
-                            ->label('Amount Saved')
-                            ->minValue(0)
-                            ->maxValue(999999999)
-                            ->required(),
-                    ])
-                    ->slideOver()
-                    ->action(function (array $data, PassiveSourceUser $record): void {
-                        try {
-                            resolve(CDBondService::class)->update(auth()->user(), $record, $data);
-                        } catch (Exception) {
-                            Notification::make()
-                                ->title('There was a problem updating your CD/Bond account.')
-                                ->danger()
-                                ->send();
-                        }
-                    }),
-                Action::make('delete')
-                    ->requiresConfirmation()
-                    ->color('danger')
-                    ->action(function (array $data, PassiveSourceUser $record): void {
-                        try {
-                            resolve(CDBondService::class)->delete(auth()->user(), $record);
-                        } catch (Exception) {
-                            Notification::make()
-                                ->title('There was a problem deleting your CD/Bond account.')
-                                ->danger()
-                                ->send();
-                        }
-                    }),
+//                Action::make('edit')
+//                    ->modalHeading('Update CD/Bond Account')
+//                    ->modalDescription('Update the details of your CD/Bond account to have Passive Guidebook account for your monthly interest.')
+//                    ->form([
+//                        Select::make('type')
+//                            ->required()
+//                            ->default(fn (PassiveSourceUser $record) => $record->cdBondDetails?->type)
+//                            ->options([
+//                                'CD' => 'CD',
+//                                'Bond' => 'Bond',
+//                            ]),
+//                        TextInput::make('bank_name')
+//                            ->label('Bank')
+//                            ->default(fn (PassiveSourceUser $record) => $record->cdBondDetails?->bank_name)
+//                            ->required(),
+//                        TextInput::make('apy')
+//                            ->postfix('%')
+//                            ->label('APY')
+//                            ->default(fn (PassiveSourceUser $record) => $record->cdBondDetails?->apy)
+//                            ->numeric()
+//                            ->minValue(0)
+//                            ->maxValue(100)
+//                            ->required(),
+//                        TextInput::make('amount')
+//                            ->default(fn (PassiveSourceUser $record) => $record->cdBondDetails?->amount)
+//                            ->numeric()
+//                            ->label('Amount Saved')
+//                            ->minValue(0)
+//                            ->maxValue(999999999)
+//                            ->required(),
+//                    ])
+//                    ->slideOver()
+//                    ->action(function (array $data, PassiveSourceUser $record): void {
+//                        try {
+//                            resolve(CDBondService::class)->update(auth()->user(), $record, $data);
+//                        } catch (Exception) {
+//                            Notification::make()
+//                                ->title('There was a problem updating your CD/Bond account.')
+//                                ->danger()
+//                                ->send();
+//                        }
+//                    }),
+//                Action::make('delete')
+//                    ->requiresConfirmation()
+//                    ->color('danger')
+//                    ->action(function (array $data, PassiveSourceUser $record): void {
+//                        try {
+//                            resolve(CDBondService::class)->delete(auth()->user(), $record);
+//                        } catch (Exception) {
+//                            Notification::make()
+//                                ->title('There was a problem deleting your CD/Bond account.')
+//                                ->danger()
+//                                ->send();
+//                        }
+//                    }),
             ]);
     }
 

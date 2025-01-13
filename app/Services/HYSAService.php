@@ -44,6 +44,34 @@ class HYSAService
         return $passiveSourceUser;
     }
 
+    public function createManual(User $user, array $data = []): PassiveSourceUser
+    {
+        if ($user->id !== auth()->id()) {
+            throw new Exception('This HYSA account does not belong to the specified user.');
+        }
+
+        $monthlyInterest = $this->calculateMonthlyInterest($data['amount'], $data['apy']);
+
+        DB::beginTransaction();
+
+        try {
+            $passiveSourceUser = $user->passiveSources()->create([
+                'passive_source_id' => $this->getSource()->id,
+                'monthly_amount' => $monthlyInterest,
+            ]);
+
+            $passiveSourceUser->hysaDetails()->create($data);
+        } catch (Exception $e) {
+            DB::rollBack();
+
+            throw $e;
+        }
+
+        DB::commit();
+
+        return $passiveSourceUser;
+    }
+
     /**
      * @throws Exception
      */
@@ -53,7 +81,7 @@ class HYSAService
             throw new Exception('This HYSA account does not belong to the specified user.');
         }
 
-        $monthlyInterest = $this->calculateMonthlyInterest($passiveSourceUser->plaidAccount->balance, $data['apy']);
+        $monthlyInterest = $this->calculateMonthlyInterest($passiveSourceUser->plaidAccount ? $passiveSourceUser->plaidAccount->balance : $passiveSourceUser->hysaDetails->amount, $data['apy']);
 
         try {
             $passiveSourceUser->update(['monthly_amount' => $monthlyInterest]);
@@ -75,10 +103,14 @@ class HYSAService
             throw new Exception('This HYSA account does not belong to the specified user.');
         }
 
-        if (resolve(PlaidService::class)->removeAccount($passiveSourceUser->plaidAccount->token->access_token)) {
-            $token = $passiveSourceUser->plaidAccount->token;
-            $passiveSourceUser->delete();
-            $token->delete();
+        if ($passiveSourceUser->plaid_account_id) {
+            if (resolve(PlaidService::class)->removeAccount($passiveSourceUser->plaidAccount->token->access_token)) {
+                $token = $passiveSourceUser->plaidAccount->token;
+                $passiveSourceUser->delete();
+                $token->delete();
+            }
+        } else {
+            return $passiveSourceUser->delete();
         }
 
         throw new Exception('There was a problem contacting Plaid to remove the account.');
