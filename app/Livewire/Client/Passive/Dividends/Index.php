@@ -98,53 +98,53 @@ class Index extends Component implements HasForms, HasTable
 //                    }),
 //            ])
             ->actions([
-//                Action::make('edit')
-//                    ->modalHeading('Update Dividend Stock')
-//                    ->modalDescription('Update the details of your dividend stock to have Passive Guidebook account for your monthly interest.')
-//                    ->form([
-//                        TextInput::make('ticker')
-//                            ->default(fn (PassiveSourceUser $record) => $record->dividendDetails?->ticker)
-//                            ->maxLength(5)
-//                            ->required(),
-//                        TextInput::make('yield')
-//                            ->postfix('%')
-//                            ->default(fn (PassiveSourceUser $record) => $record->dividendDetails?->yield)
-//                            ->numeric()
-//                            ->minValue(0)
-//                            ->maxValue(100)
-//                            ->required(),
-//                        TextInput::make('amount')
-//                            ->default(fn (PassiveSourceUser $record) => $record->dividendDetails?->amount)
-//                            ->numeric()
-//                            ->label('Amount Invested')
-//                            ->minValue(0)
-//                            ->maxValue(999999999)
-//                            ->required(),
-//                    ])
-//                    ->slideOver()
-//                    ->action(function (array $data, PassiveSourceUser $record): void {
-//                        try {
-//                            resolve(DividendService::class)->updateDividendForUser(auth()->user(), $record, $data);
-//                        } catch (Exception) {
-//                            Notification::make()
-//                                ->title('There was a problem updating your dividend stock.')
-//                                ->danger()
-//                                ->send();
-//                        }
-//                    }),
-//                Action::make('delete')
-//                    ->requiresConfirmation()
-//                    ->color('danger')
-//                    ->action(function (array $data, PassiveSourceUser $record): void {
-//                        try {
-//                            resolve(DividendService::class)->deleteDividendForUser(auth()->user(), $record);
-//                        } catch (Exception) {
-//                            Notification::make()
-//                                ->title('There was a problem deleting your dividend stock.')
-//                                ->danger()
-//                                ->send();
-//                        }
-//                    }),
+                //                Action::make('edit')
+                //                    ->modalHeading('Update Dividend Stock')
+                //                    ->modalDescription('Update the details of your dividend stock to have Passive Guidebook account for your monthly interest.')
+                //                    ->form([
+                //                        TextInput::make('ticker')
+                //                            ->default(fn (PassiveSourceUser $record) => $record->dividendDetails?->ticker)
+                //                            ->maxLength(5)
+                //                            ->required(),
+                //                        TextInput::make('yield')
+                //                            ->postfix('%')
+                //                            ->default(fn (PassiveSourceUser $record) => $record->dividendDetails?->yield)
+                //                            ->numeric()
+                //                            ->minValue(0)
+                //                            ->maxValue(100)
+                //                            ->required(),
+                //                        TextInput::make('amount')
+                //                            ->default(fn (PassiveSourceUser $record) => $record->dividendDetails?->amount)
+                //                            ->numeric()
+                //                            ->label('Amount Invested')
+                //                            ->minValue(0)
+                //                            ->maxValue(999999999)
+                //                            ->required(),
+                //                    ])
+                //                    ->slideOver()
+                //                    ->action(function (array $data, PassiveSourceUser $record): void {
+                //                        try {
+                //                            resolve(DividendService::class)->updateDividendForUser(auth()->user(), $record, $data);
+                //                        } catch (Exception) {
+                //                            Notification::make()
+                //                                ->title('There was a problem updating your dividend stock.')
+                //                                ->danger()
+                //                                ->send();
+                //                        }
+                //                    }),
+                //                Action::make('delete')
+                //                    ->requiresConfirmation()
+                //                    ->color('danger')
+                //                    ->action(function (array $data, PassiveSourceUser $record): void {
+                //                        try {
+                //                            resolve(DividendService::class)->deleteDividendForUser(auth()->user(), $record);
+                //                        } catch (Exception) {
+                //                            Notification::make()
+                //                                ->title('There was a problem deleting your dividend stock.')
+                //                                ->danger()
+                //                                ->send();
+                //                        }
+                //                    }),
             ]);
     }
 

@@ -4,7 +4,6 @@ namespace App\Services;
 
 use Exception;
 use Illuminate\Support\Facades\Http;
-use TomorrowIdeas\Plaid\Entities\AccountFilters;
 use TomorrowIdeas\Plaid\Entities\User;
 use TomorrowIdeas\Plaid\Plaid;
 
