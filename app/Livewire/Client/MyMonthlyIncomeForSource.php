@@ -22,7 +22,7 @@ class MyMonthlyIncomeForSource extends Component
     {
         if ($this->userSource instanceof \Illuminate\Support\Collection) {
             return number_format($this->userSource->sum('monthly_amount'), 2);
-        } else  {
+        } else {
             return number_format($this->userSource->monthly_amount, 2);
         }
     }
