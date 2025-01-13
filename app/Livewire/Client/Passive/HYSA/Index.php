@@ -2,6 +2,9 @@
 
 namespace App\Livewire\Client\Passive\HYSA;
 
+use App\Livewire\Client\Dashboard;
+use App\Livewire\Client\EstimatedMonthlyIncome;
+use App\Livewire\Client\MyMonthlyIncomeForSource;
 use App\Models\PassiveSource;
 use App\Models\PassiveSourceUser;
 use App\Services\HYSAService;
@@ -115,6 +118,8 @@ class Index extends Component implements HasForms, HasTable
                     ->action(function (array $data): void {
                         try {
                             resolve(HYSAService::class)->createManual(auth()->user(), $data);
+
+                            $this->refresh();
                         } catch (Exception) {
                             Notification::make()
                                 ->title('There was a problem saving your HYSA account.')
@@ -160,6 +165,8 @@ class Index extends Component implements HasForms, HasTable
                     ->action(function (array $data, PassiveSourceUser $record): void {
                         try {
                             resolve(HYSAService::class)->update(auth()->user(), $record, $data);
+
+                            $this->refresh();
                         } catch (Exception) {
                             Notification::make()
                                 ->title('There was a problem updating your HYSA account.')
@@ -174,6 +181,8 @@ class Index extends Component implements HasForms, HasTable
                     ->action(function (array $data, PassiveSourceUser $record): void {
                         try {
                             resolve(HYSAService::class)->delete(auth()->user(), $record);
+
+                            $this->refresh();
                         } catch (Exception) {
                             Notification::make()
                                 ->title('There was a problem deleting your HYSA account.')
@@ -190,5 +199,15 @@ class Index extends Component implements HasForms, HasTable
         return view('livewire.client.passive.hysa.index')
             ->withSource($source = PassiveSource::where('slug', PassiveSource::HYSA)->firstOrFail())
             ->withUserSource(PassiveSourceUser::query()->forSource($source)->forUser(auth()->user())->get());
+    }
+
+    private function refresh(): void
+    {
+        $this->dispatch('refresh')->to(EstimatedMonthlyIncome::class);
+        $this->dispatch('refresh')->to(MyMonthlyIncomeForSource::class);
+
+        if (request()->routeIs('dashboard')) {
+            $this->dispatch('refresh')->to(Dashboard::class);
+        }
     }
 }
