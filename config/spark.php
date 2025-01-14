@@ -168,7 +168,7 @@ return [
                         'Unlimited Dividend Stocks',
                         'All Social Casinos',
                     ],
-                ]
+                ],
             ],
         ],
     ],

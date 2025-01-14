@@ -2,7 +2,6 @@
 
 namespace App\Models\Traits\Methods;
 
-use App\Models\Plan;
 use App\Models\Traits\User\MoneyCalculations;
 use App\Models\Traits\User\SocialCasinos;
 use Filament\Panel;
