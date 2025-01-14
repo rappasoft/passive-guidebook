@@ -140,20 +140,36 @@ return [
 
             'plans' => [
                 [
-                    'name' => 'Passive Guidebook Membership',
-                    'short_description' => 'Access to all that Passive Guidebook has to offer!',
-                    'monthly_id' => env('SPARK_STANDARD_MONTHLY_PLAN', 'price_id'),
-                    'yearly_id' => env('SPARK_STANDARD_YEARLY_PLAN', 'price_id'),
-                    'features' => [ // TODO
-                        'Social Casinos',
-                        'Investing',
-                        'HYSA',
-                        'Crypto',
-                        'So Much More!',
+                    'name' => \App\Models\Plan::TIER_1_NAME,
+                    'short_description' => '', // TODO
+                    'monthly_id' => env('SPARK_TIER_1_MONTHLY_PLAN', 'price_id'),
+                    'yearly_id' => env('SPARK_TIER_1_YEARLY_PLAN', 'price_id'),
+                    'features' => [
+                        'One-Time Passive Income',
+                        'Manage 5 HYSA',
+                        'Manage 5 CD/Bond',
+                        'Manage 5 Dividend Stocks',
+                        '25 Social Casinos',
+                        '-- Bank Integration',
+                        '-- Custom Passive Income Sources',
                     ],
                 ],
+                [
+                    'name' => \App\Models\Plan::TIER_2_NAME,
+                    'short_description' => '', // TODO
+                    'monthly_id' => env('SPARK_TIER_2_MONTHLY_PLAN', 'price_id'),
+                    'yearly_id' => env('SPARK_TIER_2_YEARLY_PLAN', 'price_id'),
+                    'features' => [
+                        'All Tier 1+',
+                        'Bank Integrations',
+                        'Custom Passive Income Sources',
+                        'Unlimited HYSA',
+                        'Unlimited CD/Bond',
+                        'Unlimited Dividend Stocks',
+                        'All Social Casinos',
+                    ],
+                ]
             ],
-
         ],
     ],
 ];

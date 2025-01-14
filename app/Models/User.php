@@ -47,6 +47,7 @@ class User extends Authenticatable implements CanComment, FilamentUser, MustVeri
         'email',
         'password',
         'timezone',
+        'free',
     ];
 
     /**
@@ -69,6 +70,7 @@ class User extends Authenticatable implements CanComment, FilamentUser, MustVeri
     protected $casts = [
         'email_verified_at' => 'datetime',
         'trial_ends_at' => 'datetime',
+        'free' => 'boolean',
     ];
 
     /**

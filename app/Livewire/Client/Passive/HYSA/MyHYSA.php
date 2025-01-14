@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Client\Passive\HYSA;
 
+use App\Models\PassiveSource;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Forms\Contracts\HasForms;
 use Filament\Tables\Concerns\InteractsWithTable;
@@ -17,7 +18,11 @@ class MyHYSA extends Component implements HasForms, HasTable
 
     public function table(Table $table): Table
     {
-        return resolve(Index::class)->table($table);
+        return resolve(Index::class)
+            ->table($table)
+            ->recordUrl(route('passive.'.PassiveSource::HYSA.'.index'))
+            ->headerActions([])
+            ->actions([]);
     }
 
     #[Layout('layouts.app')]

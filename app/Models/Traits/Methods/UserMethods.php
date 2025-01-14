@@ -2,6 +2,7 @@
 
 namespace App\Models\Traits\Methods;
 
+use App\Models\Plan;
 use App\Models\Traits\User\MoneyCalculations;
 use App\Models\Traits\User\SocialCasinos;
 use Filament\Panel;
@@ -46,5 +47,10 @@ trait UserMethods
     public function getPassiveIncomeSources(): int
     {
         return $this->passiveSources()->where('monthly_amount', '>', 0)->count();
+    }
+
+    public function isTier2(): bool
+    {
+        return $this->subscribedToPrice(config('spark.billables.user.plans.1.monthly_id')) || $this->subscribedToPrice(config('spark.billables.user.plans.1.yearly_id'));
     }
 }

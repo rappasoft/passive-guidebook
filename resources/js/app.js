@@ -14,25 +14,40 @@ import './bootstrap';
             },
         });
 
-        const { link_token } = await response.json();
+        const data = await response.json();
+
+        if (data.result === 'error') {
+            alert(data.message);
+            return;
+        }
 
         const plaid = Plaid.create({
-            token: link_token,
+            token: data.link_token,
             onSuccess: async function (public_token, metadata) {
-                await fetch("/plaid/exchangePublicToken", {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json",
-                        "X-CSRF-TOKEN": csrfToken,
-                    },
-                    body: JSON.stringify({
-                        public_token: public_token,
-                        metadata: metadata,
-                        type: type,
-                    }),
-                });
+                try {
+                    const response = await fetch("/plaid/exchangePublicToken", {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json",
+                            "X-CSRF-TOKEN": csrfToken,
+                        },
+                        body: JSON.stringify({
+                            public_token: public_token,
+                            metadata: metadata,
+                            type: type,
+                        }),
+                    });
 
-                location.reload();
+                    const data = await response.json();
+
+                    if (data.result === 'success') {
+                        location.reload();
+                    } else {
+                        alert(data.message);
+                    }
+                } catch (error) {
+                    alert(error);
+                }
             },
             onExit: function (err) {
                 if (err) {

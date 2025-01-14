@@ -85,7 +85,20 @@ class Index extends Component implements HasForms, HasTable
             ->headerActions([
                 Action::make('connect-bank-account')
                     ->label('Connect a Bank Account')
-                    ->extraAttributes(['class' => 'plaid-link-account', 'data-type' => PassiveSource::HYSA]),
+                    ->url(function() {
+                        if (! auth()->user()->isTier2()) {
+                            return '/billing';
+                        }
+
+                        return null;
+                    })
+                    ->extraAttributes(function() {
+                        if (auth()->user()->isTier2()) {
+                            return ['class' => 'plaid-link-account', 'data-type' => PassiveSource::HYSA];
+                        }
+
+                        return [];
+                    }),
                 Action::make('add-manual-account')
                     ->label('Add Manual Account')
                     ->outlined()

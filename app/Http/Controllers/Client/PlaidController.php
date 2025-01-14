@@ -22,6 +22,13 @@ class PlaidController extends Controller
 
     public function createLinkToken(): JsonResponse
     {
+        if (! auth()->user()->isTier2()) {
+            return response()->json([
+                'result' => 'error',
+                'message' => 'You can not connect a bank account on your current subscription tier.',
+            ]);
+        }
+
         return response()->json([
             'result' => 'success',
             'link_token' => $this->plaidService->createLinkToken(auth()->id())?->link_token ?? null,
@@ -30,6 +37,13 @@ class PlaidController extends Controller
 
     public function exchangePublicToken(Request $request): JsonResponse
     {
+        if (! auth()->user()->isTier2()) {
+            return response()->json([
+                'result' => 'error',
+                'message' => 'You can not connect a bank account on your current subscription tier.',
+            ]);
+        }
+
         if (! $request->validate([
             'public_token' => 'required',
             'metadata' => ['required', 'array'],

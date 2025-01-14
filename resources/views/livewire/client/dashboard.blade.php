@@ -178,7 +178,14 @@
                                 </div>
 
                                 <div x-show="tab === 'custom'">
-                                    {{-- TODO --}}
+                                    @if (\Illuminate\Support\Facades\Auth::user()->isTier2())
+                                        {{-- TODO --}}
+                                        <p>Custom</p>
+                                    @else
+                                        <x-alerts.info>
+                                            <p>This is not available in your plan. Please <a href="/billing" class="underline hover:no-underline">upgrade</a> to unlock this feature.</p>
+                                        </x-alerts.info>
+                                    @endif
                                 </div>
                             </div>
                         </div>
