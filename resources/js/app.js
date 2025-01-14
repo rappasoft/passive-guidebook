@@ -1,7 +1,7 @@
 import './bootstrap';
 
 (async function () {
-    async function handler() {
+    async function handler(type) {
         // Fetch the CSRF token from the meta tag
         const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute("content");
 
@@ -28,6 +28,7 @@ import './bootstrap';
                     body: JSON.stringify({
                         public_token: public_token,
                         metadata: metadata,
+                        type: type,
                     }),
                 });
 
@@ -45,7 +46,7 @@ import './bootstrap';
 
     // Add click event listeners to buttons
     document.querySelectorAll('.plaid-link-account').forEach(element => {
-        element.addEventListener('click', () => handler());
+        element.addEventListener('click', () => handler(element.dataset.type));
     });
 })();
 

@@ -3,10 +3,13 @@
 namespace App\Http\Controllers\Client;
 
 use App\Http\Controllers\Controller;
+use App\Models\PassiveSource;
+use App\Models\PlaidAccount;
 use App\Services\HYSAService;
 use App\Services\PlaidService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 
 class PlaidController extends Controller
 {
@@ -29,6 +32,8 @@ class PlaidController extends Controller
     {
         if (! $request->validate([
             'public_token' => 'required',
+            'metadata' => ['required', 'array'],
+            'type' => ['required', 'string', Rule::in([PassiveSource::HYSA])]
         ])) {
             return response()->json([
                 'result' => 'error',
@@ -43,6 +48,8 @@ class PlaidController extends Controller
         if ($plaidToken) {
             $plaidToken->update([
                 'access_token' => $exchange->access_token,
+                'institution_name' => $request->metadata['institution']['name'],
+                'institution_id' => $request->metadata['institution']['institution_id'],
             ]);
         } else {
             $token = $request->user()->plaidTokens()->create([
@@ -51,8 +58,22 @@ class PlaidController extends Controller
                 'institution_name' => $request->metadata['institution']['name'],
                 'institution_id' => $request->metadata['institution']['institution_id'],
             ]);
+        }
 
-            foreach ($this->plaidService->getAccounts($token->access_token)->accounts as $account) {
+        foreach ($this->plaidService->getAccounts($token->access_token)->accounts as $account) {
+            if ($request->type === PassiveSource::HYSA && $account->subtype !== 'savings') {
+                continue;
+            }
+
+            $internalAccount = PlaidAccount::whereRelation('token', 'id', '=', $token->id)->where('account_id', $account->account_id)->first();
+
+            if ($internalAccount) {
+                $internalAccount->update([
+                    'name' => $account->name,
+                    'mask' => $account->mask,
+                    'balance' => $account->balances->current ?? 0.00,
+                ]);
+            } else {
                 $account = $token->accounts()->create([
                     'account_id' => $account->account_id,
                     'name' => $account->name,
@@ -65,13 +86,13 @@ class PlaidController extends Controller
                     resolve(HYSAService::class)->create(auth()->user(), ['plaid_account_id' => $account->id]);
                 }
 
-                if ($account->subtype === 'cd') {
-
-                }
-
-                if ($account->subtype === 'investment') {
-
-                }
+//                if ($account->subtype === 'cd') {
+//
+//                }
+//
+//                if ($account->subtype === 'investment') {
+//
+//                }
             }
         }
 

@@ -2,11 +2,13 @@
 
 namespace App\Models;
 
+use App\Models\Traits\Relationships\PlaidAccountRelationship;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class PlaidAccount extends Model
 {
+    use PlaidAccountRelationship;
+
     protected $fillable = [
         'plaid_item_id',
         'account_id',
@@ -15,9 +17,4 @@ class PlaidAccount extends Model
         'subtype',
         'balance',
     ];
-
-    public function token(): BelongsTo
-    {
-        return $this->belongsTo(PlaidToken::class, 'plaid_token_id');
-    }
 }

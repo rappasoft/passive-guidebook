@@ -108,12 +108,14 @@ class HYSAService
                 $token = $passiveSourceUser->plaidAccount->token;
                 $passiveSourceUser->delete();
                 $token->delete();
+            } else {
+                throw new Exception('There was a problem contacting Plaid to remove the account.');
             }
         } else {
             return $passiveSourceUser->delete();
         }
 
-        throw new Exception('There was a problem contacting Plaid to remove the account.');
+        throw new Exception('There was a problem removing your HYSA account.');
     }
 
     private function calculateMonthlyInterest($amount, $apy): float
