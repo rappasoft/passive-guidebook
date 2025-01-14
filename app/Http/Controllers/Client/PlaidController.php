@@ -47,7 +47,7 @@ class PlaidController extends Controller
         if (! $request->validate([
             'public_token' => 'required',
             'metadata' => ['required', 'array'],
-            'type' => ['required', 'string', Rule::in([PassiveSource::HYSA])]
+            'type' => ['required', 'string', Rule::in([PassiveSource::HYSA])],
         ])) {
             return response()->json([
                 'result' => 'error',
@@ -100,13 +100,13 @@ class PlaidController extends Controller
                     resolve(HYSAService::class)->create(auth()->user(), ['plaid_account_id' => $account->id]);
                 }
 
-//                if ($account->subtype === 'cd') {
-//
-//                }
-//
-//                if ($account->subtype === 'investment') {
-//
-//                }
+                //                if ($account->subtype === 'cd') {
+                //
+                //                }
+                //
+                //                if ($account->subtype === 'investment') {
+                //
+                //                }
             }
         }
 
