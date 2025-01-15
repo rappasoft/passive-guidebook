@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Client\Passive\CDBonds;
 
+use App\Models\PassiveSource;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Forms\Contracts\HasForms;
 use Filament\Tables\Concerns\InteractsWithTable;
@@ -17,7 +18,11 @@ class MyCDBonds extends Component implements HasForms, HasTable
 
     public function table(Table $table): Table
     {
-        return resolve(Index::class)->table($table);
+        return resolve(Index::class)
+            ->table($table)
+            ->recordUrl(route('passive.'.PassiveSource::CD_BONDS.'.index'))
+            ->headerActions([])
+            ->actions([]);
     }
 
     #[Layout('layouts.app')]
