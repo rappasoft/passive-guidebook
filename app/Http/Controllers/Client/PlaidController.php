@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Client;
 use App\Http\Controllers\Controller;
 use App\Models\PassiveSource;
 use App\Models\PlaidAccount;
+use App\Services\CDBondService;
 use App\Services\HYSAService;
 use App\Services\PlaidService;
 use Illuminate\Http\JsonResponse;
@@ -47,7 +48,7 @@ class PlaidController extends Controller
         if (! $request->validate([
             'public_token' => 'required',
             'metadata' => ['required', 'array'],
-            'type' => ['required', 'string', Rule::in([PassiveSource::HYSA])],
+            'type' => ['required', 'string', Rule::in([PassiveSource::HYSA, PassiveSource::CD_BONDS])],
         ])) {
             return response()->json([
                 'result' => 'error',
@@ -79,6 +80,10 @@ class PlaidController extends Controller
                 continue;
             }
 
+            if ($request->type === PassiveSource::CD_BONDS && $account->subtype !== 'cd') {
+                continue;
+            }
+
             $internalAccount = PlaidAccount::whereRelation('token', 'id', '=', $token->id)->where('account_id', $account->account_id)->first();
 
             if ($internalAccount) {
@@ -96,17 +101,15 @@ class PlaidController extends Controller
                     'balance' => $account->balances->current ?? 0.00,
                 ]);
 
-                if ($account->subtype === 'savings') {
+                if ($request->type === PassiveSource::HYSA && $account->subtype === 'savings') {
                     resolve(HYSAService::class)->create(auth()->user(), ['plaid_account_id' => $account->id]);
                 }
 
-                //                if ($account->subtype === 'cd') {
-                //
-                //                }
-                //
-                //                if ($account->subtype === 'investment') {
-                //
-                //                }
+                if ($request->type === PassiveSource::CD_BONDS && $account->subtype === 'cd') {
+                    resolve(CDBondService::class)->create(auth()->user(), ['plaid_account_id' => $account->id]);
+                }
+
+                // TODO
             }
         }
 

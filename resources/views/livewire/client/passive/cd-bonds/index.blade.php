@@ -28,7 +28,7 @@
                         </x-filament::button>
 
                         <x-filament::button
-                            href="{{ route('passive.social-casinos.faq') }}"
+                            href=""
                             tag="a"
                             color="info"
                             outlined
@@ -43,8 +43,6 @@
                                 </x-filament::button>
                             </x-slot>
                         </x-filament::dropdown>
-
-                        <x-filament::button class="plaid-link-account">Connect an Investment Account</x-filament::button>
                     </div>
                 </div>
 

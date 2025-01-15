@@ -11,6 +11,7 @@ class CDBondDetails extends Model
     protected $fillable = [
         'type',
         'bank_name',
+        'account_name',
         'apy',
         'amount',
     ];

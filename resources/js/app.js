@@ -45,8 +45,8 @@ import './bootstrap';
                     } else {
                         alert(data.message);
                     }
-                } catch (error) {
-                    alert(error);
+                } catch (err) {
+                    alert('There was a problem initializing Plaid. Please try again later.');
                 }
             },
             onExit: function (err) {

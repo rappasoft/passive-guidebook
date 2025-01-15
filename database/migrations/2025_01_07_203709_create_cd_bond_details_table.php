@@ -15,9 +15,10 @@ return new class extends Migration
             $table->id();
             $table->enum('type', ['CD', 'Bond'])->default('CD');
             $table->foreignIdFor(\App\Models\PassiveSourceUser::class)->constrained()->onDelete('cascade');
-            $table->string('bank_name');
-            $table->decimal('apy');
-            $table->decimal('amount');
+            $table->string('bank_name')->nullable();
+            $table->string('account_name')->nullable();
+            $table->decimal('apy')->default(0);
+            $table->decimal('amount')->nullable();
             $table->timestamps();
         });
     }

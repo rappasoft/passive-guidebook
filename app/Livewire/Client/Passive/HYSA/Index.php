@@ -55,7 +55,7 @@ class Index extends Component implements HasForms, HasTable
                     ->searchable(),
                 TextColumn::make('hysaDetails.apy')
                     ->label('APY')
-                    ->color(fn (PassiveSourceUser $record) => (int) $record->hysaDetails->apy === 0 ? 'danger' : 'success')
+                    ->color(fn (PassiveSourceUser $record) => (float) $record->hysaDetails->apy <= 0 ? 'danger' : 'success')
                     ->formatStateUsing(fn (PassiveSourceUser $record) => $record->hysaDetails->apy.'%')
                     ->badge()
                     ->sortable()
@@ -103,6 +103,8 @@ class Index extends Component implements HasForms, HasTable
                         if (auth()->user()->onTrial()) {
                             return 'You can not connect to banks during the trial period.';
                         }
+
+                        return null;
                     }),
                 Action::make('add-manual-account')
                     ->label('Add Manual Account')

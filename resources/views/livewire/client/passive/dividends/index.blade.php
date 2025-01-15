@@ -28,7 +28,7 @@
                         </x-filament::button>
 
                         <x-filament::button
-                            href="{{ route('passive.social-casinos.faq') }}"
+                            href=""
                             tag="a"
                             color="info"
                             outlined
