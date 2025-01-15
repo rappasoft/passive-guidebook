@@ -5,6 +5,7 @@ namespace App\Livewire\Client\Passive;
 use App\Models\PassiveSource;
 use App\Models\PassiveSourceUser;
 use App\Services\CustomSourceService;
+use Exception;
 use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Concerns\InteractsWithForms;
@@ -17,7 +18,6 @@ use Filament\Tables\Contracts\HasTable;
 use Filament\Tables\Table;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
-use Exception;
 
 class CustomPassiveIncome extends Component implements HasForms, HasTable
 {

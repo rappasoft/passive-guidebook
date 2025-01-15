@@ -85,21 +85,21 @@ class Index extends Component implements HasForms, HasTable
             ->headerActions([
                 Action::make('connect-bank-account')
                     ->label('Connect a Bank Account')
-                    ->url(function() {
+                    ->url(function () {
                         if (! auth()->user()->canConnectBanks()) {
                             return '/billing';
                         }
 
                         return null;
                     })
-                    ->extraAttributes(function() {
+                    ->extraAttributes(function () {
                         if (auth()->user()->canConnectBanks()) {
                             return ['class' => 'plaid-link-account', 'data-type' => PassiveSource::HYSA];
                         }
 
                         return [];
                     })
-                    ->tooltip(function() {
+                    ->tooltip(function () {
                         if (auth()->user()->onTrial()) {
                             return 'You can not connect to banks during the trial period.';
                         }

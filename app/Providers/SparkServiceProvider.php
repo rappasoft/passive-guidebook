@@ -26,13 +26,13 @@ class SparkServiceProvider extends ServiceProvider
         });
 
         Spark::billable(User::class)->checkPlanEligibility(function (User $billable, Plan $plan) {
-//             if ($billable->socialCasinos()->count() > 5 && $plan->name == \App\Models\Plan::TIER_1_NAME) {
-//                 throw ValidationException::withMessages([
-//                     'plan' => 'You must upgrade plans to add more Social Casinos.'
-//                 ]);
-//             }
+            //             if ($billable->socialCasinos()->count() > 5 && $plan->name == \App\Models\Plan::TIER_1_NAME) {
+            //                 throw ValidationException::withMessages([
+            //                     'plan' => 'You must upgrade plans to add more Social Casinos.'
+            //                 ]);
+            //             }
 
-             // TODO
+            // TODO
         });
     }
 }
