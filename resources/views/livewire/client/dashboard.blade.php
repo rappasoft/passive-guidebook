@@ -179,8 +179,7 @@
 
                                 <div x-show="tab === 'custom'">
                                     @if (\Illuminate\Support\Facades\Auth::user()->isTier2())
-                                        {{-- TODO --}}
-                                        <p>Custom</p>
+                                        <livewire:client.passive.custom-passive-income />
                                     @else
                                         <x-alerts.info>
                                             <p>This is not available in your plan. Please <a href="/billing" class="underline hover:no-underline">upgrade</a> to unlock this feature.</p>

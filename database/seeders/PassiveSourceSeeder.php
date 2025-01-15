@@ -16,6 +16,16 @@ class PassiveSourceSeeder extends Seeder
     public function run(): void
     {
         PassiveSource::create([
+            'name' => 'Custom',
+            'short_name' => 'Custom',
+            'slug' => PassiveSource::CUSTOM,
+            'passive_percentage' => 0,
+            'sort' => 0,
+            'upfront_cost' => null,
+            'level' => 0,
+        ]);
+
+        PassiveSource::create([
             'name' => 'High-Yield Savings Accounts',
             'short_name' => 'HYSA',
             'slug' => PassiveSource::HYSA,

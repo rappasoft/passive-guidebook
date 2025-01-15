@@ -3,6 +3,7 @@
 namespace App\Models\Traits\Relationships;
 
 use App\Models\CDBondDetails;
+use App\Models\CustomSourceDetails;
 use App\Models\DividendDetails;
 use App\Models\HYSADetails;
 use App\Models\PassiveSource;
@@ -41,5 +42,10 @@ trait PassiveSourceUserRelationship
     public function dividendDetails(): HasOne
     {
         return $this->hasOne(DividendDetails::class);
+    }
+
+    public function customDetails(): HasOne
+    {
+        return $this->hasOne(CustomSourceDetails::class);
     }
 }

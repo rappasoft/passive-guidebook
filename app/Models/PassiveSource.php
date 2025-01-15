@@ -19,6 +19,8 @@ class PassiveSource extends Model
 
     public const DIVIDENDS = 'dividends';
 
+    public const CUSTOM = 'custom';
+
     protected $fillable = [
         'name',
         'short_name',

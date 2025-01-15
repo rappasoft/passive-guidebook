@@ -49,8 +49,13 @@ trait UserMethods
         return $this->passiveSources()->where('monthly_amount', '>', 0)->count();
     }
 
-    public function isTier2(): bool
+    public function canConnectBanks(): bool
     {
         return $this->subscribedToPrice(config('spark.billables.user.plans.1.monthly_id')) || $this->subscribedToPrice(config('spark.billables.user.plans.1.yearly_id'));
+    }
+
+    public function isTier2(): bool
+    {
+        return $this->onTrial() || $this->canConnectBanks();
     }
 }
