@@ -15,14 +15,10 @@ class IsFreeOrSubscribed
     /**
      * Verify the incoming request's user has a subscription.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \Closure  $next
-     * @param  string|null  $billableType
-     * @param  string|null  $plan
      *
      * @return \Illuminate\Http\Response
      */
-    public function handle(Request $request, Closure $next, string $billableType = null, string $plan = null)
+    public function handle(Request $request, Closure $next, ?string $billableType = null, ?string $plan = null)
     {
         if ($request->user()->isFree()) {
             return $next($request);
