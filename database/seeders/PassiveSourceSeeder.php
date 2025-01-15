@@ -62,6 +62,15 @@ class PassiveSourceSeeder extends Seeder
             'level' => 2,
         ]);
 
+        PassiveSource::create([
+            'name' => 'Credit Card Hacking',
+            'slug' => 'credit-card-hacking',
+            'sort' => 1,
+            'passive_percentage' => 60,
+            'upfront_cost' => 0,
+            'level' => 2,
+        ]);
+
         //        PassiveSource::create([
         //            'name' => 'Grass.io',
         //            'slug' => 'grass-io',

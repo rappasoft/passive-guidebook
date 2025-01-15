@@ -117,6 +117,10 @@
                             </x-slot>
                         </x-nav-dropdown>
                     @endif
+
+                    <x-nav-link href="" :active="false">
+                        {{ __('Freebies') }}
+                    </x-nav-link>
                 </div>
             </div>
 

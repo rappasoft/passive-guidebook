@@ -19,10 +19,12 @@ class UserSeeder extends Seeder
             'email' => 'admin@admin.com',
             'password' => bcrypt('password'),
             'email_verified_at' => now(),
-            'trial_ends_at' => now()->subWeek(),
             'free' => true,
         ]);
 
         $admin->assignRole(Role::whereName('Super Admin')->firstOrFail());
+
+        $admin->trial_ends_at = null;
+        $admin->save();
     }
 }
