@@ -27,7 +27,7 @@
 
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            @if (! \Illuminate\Support\Facades\Auth::user()->onTrial() && ! \Illuminate\Support\Facades\Auth::user()->subscribed())
+            @if (! \Illuminate\Support\Facades\Auth::user()->canViewDashboard())
                 <x-alerts.info>
                     <p>Your trial period has ended. Please <a href="/billing" class="underline hover:no-underline">purchase a membership</a> to continue.</p>
                 </x-alerts.info>

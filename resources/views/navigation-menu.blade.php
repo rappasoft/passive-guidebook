@@ -156,9 +156,11 @@
                                 {{ __('Manage Account') }}
                             </div>
 
-                            <x-dropdown-link href="/billing">
-                                {{ __('Billing') }}
-                            </x-dropdown-link>
+                            @if (! \Illuminate\Support\Facades\Auth::user()->isFree())
+                                <x-dropdown-link href="/billing">
+                                    {{ __('Billing') }}
+                                </x-dropdown-link>
+                            @endif
 
                             <x-dropdown-link wire:navigate href="{{ route('profile.show') }}">
                                 {{ __('Profile') }}
@@ -249,9 +251,11 @@
                 @endif
 
                 <!-- Account Management -->
-                <x-responsive-nav-link href="/billing" :active="request()->path() === 'billing'">
-                    {{ __('Billing') }}
-                </x-responsive-nav-link>
+                @if (! \Illuminate\Support\Facades\Auth::user()->isFree())
+                    <x-responsive-nav-link href="/billing" :active="request()->path() === 'billing'">
+                        {{ __('Billing') }}
+                    </x-responsive-nav-link>
+                @endif
 
                 <x-responsive-nav-link wire:navigate href="{{ route('profile.show') }}" :active="request()->routeIs('profile.show')">
                     {{ __('Profile') }}

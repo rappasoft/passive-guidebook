@@ -31,7 +31,7 @@ return [
     |
     */
 
-    'middleware' => ['web', 'auth'],
+    'middleware' => ['web', 'auth', \App\Http\Middleware\IsNotFree::class],
 
     /*
     |--------------------------------------------------------------------------

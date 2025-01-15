@@ -7,9 +7,8 @@ use App\Livewire\Client\Passive\SocialCasino\Index as SocialCasinoIndex;
 use App\Livewire\Client\Passive\SocialCasino\Show as ViewSocialCasino;
 use App\Models\PassiveSource;
 use Illuminate\Support\Facades\Route;
-use Spark\Http\Middleware\VerifyBillableIsSubscribed;
 
-Route::as('passive.')->middleware(VerifyBillableIsSubscribed::class)->group(function () {
+Route::as('passive.')->group(function () {
     Route::prefix(PassiveSource::SOCIAL_CASINOS)->as(PassiveSource::SOCIAL_CASINOS.'.')->group(function () {
         Route::get('/', SocialCasinoIndex::class)->name('index');
 

@@ -48,13 +48,23 @@ trait UserMethods
         return $this->passiveSources()->where('monthly_amount', '>', 0)->count();
     }
 
+    public function isFree(): bool
+    {
+        return $this->free === true;
+    }
+
+    public function canViewDashboard(): bool
+    {
+        return $this->onTrial() || $this->isFree() || $this->subscribed();
+    }
+
     public function canConnectBanks(): bool
     {
-        return $this->subscribedToPrice(config('spark.billables.user.plans.1.monthly_id')) || $this->subscribedToPrice(config('spark.billables.user.plans.1.yearly_id'));
+        return $this->isFree() || $this->subscribedToPrice(config('spark.billables.user.plans.1.monthly_id')) || $this->subscribedToPrice(config('spark.billables.user.plans.1.yearly_id'));
     }
 
     public function isTier2(): bool
     {
-        return $this->onTrial() || $this->canConnectBanks();
+        return $this->isFree() ||  $this->onTrial() || $this->canConnectBanks();
     }
 }
