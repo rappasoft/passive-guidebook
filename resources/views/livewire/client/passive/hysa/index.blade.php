@@ -9,9 +9,7 @@
 
     <div class="py-12">
         <div class="max-w-7xl space-y-6 mx-auto sm:px-6 lg:px-8">
-            <x-alerts.info>
-                <p>When it comes to guaranteed interest on your savings, options like high-yield savings accounts, Certificates of Deposit (CDs), and money market accounts offer secure and reliable ways to grow your money. High-yield savings accounts provide flexibility with competitive interest rates and full access to funds, making them ideal for short-term goals. CDs, on the other hand, offer higher fixed rates but require you to lock your money for a set period, rewarding you with stability and better returns over time. Money market accounts combine elements of both, offering higher rates than traditional savings with limited transaction flexibility. All these accounts are federally insured, ensuring your deposits are safe while your money grows steadily with minimal risk.</p>
-            </x-alerts.info>
+            @include('livewire.client.passive.partials.description')
 
             <div class="p-6 text-gray-900 dark:text-gray-100 bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                 {{-- TODO: HYSA affiliate links --}}

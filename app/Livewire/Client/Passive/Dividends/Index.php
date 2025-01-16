@@ -30,34 +30,34 @@ class Index extends Component implements HasForms, HasTable
             ->emptyStateDescription(null)
             ->emptyStateIcon('heroicon-o-face-frown')
             ->columns([
-                TextColumn::make('dividendDetails.ticker')
+                TextColumn::make('dividendDetails.ticker_symbol')
                     ->label('Ticker')
                     ->sortable()
                     ->searchable(),
-                TextColumn::make('dividendDetails.yield')
-                    ->label('Yield')
-                    ->sortable()
-                    ->searchable(),
-                TextColumn::make('dividendDetails.amount')
-                    ->label('Amount Invested')
-                    ->sortable()
-                    ->money()
-                    ->searchable(),
-                TextColumn::make('monthly_amount')
-                    ->label('Monthly Interest')
-                    ->money()
-                    ->sortable()
-                    ->searchable()
-                    ->summarize([
-                        Summarizer::make()
-                            ->label('Total Monthly')
-                            ->prefix('$')
-                            ->using(fn (QueryBuilder $query): string => number_format($query->sum('monthly_amount'), 2)),
-                        Summarizer::make()
-                            ->label('Total Yearly')
-                            ->prefix('$')
-                            ->using(fn (QueryBuilder $query): string => number_format($query->sum('monthly_amount') * 12, 2)),
-                    ]),
+//                TextColumn::make('dividendDetails.yield')
+//                    ->label('Yield')
+//                    ->sortable()
+//                    ->searchable(),
+//                TextColumn::make('dividendDetails.amount')
+//                    ->label('Amount Invested')
+//                    ->sortable()
+//                    ->money()
+//                    ->searchable(),
+//                TextColumn::make('monthly_amount')
+//                    ->label('Monthly Interest')
+//                    ->money()
+//                    ->sortable()
+//                    ->searchable()
+//                    ->summarize([
+//                        Summarizer::make()
+//                            ->label('Total Monthly')
+//                            ->prefix('$')
+//                            ->using(fn (QueryBuilder $query): string => number_format($query->sum('monthly_amount'), 2)),
+//                        Summarizer::make()
+//                            ->label('Total Yearly')
+//                            ->prefix('$')
+//                            ->using(fn (QueryBuilder $query): string => number_format($query->sum('monthly_amount') * 12, 2)),
+//                    ]),
             ])
             ->headerActions([
                 Action::make('connect-brokerage-account')

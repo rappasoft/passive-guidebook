@@ -1,12 +1,16 @@
 <div class="lg:flex justify-between items-center">
-    <div class="lg:mt-0 mt-4 flex space-x-4">
-        <h2 class="font-semibold text-xl text-primary-800 dark:text-white leading-tight">
-            {{ $source->name }}
-        </h2>
+    <div class="space-y-4">
+        <div class="lg:mt-0 mt-4 flex space-x-4">
+            <h2 class="font-semibold text-xl text-primary-800 dark:text-white leading-tight">
+                {{ $source->name }}
+            </h2>
 
-        @if ($source && $userSource)
-            <livewire:client.my-monthly-income-for-source :$userSource />
-        @endif
+            @if ($source && $userSource)
+                <livewire:client.my-monthly-income-for-source :$userSource />
+            @endif
+        </div>
+
+        @include('livewire.client.passive.partials.account-types')
     </div>
 
     @if ($source)

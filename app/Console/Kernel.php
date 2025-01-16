@@ -2,6 +2,7 @@
 
 namespace App\Console;
 
+use App\Console\Commands\UpdatePlaidBalances;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 use Spatie\Health\Commands\RunHealthChecksCommand;
@@ -19,7 +20,7 @@ class Kernel extends ConsoleKernel
         $schedule->command('backup:clean')->daily()->at('01:00')->timezone('America/New_York')->monitorName('Clean Backups');
         $schedule->command('backup:run')->daily()->at('01:30')->timezone('America/New_York')->monitorName('Run Backup');
         $schedule->command('sitemap:generate')->daily()->monitorName('Generate Sitemap');
-
+        $schedule->command(UpdatePlaidBalances::class)->daily()->monitorName('Update Plaid Balances');
     }
 
     /**

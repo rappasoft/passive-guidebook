@@ -9,6 +9,7 @@ class DividendDetails extends Model
     protected $table = 'dividend_details';
 
     protected $fillable = [
+        'plaid_id',
         'security_name',
         'ticker_symbol',
         'quantity',

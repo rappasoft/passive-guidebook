@@ -12,6 +12,9 @@ import './bootstrap';
                 "Content-Type": "application/json",
                 "X-CSRF-TOKEN": csrfToken,
             },
+            body: JSON.stringify({
+                type: type,
+            }),
         });
 
         const data = await response.json();

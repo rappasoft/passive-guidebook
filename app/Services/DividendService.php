@@ -18,23 +18,28 @@ class DividendService
     /**
      * @throws Exception
      */
-    public function create(User $user, array $data): PassiveSourceUser
+    public function create(string $access_token, User $user, array $data): PassiveSourceUser
     {
         if ($user->id !== auth()->id()) {
             throw new Exception('This dividend stock does not belong to the specified user.');
         }
-
-        $monthlyInterest = $this->calculateMonthlyInterest($data['amount'], $data['yield']);
 
         DB::beginTransaction();
 
         try {
             $passiveSourceUser = $user->passiveSources()->create([
                 'passive_source_id' => $this->getSource()->id,
-                'monthly_amount' => $monthlyInterest,
+                'plaid_account_id' => $data['plaid_account_id'],
             ]);
 
-            $passiveSourceUser->dividendDetails()->create($data);
+            foreach(resolve(PlaidService::class)->getInvestments($access_token) as $investment) {
+//                $passiveSourceUser->dividendDetails()->create([
+//                    'security_name' => $investment->name,
+//                    'ticker_symbol' => $investment->ticker_symbol,
+////                    'quantity' => $investment['quantity'],
+////                    'current_value' => $investment['market_value'],
+//                ]);
+            }
         } catch (Exception $e) {
             DB::rollBack();
 

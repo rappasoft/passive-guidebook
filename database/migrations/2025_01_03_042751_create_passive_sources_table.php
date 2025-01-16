@@ -15,6 +15,8 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('short_name')->nullable();
+            $table->text('description')->nullable();
+            $table->json('account_types')->nullable();
             $table->string('slug')->unique();
             $table->tinyInteger('sort')->default(0);
             $table->integer('upfront_cost')->nullable();

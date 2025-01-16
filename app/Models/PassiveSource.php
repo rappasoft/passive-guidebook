@@ -22,6 +22,8 @@ class PassiveSource extends Model
     protected $fillable = [
         'name',
         'short_name',
+        'description',
+        'account_types',
         'slug',
         'sort',
         'upfront_cost',
@@ -34,5 +36,6 @@ class PassiveSource extends Model
         'upfront_cost' => 'integer',
         'passive_percentage' => 'integer',
         'level' => 'integer',
+        'account_types' => 'array',
     ];
 }

@@ -2,10 +2,13 @@
 
 namespace App\Services;
 
+use App\Models\PassiveSource;
 use Exception;
 use Illuminate\Support\Facades\Http;
+use TomorrowIdeas\Plaid\Entities\AccountFilters;
 use TomorrowIdeas\Plaid\Entities\User;
 use TomorrowIdeas\Plaid\Plaid;
+use TomorrowIdeas\Plaid\PlaidRequestException;
 
 class PlaidService
 {
@@ -16,25 +19,41 @@ class PlaidService
         $this->client = new Plaid(config('services.plaid.client'), config('services.plaid.secret'), config('services.plaid.env'));
     }
 
-    public function createLinkToken(int $userId): object|array
+    /**
+     * @throws PlaidRequestException
+     */
+    public function createLinkToken(int $userId, $filter = null): object|array
     {
-        try {
-            return $this->client
-                ->tokens
-                ->create(
-                    config('app.name'),
-                    'en',
-                    ['US'],
-                    new User($userId),
-                    ['auth', 'investments', 'transactions'],
-                    config('services.plaid.webhook_url'),
-                );
-        } catch (Exception $e) {
-            return [
-                'success' => false,
-                'message' => $e->getMessage(),
+        $products = [];
+        $filters = [];
+
+        if ($filter === PassiveSource::HYSA) {
+            $products = ['auth', 'transactions'];
+
+            $filters = [
+                'depository' => ['savings', 'cd', 'money market'],
             ];
         }
+
+        if ($filter === PassiveSource::DIVIDENDS) {
+            $products = ['investments'];
+
+            $filters = [
+                'investment' => ['brokerage'],
+            ];
+        }
+
+        return $this->client
+            ->tokens
+            ->create(
+                client_name: config('app.name'),
+                language: 'en',
+                country_codes: ['US'],
+                user: new User($userId),
+                products: $products,
+                webhook: config('services.plaid.webhook_url'),
+                account_filters: count($filters) ? new AccountFilters($filters) : null,
+            );
     }
 
     public function exchangePublicToken($publicToken): ?object
@@ -71,5 +90,10 @@ class PlaidService
         }
 
         return false;
+    }
+
+    public function getInvestments($accessToken): object
+    {
+        return $this->client->investments->listHoldings($accessToken);
     }
 }
