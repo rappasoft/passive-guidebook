@@ -80,28 +80,28 @@ class PlaidController extends Controller
             }
 
             if ($request->type === PassiveSource::DIVIDENDS && ! in_array($account->subtype, [
-                    'brokerage',                     // Standard brokerage accounts
-                    'non-taxable brokerage account', // Tax-advantaged brokerage accounts
-                    '401a',                          // Employer-sponsored retirement plan
-                    '401k',                          // Employer-sponsored retirement account
-                    '403B',                          // Retirement account for public education organizations
-                    '457b',                          // Deferred compensation plans
-                    '529',                           // Education savings accounts (can include dividend-yielding funds)
-                    'ira',                           // Individual Retirement Accounts
-                    'roth',                          // Roth IRA
-                    'roth 401k',                     // Roth version of 401k
-                    'sep ira',                       // Simplified Employee Pension IRA
-                    'simple ira',                    // Savings Incentive Match Plan for Employees IRA
-                    'keogh',                         // Retirement accounts for self-employed individuals
-                    'hsa',                           // Health Savings Accounts (if investment options are enabled)
-                    'sipp',                          // Self-Invested Personal Pension (UK)
-                    'tfsa',                          // Tax-Free Savings Accounts (Canada)
-                    'stock plan',                    // Employer stock plans
-                    'mutual fund',                   // Mutual funds (may invest in dividend-paying stocks)
-                    'cash isa',                      // Individual Savings Account (UK, often includes dividend stock funds)
-                    'profit sharing plan',           // Retirement accounts with stock investment options
-                    'thrift savings plan',           // Federal employee retirement accounts
-                ])) {
+                'brokerage',                     // Standard brokerage accounts
+                'non-taxable brokerage account', // Tax-advantaged brokerage accounts
+                '401a',                          // Employer-sponsored retirement plan
+                '401k',                          // Employer-sponsored retirement account
+                '403B',                          // Retirement account for public education organizations
+                '457b',                          // Deferred compensation plans
+                '529',                           // Education savings accounts (can include dividend-yielding funds)
+                'ira',                           // Individual Retirement Accounts
+                'roth',                          // Roth IRA
+                'roth 401k',                     // Roth version of 401k
+                'sep ira',                       // Simplified Employee Pension IRA
+                'simple ira',                    // Savings Incentive Match Plan for Employees IRA
+                'keogh',                         // Retirement accounts for self-employed individuals
+                'hsa',                           // Health Savings Accounts (if investment options are enabled)
+                'sipp',                          // Self-Invested Personal Pension (UK)
+                'tfsa',                          // Tax-Free Savings Accounts (Canada)
+                'stock plan',                    // Employer stock plans
+                'mutual fund',                   // Mutual funds (may invest in dividend-paying stocks)
+                'cash isa',                      // Individual Savings Account (UK, often includes dividend stock funds)
+                'profit sharing plan',           // Retirement accounts with stock investment options
+                'thrift savings plan',           // Federal employee retirement accounts
+            ])) {
                 continue;
             }
 

@@ -4,12 +4,8 @@ namespace App\Livewire\Client\Passive\Dividends;
 
 use App\Models\PassiveSource;
 use App\Models\PassiveSourceUser;
-use App\Services\DividendService;
-use Exception;
-use Filament\Forms\Components\TextInput;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Forms\Contracts\HasForms;
-use Filament\Notifications\Notification;
 use Filament\Tables\Actions\Action;
 use Filament\Tables\Columns\Summarizers\Summarizer;
 use Filament\Tables\Columns\TextColumn;
