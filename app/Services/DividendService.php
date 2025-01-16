@@ -18,7 +18,7 @@ class DividendService
     /**
      * @throws Exception
      */
-    public function createDividendForUser(User $user, array $data): PassiveSourceUser
+    public function create(User $user, array $data): PassiveSourceUser
     {
         if ($user->id !== auth()->id()) {
             throw new Exception('This dividend stock does not belong to the specified user.');
@@ -49,7 +49,7 @@ class DividendService
     /**
      * @throws Exception
      */
-    public function updateDividendForUser(User $user, PassiveSourceUser $passiveSourceUser, array $data): PassiveSourceUser
+    public function update(User $user, PassiveSourceUser $passiveSourceUser, array $data): PassiveSourceUser
     {
         if ($user->id !== $passiveSourceUser->user_id) {
             throw new Exception('This dividend stock does not belong to the specified user.');
@@ -71,7 +71,7 @@ class DividendService
         return $passiveSourceUser;
     }
 
-    public function deleteDividendForUser(User $user, PassiveSourceUser $passiveSourceUser): bool
+    public function delete(User $user, PassiveSourceUser $passiveSourceUser): bool
     {
         if ($user->id !== $passiveSourceUser->user_id) {
             throw new Exception('This dividend stock does not belong to the specified user.');

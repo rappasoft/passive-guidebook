@@ -2,10 +2,6 @@
     $defaultTab = \Illuminate\Support\Facades\Auth::user()->passiveSources()->inUse()->forSlug(\App\Models\PassiveSource::HYSA)->count() ? \App\Models\PassiveSource::HYSA : '';
 
     if ($defaultTab === '') {
-        $defaultTab = \Illuminate\Support\Facades\Auth::user()->passiveSources()->inUse()->forSlug(\App\Models\PassiveSource::CD_BONDS)->count() ? \App\Models\PassiveSource::CD_BONDS : '';
-    }
-
-    if ($defaultTab === '') {
         $defaultTab = \Illuminate\Support\Facades\Auth::user()->passiveSources()->inUse()->forSlug(\App\Models\PassiveSource::DIVIDENDS)->count() ? \App\Models\PassiveSource::DIVIDENDS : '';
     }
 
@@ -78,25 +74,10 @@
                                         @click="tab = 'hysa';window.location.hash = 'hysa'"
                                         :alpine-active="'tab === \'hysa\''">
                                         <div class="flex items-center space-x-2">
-                                            <span>HYSA</span>
+                                            <span>HYSA/CD</span>
 
                                             <x-filament::badge color="success" class="hidden lg:block">
                                                 ${{ number_format(\Illuminate\Support\Facades\Auth::user()->getMonthlyIncomeForSource(\App\Models\PassiveSource::HYSA), 2) }}
-                                                /mo
-                                            </x-filament::badge>
-                                        </div>
-                                    </x-filament::tabs.item>
-                                @endif
-
-                                @if (\Illuminate\Support\Facades\Auth::user()->passiveSources()->inUse()->forSlug(\App\Models\PassiveSource::CD_BONDS)->count())
-                                    <x-filament::tabs.item
-                                        @click="tab = 'cd-bonds';window.location.hash = 'cd-bonds'"
-                                        :alpine-active="'tab === \'cd-bonds\''">
-                                        <div class="flex items-center space-x-2">
-                                            <span>CDs/Bonds</span>
-
-                                            <x-filament::badge color="success" class="hidden lg:block">
-                                                ${{ number_format(\Illuminate\Support\Facades\Auth::user()->getMonthlyIncomeForSource(\App\Models\PassiveSource::CD_BONDS), 2) }}
                                                 /mo
                                             </x-filament::badge>
                                         </div>
@@ -152,12 +133,6 @@
                                 @if (\Illuminate\Support\Facades\Auth::user()->passiveSources()->inUse()->forSlug(\App\Models\PassiveSource::HYSA)->count())
                                     <div x-show="tab === '{{ \App\Models\PassiveSource::HYSA }}'">
                                         <livewire:client.passive.h_y_s_a.my-h_y_s_a/>
-                                    </div>
-                                @endif
-
-                                @if (\Illuminate\Support\Facades\Auth::user()->passiveSources()->inUse()->forSlug(\App\Models\PassiveSource::CD_BONDS)->count())
-                                    <div x-show="tab === '{{ \App\Models\PassiveSource::CD_BONDS }}'">
-                                        <livewire:client.passive.cd-bonds.my-c_d-b_onds />
                                     </div>
                                 @endif
 

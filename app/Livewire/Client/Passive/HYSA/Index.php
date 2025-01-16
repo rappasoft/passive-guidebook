@@ -83,8 +83,8 @@ class Index extends Component implements HasForms, HasTable
                     ]),
             ])
             ->headerActions([
-                Action::make('connect-bank-account')
-                    ->label('Connect a Bank Account')
+                Action::make('connect-savings-account')
+                    ->label('Connect a Savings Account')
                     ->url(function () {
                         if (! auth()->user()->canConnectBanks()) {
                             return '/billing';

@@ -63,88 +63,33 @@ class Index extends Component implements HasForms, HasTable
                             ->using(fn (QueryBuilder $query): string => number_format($query->sum('monthly_amount') * 12, 2)),
                     ]),
             ])
-//            ->headerActions([
-//                Action::make('create')
-//                    ->label('Add')
-//                    ->modalHeading('Add Dividend Stock')
-//                    ->modalDescription('Add the details of your dividend stocks to have Passive Guidebook account for your yields.')
-//                    ->form([
-//                        TextInput::make('ticker')
-//                            ->maxLength(5)
-//                            ->required(),
-//                        TextInput::make('yield')
-//                            ->postfix('%')
-//                            ->numeric()
-//                            ->minValue(0)
-//                            ->maxValue(100)
-//                            ->required(),
-//                        TextInput::make('amount')
-//                            ->numeric()
-//                            ->label('Amount Invested')
-//                            ->minValue(0)
-//                            ->maxValue(999999999)
-//                            ->required(),
-//                    ])
-//                    ->slideOver()
-//                    ->action(function (array $data): void {
-//                        try {
-//                            resolve(DividendService::class)->createDividendForUser(auth()->user(), $data);
-//                        } catch (Exception) {
-//                            Notification::make()
-//                                ->title('There was a problem adding your dividend stock.')
-//                                ->danger()
-//                                ->send();
-//                        }
-//                    }),
-//            ])
+            ->headerActions([
+                Action::make('connect-brokerage-account')
+                    ->label('Connect a Brokerage Account')
+                    ->url(function () {
+                        if (! auth()->user()->canConnectBanks()) {
+                            return '/billing';
+                        }
+
+                        return null;
+                    })
+                    ->extraAttributes(function () {
+                        if (auth()->user()->canConnectBanks()) {
+                            return ['class' => 'plaid-link-account', 'data-type' => PassiveSource::DIVIDENDS];
+                        }
+
+                        return [];
+                    })
+                    ->tooltip(function () {
+                        if (auth()->user()->onTrial()) {
+                            return 'You can not connect to banks during the trial period.';
+                        }
+
+                        return null;
+                    }),
+            ])
             ->actions([
-                //                Action::make('edit')
-                //                    ->modalHeading('Update Dividend Stock')
-                //                    ->modalDescription('Update the details of your dividend stock to have Passive Guidebook account for your monthly interest.')
-                //                    ->form([
-                //                        TextInput::make('ticker')
-                //                            ->default(fn (PassiveSourceUser $record) => $record->dividendDetails?->ticker)
-                //                            ->maxLength(5)
-                //                            ->required(),
-                //                        TextInput::make('yield')
-                //                            ->postfix('%')
-                //                            ->default(fn (PassiveSourceUser $record) => $record->dividendDetails?->yield)
-                //                            ->numeric()
-                //                            ->minValue(0)
-                //                            ->maxValue(100)
-                //                            ->required(),
-                //                        TextInput::make('amount')
-                //                            ->default(fn (PassiveSourceUser $record) => $record->dividendDetails?->amount)
-                //                            ->numeric()
-                //                            ->label('Amount Invested')
-                //                            ->minValue(0)
-                //                            ->maxValue(999999999)
-                //                            ->required(),
-                //                    ])
-                //                    ->slideOver()
-                //                    ->action(function (array $data, PassiveSourceUser $record): void {
-                //                        try {
-                //                            resolve(DividendService::class)->updateDividendForUser(auth()->user(), $record, $data);
-                //                        } catch (Exception) {
-                //                            Notification::make()
-                //                                ->title('There was a problem updating your dividend stock.')
-                //                                ->danger()
-                //                                ->send();
-                //                        }
-                //                    }),
-                //                Action::make('delete')
-                //                    ->requiresConfirmation()
-                //                    ->color('danger')
-                //                    ->action(function (array $data, PassiveSourceUser $record): void {
-                //                        try {
-                //                            resolve(DividendService::class)->deleteDividendForUser(auth()->user(), $record);
-                //                        } catch (Exception) {
-                //                            Notification::make()
-                //                                ->title('There was a problem deleting your dividend stock.')
-                //                                ->danger()
-                //                                ->send();
-                //                        }
-                //                    }),
+
             ]);
     }
 

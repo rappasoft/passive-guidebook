@@ -43,8 +43,6 @@
                                 </x-filament::button>
                             </x-slot>
                         </x-filament::dropdown>
-
-                        <x-filament::button class="plaid-link-account">Connect an Investment Account</x-filament::button>
                     </div>
                 </div>
 

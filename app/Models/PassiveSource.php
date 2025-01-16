@@ -15,8 +15,6 @@ class PassiveSource extends Model
 
     public const HYSA = 'hysa';
 
-    public const CD_BONDS = 'cd-bonds';
-
     public const DIVIDENDS = 'dividends';
 
     public const CUSTOM = 'custom';
