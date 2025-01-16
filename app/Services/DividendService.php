@@ -32,13 +32,13 @@ class DividendService
                 'plaid_account_id' => $data['plaid_account_id'],
             ]);
 
-            foreach(resolve(PlaidService::class)->getInvestments($access_token) as $investment) {
-//                $passiveSourceUser->dividendDetails()->create([
-//                    'security_name' => $investment->name,
-//                    'ticker_symbol' => $investment->ticker_symbol,
-////                    'quantity' => $investment['quantity'],
-////                    'current_value' => $investment['market_value'],
-//                ]);
+            foreach (resolve(PlaidService::class)->getInvestments($access_token) as $investment) {
+                //                $passiveSourceUser->dividendDetails()->create([
+                //                    'security_name' => $investment->name,
+                //                    'ticker_symbol' => $investment->ticker_symbol,
+                // //                    'quantity' => $investment['quantity'],
+                // //                    'current_value' => $investment['market_value'],
+                //                ]);
             }
         } catch (Exception $e) {
             DB::rollBack();

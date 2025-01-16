@@ -8,10 +8,10 @@ use App\Models\PlaidAccount;
 use App\Services\DividendService;
 use App\Services\HYSAService;
 use App\Services\PlaidService;
+use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
-use Exception;
 
 class PlaidController extends Controller
 {
@@ -37,7 +37,7 @@ class PlaidController extends Controller
 
             $token = $this->plaidService->createLinkToken(auth()->id(), $request->type);
         } catch (Exception $e) {
-//            info(print_r($e->getResponse(), true));
+            //            info(print_r($e->getResponse(), true));
 
             return response()->json([
                 'result' => 'error',
@@ -118,11 +118,11 @@ class PlaidController extends Controller
                     'balance' => $account->balances->current ?? 0.00,
                 ]);
 
-                if ($request->type === PassiveSource::HYSA && in_array($account->subtype, ['savings', 'cd', 'money market',])) {
+                if ($request->type === PassiveSource::HYSA && in_array($account->subtype, ['savings', 'cd', 'money market'])) {
                     resolve(HYSAService::class)->create(auth()->user(), ['plaid_account_id' => $account->id]);
                 }
 
-                if ($request->type === PassiveSource::DIVIDENDS && in_array($account->subtype, ['brokerage',])) {
+                if ($request->type === PassiveSource::DIVIDENDS && in_array($account->subtype, ['brokerage'])) {
                     resolve(DividendService::class)->create($exchange->access_token, auth()->user(), ['plaid_account_id' => $account->id]);
                 }
             }
