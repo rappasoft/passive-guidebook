@@ -17,6 +17,60 @@ class PlaidController extends Controller
 {
     public PlaidService $plaidService;
 
+    public const SAVINGS_TYPES = ['savings', 'cd', 'money market'];
+
+    public const INVESTMENT_TYPES = [
+        '529',
+        '401a',
+        '401k',
+        '403B',
+        '457b',
+        'brokerage',
+        'cash isa',
+        'crypto exchange',
+        'education savings account',
+        'fixed annuity',
+        'gic',
+        'health reimbursement arrangement',
+        'hsa',
+        'ira',
+        'isa',
+        'keogh',
+        'lif',
+        'life insurance',
+        'lira',
+        'lrif',
+        'lrsp',
+        'mutual fund',
+        'non-custodial wallet',
+        'non-taxable brokerage account',
+        'other',
+        'other annuity',
+        'other insurance',
+        'pension',
+        'prif',
+        'profit sharing plan',
+        'qshr',
+        'rdsp',
+        'resp',
+        'retirement',
+        'rlif',
+        'roth',
+        'roth 401k',
+        'rrif',
+        'rrsp',
+        'sarsep',
+        'sep ira',
+        'simple ira',
+        'sipp',
+        'stock plan',
+        'tfsa',
+        'trust',
+        'ugma',
+        'utma',
+        'variable annuity',
+    ];
+
     public function __construct(PlaidService $plaidService)
     {
         $this->plaidService = $plaidService;
@@ -91,13 +145,11 @@ class PlaidController extends Controller
         }
 
         foreach ($this->plaidService->getAccounts($plaidToken->access_token)->accounts as $account) {
-            if ($request->type === PassiveSource::HYSA && ! in_array($account->subtype, ['savings', 'cd', 'money market'])) {
+            if ($request->type === PassiveSource::HYSA && ! in_array($account->subtype, self::SAVINGS_TYPES)) {
                 continue;
             }
 
-            if ($request->type === PassiveSource::DIVIDENDS && ! in_array($account->subtype, [
-                'brokerage',
-            ])) {
+            if ($request->type === PassiveSource::DIVIDENDS && ! in_array($account->subtype, self::INVESTMENT_TYPES)) {
                 continue;
             }
 
@@ -109,8 +161,10 @@ class PlaidController extends Controller
                     'mask' => $account->mask,
                     'balance' => $account->balances->current ?? 0.00,
                 ]);
+
+                // TODO: Are we suppose to update them here? Add new ones?
             } else {
-                $account = $plaidToken->accounts()->create([
+                $internalAccount = $plaidToken->accounts()->create([
                     'account_id' => $account->account_id,
                     'name' => $account->name,
                     'mask' => $account->mask,
@@ -118,12 +172,12 @@ class PlaidController extends Controller
                     'balance' => $account->balances->current ?? 0.00,
                 ]);
 
-                if ($request->type === PassiveSource::HYSA && in_array($account->subtype, ['savings', 'cd', 'money market'])) {
-                    resolve(HYSAService::class)->create(auth()->user(), ['plaid_account_id' => $account->id]);
+                if ($request->type === PassiveSource::HYSA && in_array($account->subtype, self::SAVINGS_TYPES)) {
+                    resolve(HYSAService::class)->create(auth()->user(), ['plaid_account_id' => $internalAccount->id]);
                 }
 
-                if ($request->type === PassiveSource::DIVIDENDS && in_array($account->subtype, ['brokerage'])) {
-                    resolve(DividendService::class)->create($exchange->access_token, auth()->user(), ['plaid_account_id' => $account->id]);
+                if ($request->type === PassiveSource::DIVIDENDS && in_array($account->subtype, self::INVESTMENT_TYPES)) {
+                    resolve(DividendService::class)->create($exchange->access_token, auth()->user(), ['plaid_account' => $internalAccount]);
                 }
             }
         }

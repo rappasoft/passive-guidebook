@@ -13,13 +13,15 @@ return new class extends Migration
     {
         Schema::create('dividend_details', function (Blueprint $table) {
             $table->id();
-            $table->string('plaid_id');
             $table->foreignIdFor(\App\Models\PassiveSourceUser::class)->constrained()->onDelete('cascade');
-            $table->string('security_name');
-            $table->string('ticker_symbol');
+            $table->foreignIdFor(\App\Models\Security::class);
+            $table->decimal('cost_basis');
             $table->decimal('quantity');
-            $table->decimal('current_value');
-            $table->decimal('yield')->default(0);
+            $table->decimal('institution_price');
+            $table->date('institution_price_as_of')->nullable();
+            $table->decimal('institution_value');
+            $table->decimal('yield_on_cost')->default(0);
+            $table->decimal('annual_income')->default(0);
             $table->timestamps();
         });
     }

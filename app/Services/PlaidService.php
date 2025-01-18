@@ -39,7 +39,7 @@ class PlaidService
             $products = ['investments'];
 
             $filters = [
-                'investment' => ['brokerage'],
+                'investment' => ['all'],
             ];
         }
 
@@ -92,8 +92,8 @@ class PlaidService
         return false;
     }
 
-    public function getInvestments($accessToken): object
+    public function getInvestments($accessToken, array $options = []): object
     {
-        return $this->client->investments->listHoldings($accessToken);
+        return $this->client->investments->listHoldings($accessToken, $options);
     }
 }

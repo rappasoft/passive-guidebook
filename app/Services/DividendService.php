@@ -4,9 +4,11 @@ namespace App\Services;
 
 use App\Models\PassiveSource;
 use App\Models\PassiveSourceUser;
+use App\Models\Security;
 use App\Models\User;
 use Exception;
 use Illuminate\Support\Facades\DB;
+use TomorrowIdeas\Plaid\PlaidRequestException;
 
 class DividendService
 {
@@ -29,19 +31,90 @@ class DividendService
         try {
             $passiveSourceUser = $user->passiveSources()->create([
                 'passive_source_id' => $this->getSource()->id,
-                'plaid_account_id' => $data['plaid_account_id'],
+                'plaid_account_id' => $data['plaid_account']->id,
             ]);
 
-            foreach (resolve(PlaidService::class)->getInvestments($access_token) as $investment) {
-                //                $passiveSourceUser->dividendDetails()->create([
-                //                    'security_name' => $investment->name,
-                //                    'ticker_symbol' => $investment->ticker_symbol,
-                // //                    'quantity' => $investment['quantity'],
-                // //                    'current_value' => $investment['market_value'],
-                //                ]);
+            $response = resolve(PlaidService::class)->getInvestments($access_token, ['account_ids' => [$data['plaid_account']->account_id]]);
+            $securities = collect($response->securities);
+
+            foreach($response->holdings as $investment) {
+                $plaidSecurity = $securities->firstWhere('security_id', $investment->security_id);
+
+                if ($investment->account_id !== $data['plaid_account']->account_id) {
+                    continue;
+                }
+
+                if ($plaidSecurity->ticker_symbol === '' || $plaidSecurity->ticker_symbol === null) {
+                    continue;
+                }
+
+                if ($investment->quantity === 0) {
+                    continue;
+                }
+
+                $security = Security::where('plaid_security_id', $investment->security_id)->first();
+                $dividendYield = 0; // TODO
+                $dividendPerShare = $investment->institution_price * ($dividendYield / 100);
+                $yieldOnCost = ($dividendPerShare / $investment->cost_basis) * 100;
+                $annualIncome = $dividendPerShare * $investment->quantity;
+
+
+                /*
+                 *  Valid security types are:
+                    cash: Cash, currency, and money market funds
+                    cryptocurrency: Digital or virtual currencies
+                    derivative: Options, warrants, and other derivative instruments
+                    equity: Domestic and foreign equities
+                    etf: Multi-asset exchange-traded investment funds
+                    fixed income: Bonds and certificates of deposit (CDs)
+                    loan: Loans and loan receivables
+                    mutual fund: Open- and closed-end vehicles pooling funds of multiple investors
+                    other: Unknown or other investment types
+                 */
+                if (! in_array($plaidSecurity->type, ['cash', 'etf'])) {
+                    continue;
+                }
+
+                if ($security) {
+                    $security->update([
+                        'type' => $plaidSecurity->type,
+                        'sector' => $plaidSecurity->sector,
+                        'industry' => $plaidSecurity->industry,
+                        'name' => $plaidSecurity->name,
+                        'symbol' => $plaidSecurity->ticker_symbol,
+                        'close_price' => $plaidSecurity->close_price,
+                        'close_price_as_of' => $plaidSecurity->close_price_as_of,
+                        'dividend_yield' => $dividendYield,
+                    ]);
+                } else {
+                    $security = Security::create([
+                        'plaid_security_id' => $investment->security_id,
+                        'type' => $plaidSecurity->type,
+                        'sector' => $plaidSecurity->sector,
+                        'industry' => $plaidSecurity->industry,
+                        'name' => $plaidSecurity->name,
+                        'symbol' => $plaidSecurity->ticker_symbol,
+                        'close_price' => $plaidSecurity->close_price,
+                        'close_price_as_of' => $plaidSecurity->close_price_as_of,
+                        'dividend_yield' => $dividendYield,
+                    ]);
+                }
+
+                $passiveSourceUser->dividendDetails()->create([
+                    'security_id' => $security->id,
+                    'cost_basis' => $investment->cost_basis,
+                    'quantity' => $investment->quantity,
+                    'institution_price' => $investment->institution_price,
+                    'institution_price_as_of' => $investment->institution_price_as_of,
+                    'institution_value' => $investment->institution_value,
+                    'yield_on_cost' => $yieldOnCost,
+                    'annual_income' => $annualIncome,
+                ]);
             }
-        } catch (Exception $e) {
+        } catch (PlaidRequestException $e) {
             DB::rollBack();
+
+            info(print_r($e->getResponse(), true));
 
             throw $e;
         }

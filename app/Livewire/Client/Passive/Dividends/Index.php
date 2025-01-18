@@ -2,17 +2,18 @@
 
 namespace App\Livewire\Client\Passive\Dividends;
 
+use App\Models\DividendDetails;
 use App\Models\PassiveSource;
 use App\Models\PassiveSourceUser;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Forms\Contracts\HasForms;
 use Filament\Tables\Actions\Action;
-use Filament\Tables\Columns\Summarizers\Summarizer;
+use Filament\Tables\Actions\DeleteAction;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Concerns\InteractsWithTable;
 use Filament\Tables\Contracts\HasTable;
+use Filament\Tables\Grouping\Group;
 use Filament\Tables\Table;
-use Illuminate\Database\Query\Builder as QueryBuilder;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
 
@@ -24,40 +25,74 @@ class Index extends Component implements HasForms, HasTable
     public function table(Table $table): Table
     {
         return $table
-            ->query(PassiveSourceUser::query()->forSlug(PassiveSource::DIVIDENDS)->forUser(auth()->user())->with('dividendDetails')->whereHas('dividendDetails'))
+            ->query(
+                DividendDetails::query()
+                    ->with('security')
+                    ->whereRelation('passiveSourceUser.plaidAccount', 'user_id', '=', auth()->id())
+            )
+            ->defaultGroup('passive_source_user_id')
+            ->groups([
+                Group::make('passive_source_user_id')
+                    ->label('Source')
+                    ->getTitleFromRecordUsing(fn (DividendDetails $record): string => $record->passiveSourceUser->plaidAccount->name . ' ('.$record->passiveSourceUser->plaidAccount->mask.')'),
+                Group::make('ticker_symbol')
+                    ->label('Ticker Symbol')
+            ])
             ->paginated(false)
             ->emptyStateHeading('You have no dividend stocks.')
             ->emptyStateDescription(null)
             ->emptyStateIcon('heroicon-o-face-frown')
             ->columns([
-                TextColumn::make('dividendDetails.ticker_symbol')
+                TextColumn::make('security.symbol')
                     ->label('Ticker')
+                    ->badge()
+                    ->description(fn(DividendDetails $record) => $record->security->name)
+                    ->color('info')
                     ->sortable()
                     ->searchable(),
-                //                TextColumn::make('dividendDetails.yield')
-                //                    ->label('Yield')
-                //                    ->sortable()
-                //                    ->searchable(),
-                //                TextColumn::make('dividendDetails.amount')
-                //                    ->label('Amount Invested')
-                //                    ->sortable()
-                //                    ->money()
-                //                    ->searchable(),
-                //                TextColumn::make('monthly_amount')
-                //                    ->label('Monthly Interest')
-                //                    ->money()
-                //                    ->sortable()
-                //                    ->searchable()
-                //                    ->summarize([
-                //                        Summarizer::make()
-                //                            ->label('Total Monthly')
-                //                            ->prefix('$')
-                //                            ->using(fn (QueryBuilder $query): string => number_format($query->sum('monthly_amount'), 2)),
-                //                        Summarizer::make()
-                //                            ->label('Total Yearly')
-                //                            ->prefix('$')
-                //                            ->using(fn (QueryBuilder $query): string => number_format($query->sum('monthly_amount') * 12, 2)),
-                //                    ]),
+                TextColumn::make('quantity')
+                    ->label('Shares')
+                    ->sortable()
+                    ->searchable(),
+                TextColumn::make('institution_price')
+                    ->label('Price')
+                    ->money()
+                    ->description(fn(DividendDetails $record) => 'As of: ' . $record->institution_price_as_of),
+                TextColumn::make('institution_value')
+                    ->label('Value')
+                    ->money(),
+                TextColumn::make('security.dividend_yield')
+                    ->label('Dividend Yield')
+                    ->formatStateUsing(fn(DividendDetails $record) => $record->dividend_yield . '%')
+                    ->badge()
+                    ->color(fn(DividendDetails $record) => (int)$record->dividend_yield === 0 ? 'danger' : 'success')
+                    ->sortable()
+                    ->searchable(),
+                TextColumn::make('yield_on_cost')
+                    ->label('Yield on Cost')
+                    ->formatStateUsing(fn(DividendDetails $record) => $record->yield_on_cost . '%')
+                    ->sortable()
+                    ->searchable(),
+                TextColumn::make('annual_income')
+                    ->label('Annual Income')
+                    ->money()
+                    ->sortable()
+                    ->searchable(),
+//                TextColumn::make('passiveSourceUser.monthly_amount')
+//                    ->label('Average Monthly Income')
+//                    ->money()
+//                    ->sortable()
+//                    ->searchable()
+//                    ->summarize([
+//                        Summarizer::make()
+//                            ->label('Total Monthly')
+//                            ->prefix('$')
+//                            ->using(fn (QueryBuilder $query): string => number_format($query->sum('passive_source_user.monthly_amount'), 2)),
+//                        Summarizer::make()
+//                            ->label('Total Yearly')
+//                            ->prefix('$')
+//                            ->using(fn (QueryBuilder $query): string => number_format($query->sum('passive_source_user.monthly_amount') * 12, 2)),
+//                    ]),
             ])
             ->headerActions([
                 Action::make('connect-brokerage-account')
@@ -85,7 +120,9 @@ class Index extends Component implements HasForms, HasTable
                     }),
             ])
             ->actions([
-
+                DeleteAction::make()
+                    ->visible(fn(DividendDetails $record) => $record->dividend_yield === 0)
+                    ->action(fn() => null), // TODO
             ]);
     }
 
