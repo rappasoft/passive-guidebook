@@ -34,9 +34,9 @@ class Index extends Component implements HasForms, HasTable
             ->groups([
                 Group::make('passive_source_user_id')
                     ->label('Source')
-                    ->getTitleFromRecordUsing(fn (DividendDetails $record): string => $record->passiveSourceUser->plaidAccount->name . ' ('.$record->passiveSourceUser->plaidAccount->mask.')'),
+                    ->getTitleFromRecordUsing(fn (DividendDetails $record): string => $record->passiveSourceUser->plaidAccount->name.' ('.$record->passiveSourceUser->plaidAccount->mask.')'),
                 Group::make('ticker_symbol')
-                    ->label('Ticker Symbol')
+                    ->label('Ticker Symbol'),
             ])
             ->paginated(false)
             ->emptyStateHeading('You have no dividend stocks.')
@@ -46,7 +46,7 @@ class Index extends Component implements HasForms, HasTable
                 TextColumn::make('security.symbol')
                     ->label('Ticker')
                     ->badge()
-                    ->description(fn(DividendDetails $record) => $record->security->name)
+                    ->description(fn (DividendDetails $record) => $record->security->name)
                     ->color('info')
                     ->sortable()
                     ->searchable(),
@@ -57,20 +57,20 @@ class Index extends Component implements HasForms, HasTable
                 TextColumn::make('institution_price')
                     ->label('Price')
                     ->money()
-                    ->description(fn(DividendDetails $record) => 'As of: ' . $record->institution_price_as_of),
+                    ->description(fn (DividendDetails $record) => 'As of: '.$record->institution_price_as_of),
                 TextColumn::make('institution_value')
                     ->label('Value')
                     ->money(),
                 TextColumn::make('security.dividend_yield')
                     ->label('Dividend Yield')
-                    ->formatStateUsing(fn(DividendDetails $record) => $record->dividend_yield . '%')
+                    ->formatStateUsing(fn (DividendDetails $record) => $record->dividend_yield.'%')
                     ->badge()
-                    ->color(fn(DividendDetails $record) => (int)$record->dividend_yield === 0 ? 'danger' : 'success')
+                    ->color(fn (DividendDetails $record) => (int) $record->dividend_yield === 0 ? 'danger' : 'success')
                     ->sortable()
                     ->searchable(),
                 TextColumn::make('yield_on_cost')
                     ->label('Yield on Cost')
-                    ->formatStateUsing(fn(DividendDetails $record) => $record->yield_on_cost . '%')
+                    ->formatStateUsing(fn (DividendDetails $record) => $record->yield_on_cost.'%')
                     ->sortable()
                     ->searchable(),
                 TextColumn::make('annual_income')
@@ -78,21 +78,21 @@ class Index extends Component implements HasForms, HasTable
                     ->money()
                     ->sortable()
                     ->searchable(),
-//                TextColumn::make('passiveSourceUser.monthly_amount')
-//                    ->label('Average Monthly Income')
-//                    ->money()
-//                    ->sortable()
-//                    ->searchable()
-//                    ->summarize([
-//                        Summarizer::make()
-//                            ->label('Total Monthly')
-//                            ->prefix('$')
-//                            ->using(fn (QueryBuilder $query): string => number_format($query->sum('passive_source_user.monthly_amount'), 2)),
-//                        Summarizer::make()
-//                            ->label('Total Yearly')
-//                            ->prefix('$')
-//                            ->using(fn (QueryBuilder $query): string => number_format($query->sum('passive_source_user.monthly_amount') * 12, 2)),
-//                    ]),
+                //                TextColumn::make('passiveSourceUser.monthly_amount')
+                //                    ->label('Average Monthly Income')
+                //                    ->money()
+                //                    ->sortable()
+                //                    ->searchable()
+                //                    ->summarize([
+                //                        Summarizer::make()
+                //                            ->label('Total Monthly')
+                //                            ->prefix('$')
+                //                            ->using(fn (QueryBuilder $query): string => number_format($query->sum('passive_source_user.monthly_amount'), 2)),
+                //                        Summarizer::make()
+                //                            ->label('Total Yearly')
+                //                            ->prefix('$')
+                //                            ->using(fn (QueryBuilder $query): string => number_format($query->sum('passive_source_user.monthly_amount') * 12, 2)),
+                //                    ]),
             ])
             ->headerActions([
                 Action::make('connect-brokerage-account')
@@ -121,8 +121,8 @@ class Index extends Component implements HasForms, HasTable
             ])
             ->actions([
                 DeleteAction::make()
-                    ->visible(fn(DividendDetails $record) => $record->dividend_yield === 0)
-                    ->action(fn() => null), // TODO
+                    ->visible(fn (DividendDetails $record) => $record->dividend_yield === 0)
+                    ->action(fn () => null), // TODO
             ]);
     }
 

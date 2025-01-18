@@ -37,7 +37,7 @@ class DividendService
             $response = resolve(PlaidService::class)->getInvestments($access_token, ['account_ids' => [$data['plaid_account']->account_id]]);
             $securities = collect($response->securities);
 
-            foreach($response->holdings as $investment) {
+            foreach ($response->holdings as $investment) {
                 $plaidSecurity = $securities->firstWhere('security_id', $investment->security_id);
 
                 if ($investment->account_id !== $data['plaid_account']->account_id) {
@@ -57,7 +57,6 @@ class DividendService
                 $dividendPerShare = $investment->institution_price * ($dividendYield / 100);
                 $yieldOnCost = ($dividendPerShare / $investment->cost_basis) * 100;
                 $annualIncome = $dividendPerShare * $investment->quantity;
-
 
                 /*
                  *  Valid security types are:
