@@ -36,6 +36,7 @@ class DividendService
 
             $response = resolve(PlaidService::class)->getInvestments($access_token, ['account_ids' => [$data['plaid_account']->account_id]]);
             $securities = collect($response->securities);
+            $totalMonthly = 0;
 
             foreach($response->holdings as $investment) {
                 $plaidSecurity = $securities->firstWhere('security_id', $investment->security_id);
@@ -51,13 +52,6 @@ class DividendService
                 if ($investment->quantity === 0) {
                     continue;
                 }
-
-                $security = Security::where('plaid_security_id', $investment->security_id)->first();
-                $dividendYield = 0; // TODO
-                $dividendPerShare = $investment->institution_price * ($dividendYield / 100);
-                $yieldOnCost = ($dividendPerShare / $investment->cost_basis) * 100;
-                $annualIncome = $dividendPerShare * $investment->quantity;
-
 
                 /*
                  *  Valid security types are:
@@ -75,29 +69,29 @@ class DividendService
                     continue;
                 }
 
+                $security = Security::where('plaid_security_id', $investment->security_id)->first();
+                $dividendYield = 0; // TODO
+                $dividendPerShare = $investment->institution_price * ($dividendYield / 100);
+                $yieldOnCost = ($dividendPerShare / $investment->cost_basis) * 100;
+                $annualIncome = $dividendPerShare * $investment->quantity;
+
+                $fields = [
+                    'sector' => $plaidSecurity->sector,
+                    'industry' => $plaidSecurity->industry,
+                    'name' => $plaidSecurity->name,
+                    'symbol' => $plaidSecurity->ticker_symbol,
+                    'close_price' => $plaidSecurity->close_price,
+                    'close_price_as_of' => $plaidSecurity->close_price_as_of,
+                    'dividend_yield' => $dividendYield,
+                ];
+
                 if ($security) {
-                    $security->update([
-                        'type' => $plaidSecurity->type,
-                        'sector' => $plaidSecurity->sector,
-                        'industry' => $plaidSecurity->industry,
-                        'name' => $plaidSecurity->name,
-                        'symbol' => $plaidSecurity->ticker_symbol,
-                        'close_price' => $plaidSecurity->close_price,
-                        'close_price_as_of' => $plaidSecurity->close_price_as_of,
-                        'dividend_yield' => $dividendYield,
-                    ]);
+                    $security->update($fields);
                 } else {
-                    $security = Security::create([
+                    $security = Security::create(array_merge([
                         'plaid_security_id' => $investment->security_id,
                         'type' => $plaidSecurity->type,
-                        'sector' => $plaidSecurity->sector,
-                        'industry' => $plaidSecurity->industry,
-                        'name' => $plaidSecurity->name,
-                        'symbol' => $plaidSecurity->ticker_symbol,
-                        'close_price' => $plaidSecurity->close_price,
-                        'close_price_as_of' => $plaidSecurity->close_price_as_of,
-                        'dividend_yield' => $dividendYield,
-                    ]);
+                    ], $fields));
                 }
 
                 $passiveSourceUser->dividendDetails()->create([
@@ -110,7 +104,11 @@ class DividendService
                     'yield_on_cost' => $yieldOnCost,
                     'annual_income' => $annualIncome,
                 ]);
+
+                $totalMonthly += ($annualIncome / 12);
             }
+
+            $passiveSourceUser->update(['monthly_amount' => $totalMonthly]);
         } catch (PlaidRequestException $e) {
             DB::rollBack();
 
@@ -127,49 +125,49 @@ class DividendService
     /**
      * @throws Exception
      */
-    public function update(User $user, PassiveSourceUser $passiveSourceUser, array $data): PassiveSourceUser
-    {
-        if ($user->id !== $passiveSourceUser->user_id) {
-            throw new Exception('This dividend stock does not belong to the specified user.');
-        }
-
-        $monthlyInterest = $this->calculateMonthlyInterest($data['amount'], $data['yield']);
-
-        try {
-            $passiveSourceUser->update(['monthly_amount' => $monthlyInterest]);
-            $passiveSourceUser->dividendDetails()->update($data);
-        } catch (Exception $e) {
-            DB::rollBack();
-
-            throw $e;
-        }
-
-        DB::commit();
-
-        return $passiveSourceUser;
-    }
-
-    public function delete(User $user, PassiveSourceUser $passiveSourceUser): bool
-    {
-        if ($user->id !== $passiveSourceUser->user_id) {
-            throw new Exception('This dividend stock does not belong to the specified user.');
-        }
-
-        return $passiveSourceUser->delete();
-    }
-
-    private function calculateMonthlyInterest($amount, $yield): float
-    {
-        $annualDividend = $amount * ($yield / 100);
-
-        // Determine the number of payments per year based on frequency
-        $paymentsPerYear = match (strtolower('monthly')) {
-            'quarterly' => 4,
-            'semi-annual' => 2,
-            'annual' => 1,
-            default => 12, // Default to monthly
-        };
-
-        return $annualDividend / $paymentsPerYear;
-    }
+//    public function update(User $user, PassiveSourceUser $passiveSourceUser, array $data): PassiveSourceUser
+//    {
+//        if ($user->id !== $passiveSourceUser->user_id) {
+//            throw new Exception('This dividend stock does not belong to the specified user.');
+//        }
+//
+//        $monthlyInterest = $this->calculateMonthlyInterest($data['amount'], $data['yield']);
+//
+//        try {
+//            $passiveSourceUser->update(['monthly_amount' => $monthlyInterest]);
+//            $passiveSourceUser->dividendDetails()->update($data);
+//        } catch (Exception $e) {
+//            DB::rollBack();
+//
+//            throw $e;
+//        }
+//
+//        DB::commit();
+//
+//        return $passiveSourceUser;
+//    }
+//
+//    public function delete(User $user, PassiveSourceUser $passiveSourceUser): bool
+//    {
+//        if ($user->id !== $passiveSourceUser->user_id) {
+//            throw new Exception('This dividend stock does not belong to the specified user.');
+//        }
+//
+//        return $passiveSourceUser->delete();
+//    }
+//
+//    private function calculateMonthlyInterest($amount, $yield): float
+//    {
+//        $annualDividend = $amount * ($yield / 100);
+//
+//        // Determine the number of payments per year based on frequency
+//        $paymentsPerYear = match (strtolower('monthly')) {
+//            'quarterly' => 4,
+//            'semi-annual' => 2,
+//            'annual' => 1,
+//            default => 12, // Default to monthly
+//        };
+//
+//        return $annualDividend / $paymentsPerYear;
+//    }
 }

@@ -91,8 +91,6 @@ class PlaidController extends Controller
 
             $token = $this->plaidService->createLinkToken(auth()->id(), $request->type);
         } catch (Exception $e) {
-            //            info(print_r($e->getResponse(), true));
-
             return response()->json([
                 'result' => 'error',
                 'message' => $e->getMessage(),
@@ -129,13 +127,7 @@ class PlaidController extends Controller
 
         $plaidToken = $request->user()->plaidTokens()->where('institution_id', $request->metadata['institution']['institution_id'])->first();
 
-        if ($plaidToken) {
-            $plaidToken->update([
-                'access_token' => $exchange->access_token,
-                'institution_name' => $request->metadata['institution']['name'],
-                'institution_id' => $request->metadata['institution']['institution_id'],
-            ]);
-        } else {
+        if (! $plaidToken) {
             $plaidToken = $request->user()->plaidTokens()->create([
                 'access_token' => $exchange->access_token,
                 'item_id' => $exchange->item_id,
@@ -153,14 +145,13 @@ class PlaidController extends Controller
                 continue;
             }
 
-            $internalAccount = PlaidAccount::whereRelation('token', 'id', '=', $plaidToken->id)->where('account_id', $account->account_id)->first();
+            $internalAccount = PlaidAccount::query()
+                ->whereRelation('token', 'id', '=', $plaidToken->id)
+                ->where('account_id', $account->account_id)
+                ->first();
 
             if ($internalAccount) {
-                $internalAccount->update([
-                    'name' => $account->name,
-                    'mask' => $account->mask,
-                    'balance' => $account->balances->current ?? 0.00,
-                ]);
+                $internalAccount->sync($account);
 
                 // TODO: Are we suppose to update them here? Add new ones?
             } else {
@@ -172,6 +163,7 @@ class PlaidController extends Controller
                     'balance' => $account->balances->current ?? 0.00,
                 ]);
 
+                // TODO: CD/Money Market not importing?
                 if ($request->type === PassiveSource::HYSA && in_array($account->subtype, self::SAVINGS_TYPES)) {
                     resolve(HYSAService::class)->create(auth()->user(), ['plaid_account_id' => $internalAccount->id]);
                 }

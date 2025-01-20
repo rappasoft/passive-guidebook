@@ -20,5 +20,10 @@ class DividendDetails extends Model
         'institution_value',
         'yield_on_cost',
         'annual_income',
+        'update_dividend_automatically',
+    ];
+
+    protected $casts = [
+        'update_dividend_automatically' => 'boolean',
     ];
 }

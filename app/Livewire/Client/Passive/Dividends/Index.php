@@ -2,20 +2,28 @@
 
 namespace App\Livewire\Client\Passive\Dividends;
 
+use App\Livewire\Client\Dashboard;
+use App\Livewire\Client\EstimatedMonthlyIncome;
+use App\Livewire\Client\MyMonthlyIncomeForSource;
 use App\Models\DividendDetails;
 use App\Models\PassiveSource;
 use App\Models\PassiveSourceUser;
+use Filament\Forms\Components\TextInput;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Forms\Contracts\HasForms;
+use Filament\Notifications\Notification;
 use Filament\Tables\Actions\Action;
 use Filament\Tables\Actions\DeleteAction;
+use Filament\Tables\Columns\Summarizers\Summarizer;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Concerns\InteractsWithTable;
 use Filament\Tables\Contracts\HasTable;
 use Filament\Tables\Grouping\Group;
 use Filament\Tables\Table;
+use Illuminate\Database\Query\Builder;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
+use Exception;
 
 class Index extends Component implements HasForms, HasTable
 {
@@ -24,20 +32,29 @@ class Index extends Component implements HasForms, HasTable
 
     public function table(Table $table): Table
     {
-        return $table
-            ->query(
-                DividendDetails::query()
-                    ->with('security')
-                    ->whereRelation('passiveSourceUser.plaidAccount', 'user_id', '=', auth()->id())
-            )
-            ->defaultGroup('passive_source_user_id')
-            ->groups([
+        $groups = [];
+        $defaultGroup = null;
+
+        $query = DividendDetails::query()
+            ->with('security')
+            ->whereRelation('passiveSourceUser.plaidAccount', 'user_id', '=', auth()->id());
+
+        if ($query->clone()->distinct('passive_source_user_id')->count() > 1) {
+            $groups = [
                 Group::make('passive_source_user_id')
                     ->label('Source')
                     ->getTitleFromRecordUsing(fn (DividendDetails $record): string => $record->passiveSourceUser->plaidAccount->name . ' ('.$record->passiveSourceUser->plaidAccount->mask.')'),
-                Group::make('ticker_symbol')
+                Group::make('security.symbol')
                     ->label('Ticker Symbol')
-            ])
+            ];
+
+            $defaultGroup = 'passive_source_user_id';
+        }
+
+        return $table
+            ->query($query)
+            ->defaultGroup($defaultGroup)
+            ->groups($groups)
             ->paginated(false)
             ->emptyStateHeading('You have no dividend stocks.')
             ->emptyStateDescription(null)
@@ -63,9 +80,9 @@ class Index extends Component implements HasForms, HasTable
                     ->money(),
                 TextColumn::make('security.dividend_yield')
                     ->label('Dividend Yield')
-                    ->formatStateUsing(fn(DividendDetails $record) => $record->dividend_yield . '%')
+                    ->formatStateUsing(fn(DividendDetails $record) => $record->security->dividend_yield . '%')
                     ->badge()
-                    ->color(fn(DividendDetails $record) => (int)$record->dividend_yield === 0 ? 'danger' : 'success')
+                    ->color(fn(DividendDetails $record) => (int)$record->security->dividend_yield === 0 ? 'danger' : 'success')
                     ->sortable()
                     ->searchable(),
                 TextColumn::make('yield_on_cost')
@@ -78,21 +95,21 @@ class Index extends Component implements HasForms, HasTable
                     ->money()
                     ->sortable()
                     ->searchable(),
-//                TextColumn::make('passiveSourceUser.monthly_amount')
-//                    ->label('Average Monthly Income')
-//                    ->money()
-//                    ->sortable()
-//                    ->searchable()
-//                    ->summarize([
-//                        Summarizer::make()
-//                            ->label('Total Monthly')
-//                            ->prefix('$')
-//                            ->using(fn (QueryBuilder $query): string => number_format($query->sum('passive_source_user.monthly_amount'), 2)),
-//                        Summarizer::make()
-//                            ->label('Total Yearly')
-//                            ->prefix('$')
-//                            ->using(fn (QueryBuilder $query): string => number_format($query->sum('passive_source_user.monthly_amount') * 12, 2)),
-//                    ]),
+                TextColumn::make('passiveSourceUser.monthly_amount')
+                    ->label('Average Monthly Income')
+                    ->money()
+                    ->sortable()
+                    ->searchable()
+                    ->summarize([
+                        Summarizer::make()
+                            ->label('Total Monthly')
+                            ->prefix('$')
+                            ->using(fn (Builder $query): string => number_format($query->sum('passive_source_user.monthly_amount'), 2)),
+                        Summarizer::make()
+                            ->label('Total Yearly')
+                            ->prefix('$')
+                            ->using(fn (Builder $query): string => number_format($query->join('dividend_details', 'passive_source_user.id', '=', 'dividend_details.passive_source_user_id')->sum('dividend_details.annual_income'), 2)),
+                    ]),
             ])
             ->headerActions([
                 Action::make('connect-brokerage-account')
@@ -120,9 +137,36 @@ class Index extends Component implements HasForms, HasTable
                     }),
             ])
             ->actions([
-                DeleteAction::make()
-                    ->visible(fn(DividendDetails $record) => $record->dividend_yield === 0)
-                    ->action(fn() => null), // TODO
+                // TODO Copy delete button from HYSA
+//                DeleteAction::make()
+//                    ->visible(fn(DividendDetails $record) => (int)$record->dividend_yield === 0)
+                Action::make('edit')
+                    ->label('Edit')
+                    ->modalHeading('Update Security')
+                    ->modalDescription('Update the details of your security to have Passive Guidebook account for your dividend yield.')
+                    ->form([
+                        TextInput::make('dividend_yield')
+                            ->postfix('%')
+                            ->label('Dividend Yield')
+                            ->default(fn (PassiveSourceUser $record) => $record->security?->dividend_yield)
+                            ->numeric()
+                            ->minValue(0)
+                            ->maxValue(100)
+                            ->required(),
+                    ])
+                    ->slideOver()
+                    ->action(function (array $data, DividendDetails $record): void {
+                        try {
+//                            resolve(HYSAService::class)->update(auth()->user(), $record, $data);
+
+                            $this->refresh();
+                        } catch (Exception) {
+                            Notification::make()
+                                ->title('There was a problem updating your security.')
+                                ->danger()
+                                ->send();
+                        }
+                    }),
             ]);
     }
 
@@ -132,5 +176,15 @@ class Index extends Component implements HasForms, HasTable
         return view('livewire.client.passive.dividends.index')
             ->withSource($source = PassiveSource::where('slug', PassiveSource::DIVIDENDS)->firstOrFail())
             ->withUserSource(PassiveSourceUser::query()->forSource($source)->forUser(auth()->user())->get());
+    }
+
+    private function refresh(): void
+    {
+        $this->dispatch('refresh')->to(EstimatedMonthlyIncome::class);
+        $this->dispatch('refresh')->to(MyMonthlyIncomeForSource::class);
+
+        if (request()->routeIs('dashboard')) {
+            $this->dispatch('refresh')->to(Dashboard::class);
+        }
     }
 }
