@@ -115,7 +115,7 @@ class PlaidService
 
         return [
             'success' => false,
-            'response' => $response->getBody()->getContents()
+            'response' => $response->getBody()->getContents(),
         ];
     }
 
