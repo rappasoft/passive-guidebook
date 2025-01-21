@@ -9,6 +9,7 @@ use App\Models\DividendDetails;
 use App\Models\PassiveSource;
 use App\Models\PassiveSourceUser;
 use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\Toggle;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Forms\Contracts\HasForms;
 use Filament\Notifications\Notification;
@@ -140,33 +141,36 @@ class Index extends Component implements HasForms, HasTable
                 // TODO Copy delete button from HYSA
 //                DeleteAction::make()
 //                    ->visible(fn(DividendDetails $record) => (int)$record->dividend_yield === 0)
-                Action::make('edit')
-                    ->label('Edit')
-                    ->modalHeading('Update Security')
-                    ->modalDescription('Update the details of your security to have Passive Guidebook account for your dividend yield.')
-                    ->form([
-                        TextInput::make('dividend_yield')
-                            ->postfix('%')
-                            ->label('Dividend Yield')
-                            ->default(fn (PassiveSourceUser $record) => $record->security?->dividend_yield)
-                            ->numeric()
-                            ->minValue(0)
-                            ->maxValue(100)
-                            ->required(),
-                    ])
-                    ->slideOver()
-                    ->action(function (array $data, DividendDetails $record): void {
-                        try {
-//                            resolve(HYSAService::class)->update(auth()->user(), $record, $data);
-
-                            $this->refresh();
-                        } catch (Exception) {
-                            Notification::make()
-                                ->title('There was a problem updating your security.')
-                                ->danger()
-                                ->send();
-                        }
-                    }),
+//                Action::make('edit')
+//                    ->label('Edit')
+//                    ->modalHeading('Update Security')
+//                    ->modalDescription('Update the details of your security to have Passive Guidebook account for your dividend yield.')
+//                    ->form([
+//                        TextInput::make('dividend_yield')
+//                            ->postfix('%')
+//                            ->label('Dividend Yield')
+//                            ->default(fn (DividendDetails $record) => $record->security?->dividend_yield)
+//                            ->numeric()
+//                            ->minValue(0)
+//                            ->maxValue(100)
+//                            ->required(),
+//                        Toggle::make('update_dividend_automatically')
+//                            ->label('')
+//                            ->default(false),
+//                    ])
+//                    ->slideOver()
+//                    ->action(function (array $data, DividendDetails $record): void {
+//                        try {
+////                            resolve(HYSAService::class)->update(auth()->user(), $record, $data);
+//
+//                            $this->refresh();
+//                        } catch (Exception) {
+//                            Notification::make()
+//                                ->title('There was a problem updating your security.')
+//                                ->danger()
+//                                ->send();
+//                        }
+//                    }),
             ]);
     }
 

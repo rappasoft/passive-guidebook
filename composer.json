@@ -27,6 +27,7 @@
         "filament/filament": "^3.0-stable",
         "filament/spatie-laravel-media-library-plugin": "^3.2",
         "filament/spatie-laravel-settings-plugin": "^3.0",
+        "firebase/php-jwt": "^6.10",
         "flowframe/laravel-trend": "*",
         "guzzlehttp/guzzle": "^7.2",
         "jamesmills/laravel-timezone": "dev-l11-compatibility",

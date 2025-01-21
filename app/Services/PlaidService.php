@@ -96,4 +96,40 @@ class PlaidService
     {
         return $this->client->investments->listHoldings($accessToken, $options);
     }
+
+    public function getWebhookVerificationKey(string $kid): array
+    {
+        $response = Http::withHeader('Content-Type', 'application/json')
+            ->post(config('services.plaid.api_url').'/webhook_verification_key/get', [
+                'client_id' => config('services.plaid.client'),
+                'secret' => config('services.plaid.secret'),
+                'key_id' => $kid,
+            ]);
+
+        if ($response->ok()) {
+            return [
+                'success' => true,
+                'response' => json_decode($response->body(), true),
+            ];
+        }
+
+        return [
+            'success' => false,
+            'response' => $response->getBody()->getContents()
+        ];
+    }
+
+    public function fireTestWebhook(string $accessToken): bool
+    {
+        $response = Http::withHeader('Content-Type', 'application/json')
+            ->post(config('services.plaid.api_url').'/sandbox/item/fire_webhook', [
+                'client_id' => config('services.plaid.client'),
+                'secret' => config('services.plaid.secret'),
+                'access_token' => $accessToken,
+                'webhook_type' => 'HOLDINGS',
+                'webhook_code' => 'DEFAULT_UPDATE',
+            ]);
+
+        return $response->ok();
+    }
 }

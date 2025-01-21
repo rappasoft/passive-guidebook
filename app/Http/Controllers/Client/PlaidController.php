@@ -9,8 +9,11 @@ use App\Services\DividendService;
 use App\Services\HYSAService;
 use App\Services\PlaidService;
 use Exception;
+use Firebase\JWT\JWK;
+use Firebase\JWT\JWT;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Validation\Rule;
 
 class PlaidController extends Controller
@@ -178,5 +181,67 @@ class PlaidController extends Controller
             'result' => 'success',
             'access_token' => $exchange->access_token,
         ]);
+    }
+
+    public function webhook(Request $request)
+    {
+        if (! $this->isValidWebhook($request)) {
+            Log::warning('Invalid Plaid Webhook Attempt:', $request->all());
+
+            return response()->json(['error' => 'Invalid webhook'], 400);
+        }
+
+        // TODO: Store webhooks?
+        // TODO: Process webhooks
+        info($request->all());
+    }
+
+    private function isValidWebhook(Request $request): bool
+    {
+        try {
+            if (! $request->hasHeader('Plaid-Verification')) {
+                throw new Exception('Missing Plaid-Verification Header');
+            }
+
+            $encodedToken = $request->header('Plaid-Verification');
+
+            $parts = explode('.', $encodedToken);
+
+            $header = base64_decode($parts[0]);
+            $header = json_decode($header, true);
+
+            if ($header['alg'] !== 'ES256') {
+                throw new Exception('Invalid Algorithm Specified');
+            }
+
+            $verificationKey = resolve(PlaidService::class)->getWebhookVerificationKey($header['kid']);
+
+            if (($verificationKey['success'] ?? false) === false) {
+                throw new Exception('Unable to get verification key from Plaid.');
+            }
+
+            if ($jwt = JWT::decode($encodedToken, JWK::parseKeySet(['keys' => [$verificationKey['response']['key']]]))) {
+                // Use the issued at time denoted by the iat field to verify that the webhook is not more than 5 minutes old. Rejecting outdated webhooks can help prevent replay attacks.
+                if (time() - $jwt->iat > 300) {
+                    throw new Exception('Webhook is greater than 5 minutes old');
+                }
+
+                /*
+                 * Extract the value of the request_body_sha256 field. This will be used to check the integrity and authenticity of the webhook body.
+                 * Compute the SHA-256 of the webhook body and ensure that it matches what is specified in the request_body_sha256 field of the validated JWT. If not, reject the webhook. It is best practice to use a constant time string/hash comparison method in your preferred language to prevent timing attacks.
+                */
+                if (! hash_equals(hash('sha256', $request->getContent()), $jwt->request_body_sha256)) {
+                    throw new Exception('Unable to verify SHA256 of webhook body.');
+                }
+
+                return true;
+            }
+
+            throw new Exception('Unable to verify token.');
+        } catch (Exception $e) {
+            Log::warning($e->getMessage() . ' on line ' . $e->getLine() . ' in file ' . $e->getFile());
+
+            return false;
+        }
     }
 }
