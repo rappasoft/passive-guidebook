@@ -17,7 +17,6 @@ use Filament\Forms\Contracts\HasForms;
 use Filament\Forms\Get;
 use Filament\Notifications\Notification;
 use Filament\Tables\Actions\Action;
-use Filament\Tables\Actions\DeleteAction;
 use Filament\Tables\Columns\Summarizers\Summarizer;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Concerns\InteractsWithTable;
@@ -84,8 +83,23 @@ class Index extends Component implements HasForms, HasTable
                 TextColumn::make('security.dividend_yield')
                     ->label('Dividend Yield')
                     ->formatStateUsing(fn (DividendDetails $record) => ($record->dividend_yield_override ? $record->dividend_yield_override : $record->security->dividend_yield).'%')
+                    ->description(fn (DividendDetails $record) => ! $record->update_dividend_automatically ? 'Overridden' : '')
                     ->badge()
-                    ->color(fn (DividendDetails $record) => (int) ($record->dividend_yield_override ? $record->dividend_yield_override : $record->security->dividend_yield) === 0 ? 'danger' : 'success')
+                    ->color(function (DividendDetails $record) {
+                        if ($record->update_dividend_automatically) {
+                            if ((int) $record->security->dividend_yield === 0) {
+                                return 'danger';
+                            } else {
+                                return 'success';
+                            }
+                        } else {
+                            if ((int) $record->dividend_yield_override === 0) {
+                                return 'danger';
+                            } else {
+                                return 'warning';
+                            }
+                        }
+                    })
                     ->sortable()
                     ->searchable(),
                 TextColumn::make('yield_on_cost')
@@ -142,9 +156,6 @@ class Index extends Component implements HasForms, HasTable
                     }),
             ])
             ->actions([
-                // TODO Copy delete button from HYSA
-                //                DeleteAction::make()
-                //                    ->visible(fn(DividendDetails $record) => (int)$record->dividend_yield === 0)
                 Action::make('edit')
                     ->label('Edit')
                     ->modalHeading('Update Security')
@@ -161,7 +172,7 @@ class Index extends Component implements HasForms, HasTable
                             ->requiredIf('update_dividend_automatically', false),
                         Toggle::make('update_dividend_automatically')
                             ->label('Update Dividend Yield Automatically')
-                            ->live() // TODO: Not active live
+                            ->live()
                             ->default(fn (DividendDetails $record) => $record->update_dividend_automatically)
                             ->helperText('Turn this off to keep your custom dividend yield the next time this security updates.'),
                     ])

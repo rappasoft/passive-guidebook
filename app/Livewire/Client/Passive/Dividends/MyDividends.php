@@ -17,7 +17,10 @@ class MyDividends extends Component implements HasForms, HasTable
 
     public function table(Table $table): Table
     {
-        return resolve(Index::class)->table($table);
+        return resolve(Index::class)
+            ->table($table)
+            ->headerActions([])
+            ->actions([]);
     }
 
     #[Layout('layouts.app')]

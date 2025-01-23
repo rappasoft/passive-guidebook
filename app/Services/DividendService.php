@@ -159,30 +159,6 @@ class DividendService
 
         return $dividendDetails;
     }
-    //
-    //    public function delete(User $user, PassiveSourceUser $passiveSourceUser): bool
-    //    {
-    //        if ($user->id !== $passiveSourceUser->user_id) {
-    //            throw new Exception('This dividend stock does not belong to the specified user.');
-    //        }
-    //
-    //        return $passiveSourceUser->delete();
-    //    }
-    //
-    //    private function calculateMonthlyInterest($amount, $yield): float
-    //    {
-    //        $annualDividend = $amount * ($yield / 100);
-    //
-    //        // Determine the number of payments per year based on frequency
-    //        $paymentsPerYear = match (strtolower('monthly')) {
-    //            'quarterly' => 4,
-    //            'semi-annual' => 2,
-    //            'annual' => 1,
-    //            default => 12, // Default to monthly
-    //        };
-    //
-    //        return $annualDividend / $paymentsPerYear;
-    //    }
 
     private function calculateSecurityIncome(DividendDetails $dividendDetails, array $data): array
     {
