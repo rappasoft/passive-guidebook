@@ -22,6 +22,7 @@ return new class extends Migration
             $table->decimal('institution_value');
             $table->decimal('yield_on_cost')->default(0);
             $table->decimal('annual_income')->default(0);
+            $table->decimal('dividend_yield_override')->nullable();
             $table->boolean('update_dividend_automatically')->default(true);
             $table->timestamps();
         });

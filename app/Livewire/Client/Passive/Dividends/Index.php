@@ -8,10 +8,12 @@ use App\Livewire\Client\MyMonthlyIncomeForSource;
 use App\Models\DividendDetails;
 use App\Models\PassiveSource;
 use App\Models\PassiveSourceUser;
+use App\Services\DividendService;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Forms\Contracts\HasForms;
+use Filament\Forms\Get;
 use Filament\Notifications\Notification;
 use Filament\Tables\Actions\Action;
 use Filament\Tables\Actions\DeleteAction;
@@ -81,23 +83,25 @@ class Index extends Component implements HasForms, HasTable
                     ->money(),
                 TextColumn::make('security.dividend_yield')
                     ->label('Dividend Yield')
-                    ->formatStateUsing(fn(DividendDetails $record) => $record->security->dividend_yield . '%')
+                    ->formatStateUsing(fn(DividendDetails $record) => ($record->dividend_yield_override ? $record->dividend_yield_override : $record->security->dividend_yield) . '%')
                     ->badge()
-                    ->color(fn(DividendDetails $record) => (int)$record->security->dividend_yield === 0 ? 'danger' : 'success')
+                    ->color(fn(DividendDetails $record) => (int)($record->dividend_yield_override ? $record->dividend_yield_override : $record->security->dividend_yield) === 0 ? 'danger' : 'success')
                     ->sortable()
                     ->searchable(),
                 TextColumn::make('yield_on_cost')
                     ->label('Yield on Cost')
                     ->formatStateUsing(fn(DividendDetails $record) => $record->yield_on_cost . '%')
+                    ->toggleable(isToggledHiddenByDefault: true)
                     ->sortable()
                     ->searchable(),
                 TextColumn::make('annual_income')
                     ->label('Annual Income')
+                    ->toggleable(isToggledHiddenByDefault: true)
                     ->money()
                     ->sortable()
                     ->searchable(),
                 TextColumn::make('passiveSourceUser.monthly_amount')
-                    ->label('Average Monthly Income')
+                    ->label('Average Monthly')
                     ->money()
                     ->sortable()
                     ->searchable()
@@ -141,36 +145,39 @@ class Index extends Component implements HasForms, HasTable
                 // TODO Copy delete button from HYSA
 //                DeleteAction::make()
 //                    ->visible(fn(DividendDetails $record) => (int)$record->dividend_yield === 0)
-//                Action::make('edit')
-//                    ->label('Edit')
-//                    ->modalHeading('Update Security')
-//                    ->modalDescription('Update the details of your security to have Passive Guidebook account for your dividend yield.')
-//                    ->form([
-//                        TextInput::make('dividend_yield')
-//                            ->postfix('%')
-//                            ->label('Dividend Yield')
-//                            ->default(fn (DividendDetails $record) => $record->security?->dividend_yield)
-//                            ->numeric()
-//                            ->minValue(0)
-//                            ->maxValue(100)
-//                            ->required(),
-//                        Toggle::make('update_dividend_automatically')
-//                            ->label('')
-//                            ->default(false),
-//                    ])
-//                    ->slideOver()
-//                    ->action(function (array $data, DividendDetails $record): void {
-//                        try {
-////                            resolve(HYSAService::class)->update(auth()->user(), $record, $data);
-//
-//                            $this->refresh();
-//                        } catch (Exception) {
-//                            Notification::make()
-//                                ->title('There was a problem updating your security.')
-//                                ->danger()
-//                                ->send();
-//                        }
-//                    }),
+                Action::make('edit')
+                    ->label('Edit')
+                    ->modalHeading('Update Security')
+                    ->modalDescription('Update the details of your security to have Passive Guidebook account for your dividend yield.')
+                    ->form([
+                        TextInput::make('dividend_yield')
+                            ->postfix('%')
+                            ->label('Dividend Yield')
+                            ->default(fn (DividendDetails $record) => $record->dividend_yield_override)
+                            ->numeric()
+                            ->minValue(0)
+                            ->maxValue(100)
+                            ->disabled(fn (Get $get) => $get('update_dividend_automatically') === true)
+                            ->requiredIf('update_dividend_automatically', false),
+                        Toggle::make('update_dividend_automatically')
+                            ->label('Update Dividend Yield Automatically')
+                            ->live() // TODO: Not active live
+                            ->default(fn(DividendDetails $record) => $record->update_dividend_automatically)
+                            ->helperText('Turn this off to keep your custom dividend yield the next time this security updates.'),
+                    ])
+                    ->slideOver()
+                    ->action(function (array $data, DividendDetails $record): void {
+                        try {
+                            resolve(DividendService::class)->update(auth()->user(), $record, $data);
+
+                            $this->refresh();
+                        } catch (Exception) {
+                            Notification::make()
+                                ->title('There was a problem updating your security.')
+                                ->danger()
+                                ->send();
+                        }
+                    }),
             ]);
     }
 

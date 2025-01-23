@@ -169,10 +169,10 @@ class PlaidController extends Controller
                 // TODO: CD/Money Market not importing?
                 if ($request->type === PassiveSource::HYSA && in_array($account->subtype, self::SAVINGS_TYPES)) {
                     resolve(HYSAService::class)->create(auth()->user(), ['plaid_account_id' => $internalAccount->id]);
-                }
-
-                if ($request->type === PassiveSource::DIVIDENDS && in_array($account->subtype, self::INVESTMENT_TYPES)) {
+                } elseif ($request->type === PassiveSource::DIVIDENDS && in_array($account->subtype, self::INVESTMENT_TYPES)) {
                     resolve(DividendService::class)->create($exchange->access_token, auth()->user(), ['plaid_account' => $internalAccount]);
+                } else {
+                    info('Unknown subtype: ' . $account->subtype);
                 }
             }
         }

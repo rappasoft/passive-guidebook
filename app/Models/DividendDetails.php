@@ -20,6 +20,7 @@ class DividendDetails extends Model
         'institution_value',
         'yield_on_cost',
         'annual_income',
+        'dividend_yield_override',
         'update_dividend_automatically',
     ];
 

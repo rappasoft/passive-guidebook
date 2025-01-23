@@ -1,6 +1,8 @@
 <div>
     @push('before-header-scripts')
-        <script src="https://cdn.plaid.com/link/v2/stable/link-initialize.js"></script>
+        @once
+            <script src="https://cdn.plaid.com/link/v2/stable/link-initialize.js"></script>
+        @endonce
     @endpush
 
     <x-slot name="header">

@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Models\DividendDetails;
 use App\Models\PassiveSource;
 use App\Models\PassiveSourceUser;
 use App\Models\Security;
@@ -70,7 +71,7 @@ class DividendService
                 }
 
                 $security = Security::where('plaid_security_id', $investment->security_id)->first();
-                $dividendYield = 0; // TODO
+                $dividendYield = $security?->dividend_yield ?? 0;
                 $dividendPerShare = $investment->institution_price * ($dividendYield / 100);
                 $yieldOnCost = ($dividendPerShare / $investment->cost_basis) * 100;
                 $annualIncome = $dividendPerShare * $investment->quantity;
@@ -125,27 +126,39 @@ class DividendService
     /**
      * @throws Exception
      */
-    //    public function update(User $user, PassiveSourceUser $passiveSourceUser, array $data): PassiveSourceUser
-    //    {
-    //        if ($user->id !== $passiveSourceUser->user_id) {
-    //            throw new Exception('This dividend stock does not belong to the specified user.');
-    //        }
-    //
-    //        $monthlyInterest = $this->calculateMonthlyInterest($data['amount'], $data['yield']);
-    //
-    //        try {
-    //            $passiveSourceUser->update(['monthly_amount' => $monthlyInterest]);
-    //            $passiveSourceUser->dividendDetails()->update($data);
-    //        } catch (Exception $e) {
-    //            DB::rollBack();
-    //
-    //            throw $e;
-    //        }
-    //
-    //        DB::commit();
-    //
-    //        return $passiveSourceUser;
-    //    }
+        public function update(User $user, DividendDetails $dividendDetails, array $data): DividendDetails
+        {
+            if ($user->id !== $dividendDetails->passiveSourceUser->user_id) {
+                throw new Exception('This dividend stock does not belong to the specified user.');
+            }
+
+            try {
+                $income = $this->calculateSecurityIncome($dividendDetails, $data);
+
+                $dividendDetails->update([
+                    'update_dividend_automatically' => $data['update_dividend_automatically'],
+                    'dividend_yield_override' => $data['update_dividend_automatically'] ? null : $data['dividend_yield'],
+                    'yield_on_cost' => $income['yieldOnCost'],
+                    'annual_income' => $income['annualIncome'],
+                ]);
+
+                $totalMonthly = 0;
+
+                foreach (DividendDetails::query()->where('passive_source_user_id', $dividendDetails->passive_source_user_id)->get() as $investment) {
+                    $totalMonthly += ($investment->annual_income / 12);
+                }
+
+                $dividendDetails->passiveSourceUser()->update(['monthly_amount' => $totalMonthly]);
+            } catch (Exception $e) {
+                DB::rollBack();
+
+                throw $e;
+            }
+
+            DB::commit();
+
+            return $dividendDetails;
+        }
     //
     //    public function delete(User $user, PassiveSourceUser $passiveSourceUser): bool
     //    {
@@ -170,4 +183,19 @@ class DividendService
     //
     //        return $annualDividend / $paymentsPerYear;
     //    }
+
+    private function calculateSecurityIncome(DividendDetails $dividendDetails, array $data): array
+    {
+        $dividendYield = $data['update_dividend_automatically'] ? $dividendDetails->security->dividend_yield : $data['dividend_yield'];
+        $dividendPerShare = $dividendDetails->institution_price * ($dividendYield / 100);
+        $yieldOnCost = ($dividendPerShare / $dividendDetails->cost_basis) * 100;
+        $annualIncome = $dividendPerShare * $dividendDetails->quantity;
+
+        return [
+            'dividendYield' => $dividendYield,
+            'dividendPerShare' => $dividendPerShare,
+            'yieldOnCost' => $yieldOnCost,
+            'annualIncome' => $annualIncome,
+        ];
+    }
 }

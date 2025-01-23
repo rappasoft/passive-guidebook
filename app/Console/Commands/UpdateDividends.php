@@ -26,5 +26,8 @@ class UpdateDividends extends Command
     public function handle()
     {
         // TODO
+//        if (! $dividendDetails->update_dividend_automatically) {
+//            continue;
+//        }
     }
 }
