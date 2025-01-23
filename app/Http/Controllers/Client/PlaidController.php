@@ -239,7 +239,7 @@ class PlaidController extends Controller
 
             throw new Exception('Unable to verify token.');
         } catch (Exception $e) {
-            Log::warning($e->getMessage() . ' on line ' . $e->getLine() . ' in file ' . $e->getFile());
+            Log::warning($e->getMessage().' on line '.$e->getLine().' in file '.$e->getFile());
 
             return false;
         }
