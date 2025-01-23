@@ -26,6 +26,7 @@ class UpdatePlaidBalances extends Command
     public function handle()
     {
         // TODO: Make sure user has a active tier2 subscription
+        // Also do the plaid webhooks cover this automatically?
 
         /*
          * $plaidClient = new Plaid\Client(env('PLAID_CLIENT_ID'), env('PLAID_SECRET'), Plaid\Environment::Development);

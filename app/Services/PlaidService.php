@@ -24,20 +24,16 @@ class PlaidService
      */
     public function createLinkToken(int $userId, $filter = null): object|array
     {
-        $products = [];
         $filters = [];
+        $products = ['auth', 'transactions', 'investments'];
 
         if ($filter === PassiveSource::HYSA) {
-            $products = ['auth', 'transactions'];
-
             $filters = [
                 'depository' => ['savings', 'cd', 'money market'],
             ];
         }
 
         if ($filter === PassiveSource::DIVIDENDS) {
-            $products = ['investments'];
-
             $filters = [
                 'investment' => ['all'],
             ];
