@@ -172,7 +172,7 @@ class PlaidController extends Controller
                 } elseif ($request->type === PassiveSource::DIVIDENDS && in_array($account->subtype, self::INVESTMENT_TYPES)) {
                     resolve(DividendService::class)->create($exchange->access_token, auth()->user(), ['plaid_account' => $internalAccount]);
                 } else {
-                    info('Unknown subtype: ' . $account->subtype);
+                    info('Unknown subtype: '.$account->subtype);
                 }
             }
         }

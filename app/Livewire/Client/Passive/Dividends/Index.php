@@ -9,6 +9,7 @@ use App\Models\DividendDetails;
 use App\Models\PassiveSource;
 use App\Models\PassiveSourceUser;
 use App\Services\DividendService;
+use Exception;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
 use Filament\Forms\Concerns\InteractsWithForms;
@@ -26,7 +27,6 @@ use Filament\Tables\Table;
 use Illuminate\Database\Query\Builder;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
-use Exception;
 
 class Index extends Component implements HasForms, HasTable
 {
@@ -46,9 +46,9 @@ class Index extends Component implements HasForms, HasTable
             $groups = [
                 Group::make('passive_source_user_id')
                     ->label('Source')
-                    ->getTitleFromRecordUsing(fn (DividendDetails $record): string => $record->passiveSourceUser->plaidAccount->name . ' ('.$record->passiveSourceUser->plaidAccount->mask.')'),
+                    ->getTitleFromRecordUsing(fn (DividendDetails $record): string => $record->passiveSourceUser->plaidAccount->name.' ('.$record->passiveSourceUser->plaidAccount->mask.')'),
                 Group::make('security.symbol')
-                    ->label('Ticker Symbol')
+                    ->label('Ticker Symbol'),
             ];
 
             $defaultGroup = 'passive_source_user_id';
@@ -66,7 +66,7 @@ class Index extends Component implements HasForms, HasTable
                 TextColumn::make('security.symbol')
                     ->label('Ticker')
                     ->badge()
-                    ->description(fn(DividendDetails $record) => $record->security->name)
+                    ->description(fn (DividendDetails $record) => $record->security->name)
                     ->color('info')
                     ->sortable()
                     ->searchable(),
@@ -77,20 +77,20 @@ class Index extends Component implements HasForms, HasTable
                 TextColumn::make('institution_price')
                     ->label('Price')
                     ->money()
-                    ->description(fn(DividendDetails $record) => 'As of: ' . $record->institution_price_as_of),
+                    ->description(fn (DividendDetails $record) => 'As of: '.$record->institution_price_as_of),
                 TextColumn::make('institution_value')
                     ->label('Value')
                     ->money(),
                 TextColumn::make('security.dividend_yield')
                     ->label('Dividend Yield')
-                    ->formatStateUsing(fn(DividendDetails $record) => ($record->dividend_yield_override ? $record->dividend_yield_override : $record->security->dividend_yield) . '%')
+                    ->formatStateUsing(fn (DividendDetails $record) => ($record->dividend_yield_override ? $record->dividend_yield_override : $record->security->dividend_yield).'%')
                     ->badge()
-                    ->color(fn(DividendDetails $record) => (int)($record->dividend_yield_override ? $record->dividend_yield_override : $record->security->dividend_yield) === 0 ? 'danger' : 'success')
+                    ->color(fn (DividendDetails $record) => (int) ($record->dividend_yield_override ? $record->dividend_yield_override : $record->security->dividend_yield) === 0 ? 'danger' : 'success')
                     ->sortable()
                     ->searchable(),
                 TextColumn::make('yield_on_cost')
                     ->label('Yield on Cost')
-                    ->formatStateUsing(fn(DividendDetails $record) => $record->yield_on_cost . '%')
+                    ->formatStateUsing(fn (DividendDetails $record) => $record->yield_on_cost.'%')
                     ->toggleable(isToggledHiddenByDefault: true)
                     ->sortable()
                     ->searchable(),
@@ -143,8 +143,8 @@ class Index extends Component implements HasForms, HasTable
             ])
             ->actions([
                 // TODO Copy delete button from HYSA
-//                DeleteAction::make()
-//                    ->visible(fn(DividendDetails $record) => (int)$record->dividend_yield === 0)
+                //                DeleteAction::make()
+                //                    ->visible(fn(DividendDetails $record) => (int)$record->dividend_yield === 0)
                 Action::make('edit')
                     ->label('Edit')
                     ->modalHeading('Update Security')
@@ -162,7 +162,7 @@ class Index extends Component implements HasForms, HasTable
                         Toggle::make('update_dividend_automatically')
                             ->label('Update Dividend Yield Automatically')
                             ->live() // TODO: Not active live
-                            ->default(fn(DividendDetails $record) => $record->update_dividend_automatically)
+                            ->default(fn (DividendDetails $record) => $record->update_dividend_automatically)
                             ->helperText('Turn this off to keep your custom dividend yield the next time this security updates.'),
                     ])
                     ->slideOver()

@@ -126,39 +126,39 @@ class DividendService
     /**
      * @throws Exception
      */
-        public function update(User $user, DividendDetails $dividendDetails, array $data): DividendDetails
-        {
-            if ($user->id !== $dividendDetails->passiveSourceUser->user_id) {
-                throw new Exception('This dividend stock does not belong to the specified user.');
-            }
-
-            try {
-                $income = $this->calculateSecurityIncome($dividendDetails, $data);
-
-                $dividendDetails->update([
-                    'update_dividend_automatically' => $data['update_dividend_automatically'],
-                    'dividend_yield_override' => $data['update_dividend_automatically'] ? null : $data['dividend_yield'],
-                    'yield_on_cost' => $income['yieldOnCost'],
-                    'annual_income' => $income['annualIncome'],
-                ]);
-
-                $totalMonthly = 0;
-
-                foreach (DividendDetails::query()->where('passive_source_user_id', $dividendDetails->passive_source_user_id)->get() as $investment) {
-                    $totalMonthly += ($investment->annual_income / 12);
-                }
-
-                $dividendDetails->passiveSourceUser()->update(['monthly_amount' => $totalMonthly]);
-            } catch (Exception $e) {
-                DB::rollBack();
-
-                throw $e;
-            }
-
-            DB::commit();
-
-            return $dividendDetails;
+    public function update(User $user, DividendDetails $dividendDetails, array $data): DividendDetails
+    {
+        if ($user->id !== $dividendDetails->passiveSourceUser->user_id) {
+            throw new Exception('This dividend stock does not belong to the specified user.');
         }
+
+        try {
+            $income = $this->calculateSecurityIncome($dividendDetails, $data);
+
+            $dividendDetails->update([
+                'update_dividend_automatically' => $data['update_dividend_automatically'],
+                'dividend_yield_override' => $data['update_dividend_automatically'] ? null : $data['dividend_yield'],
+                'yield_on_cost' => $income['yieldOnCost'],
+                'annual_income' => $income['annualIncome'],
+            ]);
+
+            $totalMonthly = 0;
+
+            foreach (DividendDetails::query()->where('passive_source_user_id', $dividendDetails->passive_source_user_id)->get() as $investment) {
+                $totalMonthly += ($investment->annual_income / 12);
+            }
+
+            $dividendDetails->passiveSourceUser()->update(['monthly_amount' => $totalMonthly]);
+        } catch (Exception $e) {
+            DB::rollBack();
+
+            throw $e;
+        }
+
+        DB::commit();
+
+        return $dividendDetails;
+    }
     //
     //    public function delete(User $user, PassiveSourceUser $passiveSourceUser): bool
     //    {
