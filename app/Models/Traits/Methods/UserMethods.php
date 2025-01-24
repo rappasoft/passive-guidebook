@@ -60,11 +60,11 @@ trait UserMethods
 
     public function canConnectBanks(): bool
     {
-        return $this->isFree() || $this->subscribedToPrice(config('spark.billables.user.plans.1.monthly_id')) || $this->subscribedToPrice(config('spark.billables.user.plans.1.yearly_id'));
+        return $this->isFree() || $this->onTrial() || $this->subscribedToPrice(config('spark.billables.user.plans.1.monthly_id')) || $this->subscribedToPrice(config('spark.billables.user.plans.1.yearly_id'));
     }
 
     public function isTier2(): bool
     {
-        return $this->isFree() || $this->canConnectBanks();
+        return $this->isFree() || $this->onTrial() || $this->canConnectBanks();
     }
 }

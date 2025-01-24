@@ -28,17 +28,31 @@ class SparkServiceProvider extends ServiceProvider
         Spark::billable(User::class)->checkPlanEligibility(function (User $billable, Plan $plan) {
             // https://spark.laravel.com/docs/spark-stripe/plans#determining-plan-eligibility
 
-//             if ($billable->socialCasinos()->count() > 10 && $plan->name == \App\Models\Plan::TIER_1_NAME) {
-//                 throw ValidationException::withMessages([
-//                     'plan' => 'You must upgrade plans to add more Social Casinos.'
-//                 ]);
-//             }
-//
-//            if ($billable->savingsAccounts()->count() > 1 && $plan->name == \App\Models\Plan::TIER_1_NAME) {
-//                throw ValidationException::withMessages([
-//                    'plan' => 'You must upgrade plans to add more Social Casinos.'
-//                ]);
-//            }
+            // Check to make sure when upgrading from trial
+            // Tier 1 only allows
+
+            if ($plan->name == \App\Models\Plan::TIER_1_NAME) {
+                // No bank integration
+                // TODO
+
+                // 1 savings account
+                // TODO
+
+                // 5 dividend stocks
+                // TODO
+
+                // 10 social casinos
+                if ($billable->activeSocialCasinos()->count() > 10) {
+                    throw ValidationException::withMessages([
+                        'plan' => 'This plan only allows for 10 social casinos and you have ' . $billable->activeSocialCasinos()->count() . '. Please mark ' . ($billable->activeSocialCasinos()->count() - 10) . ' social casinos as unused to continue or subscribe to tier for unlimited everything.'
+                    ]);
+                }
+
+                // No custom sources
+                // TODO
+            }
+
+            // Tier 2 allows everything
         });
     }
 }

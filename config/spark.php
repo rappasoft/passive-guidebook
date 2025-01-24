@@ -141,7 +141,7 @@ return [
             'plans' => [
                 [
                     'name' => \App\Models\Plan::TIER_1_NAME,
-                    'short_description' => '', // TODO
+                    'short_description' => '',
                     'monthly_id' => env('SPARK_TIER_1_MONTHLY_PLAN', 'price_id'),
                     'yearly_id' => env('SPARK_TIER_1_YEARLY_PLAN', 'price_id'),
                     'features' => [
@@ -155,7 +155,7 @@ return [
                 ],
                 [
                     'name' => \App\Models\Plan::TIER_2_NAME,
-                    'short_description' => '', // TODO
+                    'short_description' => '',
                     'monthly_id' => env('SPARK_TIER_2_MONTHLY_PLAN', 'price_id'),
                     'yearly_id' => env('SPARK_TIER_2_YEARLY_PLAN', 'price_id'),
                     'features' => [

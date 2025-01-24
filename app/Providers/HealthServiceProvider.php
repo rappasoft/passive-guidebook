@@ -30,7 +30,6 @@ class HealthServiceProvider extends ServiceProvider
             EnvironmentCheck::new(),
             HorizonCheck::new(),
             RedisCheck::new(),
-            ScheduleCheck::new(),
             CpuLoadCheck::new()
                 ->failWhenLoadIsHigherInTheLast5Minutes(2.0)
                 ->failWhenLoadIsHigherInTheLast15Minutes(1.5),
