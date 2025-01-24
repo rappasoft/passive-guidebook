@@ -44,7 +44,7 @@ class SparkServiceProvider extends ServiceProvider
                 // 10 social casinos
                 if ($billable->activeSocialCasinos()->count() > 10) {
                     throw ValidationException::withMessages([
-                        'plan' => 'This plan only allows for 10 social casinos and you have ' . $billable->activeSocialCasinos()->count() . '. Please mark ' . ($billable->activeSocialCasinos()->count() - 10) . ' social casinos as unused to continue or subscribe to tier for unlimited everything.'
+                        'plan' => 'This plan only allows for 10 social casinos and you have '.$billable->activeSocialCasinos()->count().'. Please mark '.($billable->activeSocialCasinos()->count() - 10).' social casinos as unused to continue or subscribe to tier for unlimited everything.',
                     ]);
                 }
 
