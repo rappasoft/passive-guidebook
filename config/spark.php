@@ -146,9 +146,9 @@ return [
                     'yearly_id' => env('SPARK_TIER_1_YEARLY_PLAN', 'price_id'),
                     'features' => [
                         'One-Time Passive Income',
-                        'Manage 5 Savings Accounts',
+                        'Manage 1 Savings Account',
                         'Manage 5 Dividend Stocks',
-                        '25 Social Casinos',
+                        '10 Social Casinos',
                         '-- Bank Integration',
                         '-- Custom Passive Income Sources',
                     ],

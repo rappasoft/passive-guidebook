@@ -2,12 +2,16 @@
 
 namespace App\Livewire\Client\Passive\SocialCasino;
 
+use App\Livewire\Client\Dashboard;
+use App\Livewire\Client\EstimatedMonthlyIncome;
+use App\Livewire\Client\MyMonthlyIncomeForSource;
 use App\Models\SocialCasino;
 use Filament\Actions\Action;
 use Filament\Actions\Concerns\InteractsWithActions;
 use Filament\Actions\Contracts\HasActions;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Forms\Contracts\HasForms;
+use Laravel\Jetstream\Http\Livewire\NavigationMenu;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
 
@@ -31,7 +35,8 @@ class StatusToggle extends Component implements HasActions, HasForms
             ->tooltip('Add this to your dashboard to keep track of your daily earnings.')
             ->action(function () {
                 auth()->user()->addSocialCasino($this->socialCasino);
-            }); // TODO: Dispatch event to refresh header
+                $this->refresh();
+            });
     }
 
     public function unusedAction(): Action
@@ -46,7 +51,8 @@ class StatusToggle extends Component implements HasActions, HasForms
             ])
             ->action(function () {
                 auth()->user()->removeSocialCasino($this->socialCasino);
-            }); // TODO: Dispatch event to refresh header
+                $this->refresh();
+            });
     }
 
     #[Layout('layouts.app')]
@@ -59,5 +65,10 @@ class StatusToggle extends Component implements HasActions, HasForms
                 {{ $this->usedAction }}
             @endif
         blade;
+    }
+
+    private function refresh(): void
+    {
+        $this->dispatch('refresh-navigation-menu')->to(NavigationMenu::class);
     }
 }

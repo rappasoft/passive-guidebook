@@ -65,6 +65,6 @@ trait UserMethods
 
     public function isTier2(): bool
     {
-        return $this->isFree() || $this->onTrial() || $this->canConnectBanks();
+        return $this->isFree() || $this->canConnectBanks();
     }
 }

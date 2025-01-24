@@ -166,7 +166,6 @@ class PlaidController extends Controller
                     'balance' => $account->balances->current ?? 0.00,
                 ]);
 
-                // TODO: CD/Money Market not importing?
                 if ($request->type === PassiveSource::HYSA && in_array($account->subtype, self::SAVINGS_TYPES)) {
                     resolve(HYSAService::class)->create(auth()->user(), ['plaid_account_id' => $internalAccount->id]);
                 } elseif ($request->type === PassiveSource::DIVIDENDS && in_array($account->subtype, self::INVESTMENT_TYPES)) {

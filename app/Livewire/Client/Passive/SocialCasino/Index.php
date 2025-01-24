@@ -84,22 +84,14 @@ class Index extends Component implements HasForms, HasTable
                     ->tooltip('Add this to your dashboard to keep track of your daily earnings.')
                     ->action(function (SocialCasino $record) {
                         auth()->user()->addSocialCasino($record);
-                        //                        $this->dispatch('refresh')->to(EstimatedMonthlyIncome::class);
-                        //                        $this->dispatch('refresh')->to(MyMonthlyIncomeForSource::class); // TODO
-                        //                        if (request()->routeIs('dashboard')) {
-                        //                            $this->dispatch('refresh')->to(Dashboard::class);
-                        //                        }
+                        $this->refresh();
                     })
                     ->visible(fn (SocialCasino $record) => ! auth()->user()->hasActiveSocialCasino($record)),
                 Action::make('not-using')
                     ->label('Remove')
                     ->action(function (SocialCasino $record) {
                         auth()->user()->removeSocialCasino($record);
-                        //                        $this->dispatch('refresh')->to(EstimatedMonthlyIncome::class);
-                        //                        $this->dispatch('refresh')->to(MyMonthlyIncomeForSource::class); // TODO
-                        //                        if (request()->routeIs('dashboard')) {
-                        //                            $this->dispatch('refresh')->to(Dashboard::class);
-                        //                        }
+                        $this->refresh();
                     })
                     ->visible(fn (SocialCasino $record) => auth()->user()->hasActiveSocialCasino($record)),
             ])
@@ -119,5 +111,15 @@ class Index extends Component implements HasForms, HasTable
                 'user_id' => auth()->id(),
                 'passive_source_id' => $source->id,
             ]));
+    }
+
+    private function refresh(): void
+    {
+        $this->dispatch('refresh')->to(EstimatedMonthlyIncome::class);
+        $this->dispatch('refresh')->to(MyMonthlyIncomeForSource::class);
+
+        if (request()->routeIs('dashboard')) {
+            $this->dispatch('refresh')->to(Dashboard::class);
+        }
     }
 }
