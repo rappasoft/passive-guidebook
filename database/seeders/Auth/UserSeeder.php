@@ -26,5 +26,31 @@ class UserSeeder extends Seeder
 
         $admin->trial_ends_at = null;
         $admin->save();
+
+        if (! app()->isProduction()) {
+            $currentTrial = User::create([
+                'name' => 'Active Trial',
+                'display_name' => 'Trial',
+                'email' => 'trial@trial.com',
+                'password' => bcrypt('password'),
+                'email_verified_at' => now(),
+                'free' => false,
+            ]);
+
+            $currentTrial->trial_ends_at = now()->addWeeks(2);
+            $currentTrial->save();
+
+            $expiredTrial = User::create([
+                'name' => 'Expired Trial',
+                'display_name' => 'Expired',
+                'email' => 'expired@expired.com',
+                'password' => bcrypt('password'),
+                'email_verified_at' => now(),
+                'free' => true, // Create all the accounts and then switch to false lol
+            ]);
+
+            $expiredTrial->trial_ends_at = now()->subYear();
+            $expiredTrial->save();
+        }
     }
 }

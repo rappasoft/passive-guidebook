@@ -58,9 +58,11 @@
                         <dd class="mt-1 flex justify-between items-center font-semibold tracking-tight text-gray-900 dark:text-white">
                             <span class="text-3xl">${{ number_format(\Illuminate\Support\Facades\Auth::user()->getOneTimeIncome(), 2) }}</span>
 
-                            <x-filament::button size="xs" outlined @click="tab = 'one-time';window.location.hash = 'one-time';" >
-                                Add
-                            </x-filament::button>
+                            @if (\Illuminate\Support\Facades\Auth::user()->isTier2())
+                                <x-filament::button size="xs" outlined @click="tab = 'one-time';window.location.hash = 'one-time';" >
+                                    Add
+                                </x-filament::button>
+                            @endif
                         </dd>
                     </div>
                 </dl>
@@ -149,7 +151,13 @@
                                 @endif
 
                                 <div x-show="tab === 'one-time'">
-                                    <livewire:client.passive.one-time-passive-income />
+                                    @if (\Illuminate\Support\Facades\Auth::user()->isTier2())
+                                        <livewire:client.passive.one-time-passive-income />
+                                    @else
+                                        <x-alerts.info>
+                                            <p>This is not available in your plan. Please <a href="/billing" class="underline hover:no-underline">upgrade</a> to unlock this feature.</p>
+                                        </x-alerts.info>
+                                    @endif
                                 </div>
 
                                 <div x-show="tab === 'custom'">

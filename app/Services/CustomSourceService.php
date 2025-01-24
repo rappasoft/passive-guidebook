@@ -20,6 +20,10 @@ class CustomSourceService
      */
     public function create(User $user, array $data = []): PassiveSourceUser
     {
+        if (! $user->isTier2()) {
+            throw new Exception('You need to be subscribed to Tier 2 for custom passive income sources.');
+        }
+
         if ($user->id !== auth()->id()) {
             throw new Exception('This custom source does not belong to the specified user.');
         }

@@ -14,6 +14,10 @@ class OneTimePassiveIncomeService
      */
     public function create(User $user, array $data): OneTimePassiveIncome
     {
+        if (! $user->isTier2()) {
+            throw new Exception('You need to be subscribed to Tier 2 for one-time passive income sources.');
+        }
+
         if ($user->id !== auth()->id()) {
             throw new Exception('This income does not belong to the specified user.');
         }

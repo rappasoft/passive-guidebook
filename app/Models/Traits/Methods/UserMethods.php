@@ -2,9 +2,11 @@
 
 namespace App\Models\Traits\Methods;
 
+use App\Models\PassiveSource;
 use App\Models\Traits\User\MoneyCalculations;
 use App\Models\Traits\User\SocialCasinos;
 use Filament\Panel;
+use Illuminate\Database\Eloquent\Builder;
 use Spatie\Activitylog\LogOptions;
 
 trait UserMethods
@@ -45,7 +47,17 @@ trait UserMethods
 
     public function getPassiveIncomeSources(): int
     {
-        return $this->passiveSources()->where('monthly_amount', '>', 0)->count();
+        return $this
+            ->passiveSources()
+            ->when(function(Builder $builder) {
+                if (! $this->isTier2()) {
+                    return $builder->whereRelation('source', 'slug', '<>', PassiveSource::CUSTOM)->sum('monthly_amount');
+                }
+
+                return $builder;
+            })
+            ->where('monthly_amount', '>', 0)
+            ->count();
     }
 
     public function isFree(): bool
@@ -55,12 +67,12 @@ trait UserMethods
 
     public function canViewDashboard(): bool
     {
-        return $this->onTrial() || $this->isFree() || $this->subscribed();
+        return $this->isFree() || $this->onTrial() || $this->subscribed();
     }
 
     public function canConnectBanks(): bool
     {
-        return $this->isFree() || $this->onTrial() || $this->subscribedToPrice(config('spark.billables.user.plans.1.monthly_id')) || $this->subscribedToPrice(config('spark.billables.user.plans.1.yearly_id'));
+        return $this->isFree() || $this->subscribedToPrice(config('spark.billables.user.plans.1.monthly_id')) || $this->subscribedToPrice(config('spark.billables.user.plans.1.yearly_id'));
     }
 
     public function isTier2(): bool

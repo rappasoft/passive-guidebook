@@ -143,6 +143,10 @@
                     @endif
 
                     <x-nav-link href="" :active="false">
+                        {{ __('Websites') }}
+                    </x-nav-link>
+
+                    <x-nav-link href="" :active="false">
                         {{ __('Freebies') }}
                     </x-nav-link>
                 </div>
