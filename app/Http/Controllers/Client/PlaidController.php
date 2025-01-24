@@ -142,11 +142,13 @@ class PlaidController extends Controller
         foreach ($this->plaidService->getAccounts($plaidToken->access_token)->accounts as $account) {
             if ($request->type === PassiveSource::HYSA && ! in_array($account->subtype, self::SAVINGS_TYPES)) {
                 debug('Unknown HYSA subtype: '.$account->subtype);
+
                 continue;
             }
 
             if ($request->type === PassiveSource::DIVIDENDS && ! in_array($account->subtype, self::INVESTMENT_TYPES)) {
                 debug('Unknown dividend subtype: '.$account->subtype);
+
                 continue;
             }
 

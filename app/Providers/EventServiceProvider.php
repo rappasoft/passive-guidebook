@@ -30,9 +30,7 @@ class EventServiceProvider extends ServiceProvider
         /*
          * This event is dispatched when a subscription becomes active. The event’s public properties include $billable and $subscription.
          */
-        Event::listen(function (SubscriptionCreated $event) {
-
-        });
+        Event::listen(function (SubscriptionCreated $event) {});
 
         /*
          * This event is dispatched when a subscription is changed. Possible changes include plan changes, quantity changes, pausing a subscription, or resuming a subscription. The event’s public properties include $billable and $subscription.

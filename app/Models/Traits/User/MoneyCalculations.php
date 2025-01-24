@@ -26,7 +26,7 @@ trait MoneyCalculations
     public function getEstimatedMonthlyIncome(): float
     {
         return $this->passiveSources()
-            ->when(function(Builder $builder) {
+            ->when(function (Builder $builder) {
                 if (! $this->isTier2()) {
                     return $builder->whereRelation('source', 'slug', '<>', PassiveSource::CUSTOM)->sum('monthly_amount');
                 }
