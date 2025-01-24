@@ -2,9 +2,6 @@
 
 namespace App\Livewire\Client\Passive\SocialCasino;
 
-use App\Livewire\Client\Dashboard;
-use App\Livewire\Client\EstimatedMonthlyIncome;
-use App\Livewire\Client\MyMonthlyIncomeForSource;
 use App\Models\SocialCasino;
 use Filament\Actions\Action;
 use Filament\Actions\Concerns\InteractsWithActions;

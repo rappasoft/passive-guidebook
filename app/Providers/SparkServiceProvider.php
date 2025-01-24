@@ -28,17 +28,17 @@ class SparkServiceProvider extends ServiceProvider
         Spark::billable(User::class)->checkPlanEligibility(function (User $billable, Plan $plan) {
             // https://spark.laravel.com/docs/spark-stripe/plans#determining-plan-eligibility
 
-//             if ($billable->socialCasinos()->count() > 10 && $plan->name == \App\Models\Plan::TIER_1_NAME) {
-//                 throw ValidationException::withMessages([
-//                     'plan' => 'You must upgrade plans to add more Social Casinos.'
-//                 ]);
-//             }
-//
-//            if ($billable->savingsAccounts()->count() > 1 && $plan->name == \App\Models\Plan::TIER_1_NAME) {
-//                throw ValidationException::withMessages([
-//                    'plan' => 'You must upgrade plans to add more Social Casinos.'
-//                ]);
-//            }
+            //             if ($billable->socialCasinos()->count() > 10 && $plan->name == \App\Models\Plan::TIER_1_NAME) {
+            //                 throw ValidationException::withMessages([
+            //                     'plan' => 'You must upgrade plans to add more Social Casinos.'
+            //                 ]);
+            //             }
+            //
+            //            if ($billable->savingsAccounts()->count() > 1 && $plan->name == \App\Models\Plan::TIER_1_NAME) {
+            //                throw ValidationException::withMessages([
+            //                    'plan' => 'You must upgrade plans to add more Social Casinos.'
+            //                ]);
+            //            }
         });
     }
 }
