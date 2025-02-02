@@ -3,10 +3,10 @@
 namespace App\Console\Commands;
 
 use App\Models\Freebie;
+use Exception;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
-use Exception;
 
 class FetchFreebies extends Command
 {
@@ -43,10 +43,10 @@ class FetchFreebies extends Command
 
             $contents = collect($response['data']['children'] ?? []);
 
-            $this->line('Found ' . $response['data']['dist'] . ' results.');
+            $this->line('Found '.$response['data']['dist'].' results.');
 
             if ($contents->count()) {
-                foreach($contents as $content) {
+                foreach ($contents as $content) {
                     $content = $content['data'];
 
                     Freebie::firstOrCreate([
@@ -58,7 +58,7 @@ class FetchFreebies extends Command
                 }
             }
         } catch (Exception $e) {
-            debug('Freebies Fetch Error: ' . $e->getMessage());
+            debug('Freebies Fetch Error: '.$e->getMessage());
 
             DB::rollBack();
         }

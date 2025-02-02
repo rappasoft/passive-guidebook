@@ -8,7 +8,6 @@ use Livewire\Component;
 
 class FreebieIndex extends Component
 {
-
     #[Layout('layouts.app')]
     public function render()
     {
