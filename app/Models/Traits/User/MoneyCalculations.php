@@ -11,16 +11,19 @@ trait MoneyCalculations
 {
     public function getOneTimeIncome(): float
     {
+        // TODO: Test the tiers here
+        $casinos = SocialCasinoPromotionUser::query()
+            ->where('user_id', $this->id)
+            ->whereNotNull('redeemed_at')
+            ->join('social_casino_promotions', 'social_casino_promotions.id', '=', 'social_casino_promotion_user.social_casino_promotion_id')
+            ->whereNotNull('social_casino_promotions.rewards')
+            ->sum('social_casino_promotions.dollar_value');
+
         if ($this->isTier2()) {
-            return SocialCasinoPromotionUser::query()
-                ->where('user_id', $this->id)
-                ->whereNotNull('redeemed_at')
-                ->join('social_casino_promotions', 'social_casino_promotions.id', '=', 'social_casino_promotion_user.social_casino_promotion_id')
-                ->whereNotNull('social_casino_promotions.rewards')
-                ->sum('social_casino_promotions.dollar_value') + OneTimePassiveIncome::query()->forUser($this)->sum('amount');
+            return $casinos + OneTimePassiveIncome::query()->forUser($this)->sum('amount');
         }
 
-        return 0;
+        return $casinos;
     }
 
     public function getEstimatedMonthlyIncome(): float

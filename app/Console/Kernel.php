@@ -2,6 +2,7 @@
 
 namespace App\Console;
 
+use App\Console\Commands\FetchFreebies;
 use App\Console\Commands\UpdateDividends;
 use App\Console\Commands\UpdatePlaidBalances;
 use Illuminate\Console\Scheduling\Schedule;
@@ -23,6 +24,7 @@ class Kernel extends ConsoleKernel
         $schedule->command('sitemap:generate')->daily()->monitorName('Generate Sitemap');
         $schedule->command(UpdatePlaidBalances::class)->daily()->monitorName('Update Plaid Balances');
         $schedule->command(UpdateDividends::class)->weekly()->monitorName('Update Dividend Yields');
+        $schedule->command(FetchFreebies::class)->everySixHours()->monitorName('Fetch Freebies');
     }
 
     /**

@@ -39,5 +39,6 @@ class DatabaseSeeder extends Seeder
 
         $this->call(PassiveSourceSeeder::class);
         $this->call(SocialCasinoSeeder::class);
+        $this->call(FreebieCategorySeeder::class);
     }
 }
