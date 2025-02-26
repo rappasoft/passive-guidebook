@@ -146,9 +146,9 @@
                         {{ __('Websites') }}
                     </x-nav-link>
 
-                    <x-nav-link href="{{ route('freebies.index') }}" :active="request()->routeIs('freebies.*')">
-                        {{ __('Freebies') }}
-                    </x-nav-link>
+{{--                    <x-nav-link href="{{ route('freebies.index') }}" :active="request()->routeIs('freebies.*')">--}}
+{{--                        {{ __('Freebies') }}--}}
+{{--                    </x-nav-link>--}}
                 </div>
             </div>
 
