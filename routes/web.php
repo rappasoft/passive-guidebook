@@ -23,7 +23,7 @@ Route::middleware([
 
     Route::middleware(IsFreeOrSubscribed::class)->group(function () {
         require __DIR__.'/client/passive.php';
-//        require __DIR__.'/client/freebies.php';
+        //        require __DIR__.'/client/freebies.php';
         require __DIR__.'/client/plaid.php';
     });
 });
