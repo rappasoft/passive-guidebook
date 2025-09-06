@@ -19,3 +19,5 @@ yarn-error.log
 /.vscode
 auth.json
 /public/sitemap.xml
+.env.production
+.deploy.sh
